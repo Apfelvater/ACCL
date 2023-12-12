@@ -457,15 +457,15 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
   return nullptr;
 }
 
-ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function,
-                           BaseBuffer &val1, BaseBuffer &val2, BaseBuffer &result,
-                           bool val1_from_fpga, bool val2_from_fpga, bool to_fpga,
-                           bool run_async, std::vector<ACCLRequest *> waitfor) {
-  std::cout << "NOT IMPLEMENTED!" << std::endl;
-  throw std::exception("Not implemented yet.");
+ACCLRequest *ACCL::recv_and_combine() {//unsigned int count, reduceFunction function,
+                           //BaseBuffer &val1, BaseBuffer &val2, BaseBuffer &result,
+                           //bool val1_from_fpga, bool val2_from_fpga, bool to_fpga,
+                           //bool run_async, std::vector<ACCLRequest *> waitfor) {
+  std::cout << "**********************\n\rNOT IMPLEMENTED!\n\r**********************" << std::endl;
+  //throw std::exception("Not implemented yet.");
 
   // TODOOOOOO
-
+/**
   CCLO::Options options{};
 
   if (to_fpga == false && run_async == true) {
@@ -503,7 +503,7 @@ ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function,
     }
     check_return_value("combine", handle);
   }
-
+*/
   return nullptr;
 }
 

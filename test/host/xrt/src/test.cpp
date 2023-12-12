@@ -27,6 +27,13 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+TEST_F(ACCLTest, recv_and_combine) {
+  
+  accl->recv_and_combine();
+  
+  GTEST_SUCCEED();
+}
+
 TEST_F(ACCLTest, test_copy){
   if(::size > 1){
     GTEST_SKIP() << "Skipping single-node test on multi-node setup";

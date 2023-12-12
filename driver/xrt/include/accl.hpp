@@ -410,6 +410,14 @@ public:
                       std::vector<ACCLRequest *> waitfor = {});
 
   /**
+   * TEST
+   * 
+   * TODO: Documentation
+   * 
+  */
+  ACCLRequest *recv_and_combine();
+
+  /**
    * Performs the broadcast operation on the FPGA.
    *
    * @param buf            Buffer that should contain the same data as the root
