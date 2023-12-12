@@ -73,7 +73,8 @@ class TestEnvironment : public ::testing::Environment {
       }
 
       if (options.hardware || options.test_xrt_simulator) {
-        dev = xrt::device(options.device_index);
+        dev = xrt::device();
+        //dev = xrt::device(options.device_index);
       }
 
       // Set up for benchmarking

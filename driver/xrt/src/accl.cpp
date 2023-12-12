@@ -457,6 +457,56 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
   return nullptr;
 }
 
+ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function,
+                           BaseBuffer &val1, BaseBuffer &val2, BaseBuffer &result,
+                           bool val1_from_fpga, bool val2_from_fpga, bool to_fpga,
+                           bool run_async, std::vector<ACCLRequest *> waitfor) {
+  std::cout << "NOT IMPLEMENTED!" << std::endl;
+  throw std::exception("Not implemented yet.");
+
+  // TODOOOOOO
+
+  CCLO::Options options{};
+
+  if (to_fpga == false && run_async == true) {
+    std::cerr << "ACCL: async run returns data on FPGA, user must "
+                 "sync_from_device() after waiting"
+              << std::endl;
+  }
+
+  //if (val1_from_fpga == false) {
+  //  val1.sync_to_device();
+  //}
+
+  if (val2_from_fpga == false) {
+    val2.sync_to_device();
+  }
+
+  // Step 2: Combine
+  options.scenario = operation::combine;
+  // Following is wrong, val1 is received, not argument. 
+  options.addr_0 = &val1;
+
+  options.addr_1 = &val2;
+  options.addr_2 = &result;
+  options.reduce_function = function;
+  options.count = count;
+  options.waitfor = waitfor;
+  ACCLRequest *handle = call_async(options);
+
+  if (run_async) {
+    return handle;
+  } else {
+    wait(handle);
+    if (to_fpga == false) {
+      result.sync_from_device();
+    }
+    check_return_value("combine", handle);
+  }
+
+  return nullptr;
+}
+
 ACCLRequest *ACCL::bcast(BaseBuffer &buf, unsigned int count,
                          unsigned int root, communicatorId comm_id, bool from_fpga,
                          bool to_fpga, dataType compress_dtype, bool run_async,
