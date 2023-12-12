@@ -410,12 +410,31 @@ public:
                       std::vector<ACCLRequest *> waitfor = {});
 
   /**
-   * TEST
+   * Performs the receive operation on the FPGA and performs a reduce operation 
+   * on the result buffer and a local buffer on the FPGA.
    * 
-   * TODO: Documentation
+   * needed? @param dst_data_type   Data Type of the received data.
+   * @param count           Amount of elements to work on.. (?)
+   * @param function        Reduce operation to perform.
+   * @param result          Buffer where the result should be stored to. Create
+   *                        a buffer using ACCL::create_buffer.
+   * @param function        Reduce operation to perform.
+   * @param val             First buffer that should be used for reduce
+   *                        operation. Create a buffer using
+   *                        ACCL::create_buffer. (Second buffer is received value)
+   * @param result          Buffer where the result should be stored to. Create
+   *                        a buffer using ACCL::create_buffer.
+   * what? receive? @param val_from_fpga   Set to true if the data of the first buffer is
+   *                        already on the FPGA.
+   * @param to_fpga         Set to true if the copied data will be used on the
+   *                        FPGA only.
+   * @param run_async       Run the ACCL call asynchronously.
+   * 
    * 
   */
-  ACCLRequest *recv_and_combine();
+  ACCLRequest *recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
+                                BaseBuffer &val, bool val_from_fpga = false, bool to_fpga = false, 
+                                bool run_async = false);
 
   /**
    * Performs the broadcast operation on the FPGA.

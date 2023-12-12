@@ -457,15 +457,11 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
   return nullptr;
 }
 
-ACCLRequest *ACCL::recv_and_combine() {//unsigned int count, reduceFunction function,
-                           //BaseBuffer &val1, BaseBuffer &val2, BaseBuffer &result,
-                           //bool val1_from_fpga, bool val2_from_fpga, bool to_fpga,
-                           //bool run_async, std::vector<ACCLRequest *> waitfor) {
-  std::cout << "**********************\n\rNOT IMPLEMENTED!\n\r**********************" << std::endl;
-  //throw std::exception("Not implemented yet.");
+ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
+                                    BaseBuffer &val, bool val_from_fpga = false, bool to_fpga = false, 
+                                    bool run_async = false) {
+  std::cout << "**********************\n\r...recv_and_combine...\n\r**********************" << std::endl;
 
-  // TODOOOOOO
-/**
   CCLO::Options options{};
 
   if (to_fpga == false && run_async == true) {
@@ -473,10 +469,21 @@ ACCLRequest *ACCL::recv_and_combine() {//unsigned int count, reduceFunction func
                  "sync_from_device() after waiting"
               << std::endl;
   }
+  // Step 1:
+  options.scenario = operation::recv;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_2 = &dstbuf;
+  options.count = count;
+  options.root_src_dst = src;
+  options.tag = tag;
+  options.compress_dtype = compress_dtype;
+  options.waitfor = waitfor;
+  ACCLRequest *handle = call_async(options);
 
-  //if (val1_from_fpga == false) {
-  //  val1.sync_to_device();
-  //}
+/**
+  if (val1_from_fpga == false) {
+    val1.sync_to_device();
+  }
 
   if (val2_from_fpga == false) {
     val2.sync_to_device();
