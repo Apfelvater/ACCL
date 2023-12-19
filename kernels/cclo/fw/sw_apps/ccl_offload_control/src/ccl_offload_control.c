@@ -547,6 +547,62 @@ static inline int copy(	unsigned int count,
     );
 }
 
+// result = combine(received_val, val2)
+// received_val = recv(src_rank)
+// val2 = val(addr_to_combine)
+int recv_and_combine(unsigned int src_rank,
+                     unsigned int src_tag,
+                     uint64_t addr_to_combine,
+                     unsigned int count,
+                     uint64_t dst_addr,
+                     unsigned int comm_offset,
+                     unsigned int arcfg_offset,
+                     unsigned int compression,
+                     unsigned int function,
+                     unsigned int buftype) {
+    
+    // what is this?
+    unsigned int stream = buftype & 0xff;
+    unsigned int host = (buftype >> 8) & 0xff;
+
+    return move(MOVE_IMMEDIATE, MOVE_ON_RECV, MOVE_IMMEDIATE,  // INSTRUCTIONS for: values to combine, values received, result
+                pack_flags(compression, RES_LOCAL, host),      // copied from copy() -> correct?
+                function,                                      // combine function
+                count,                                         // #Elements to operate on
+                comm_offset,                                   // ?
+                arcfg_offset,                                  // ?
+                addr_to_combine,                               // addr of "val2"
+                0,                                             // op1 = 0, 2nd value comes from src
+                dst_addr,                                      // destination address of result
+                0, 0, 0,                                       // what is stride again?
+                src_rank, src_tag,                             // receiving from source
+                0, 0                                           // transmitting to nothing
+                );
+    // Frage: Wenn op1_addr = 0 und statdessen rx_src_rank != 0, welcher opcode (op0,op1,res) wird für src genutzt?
+
+    /* attempt.1
+    int recv_rc = recv(
+        src_rank,//
+        count, //
+        X, // Hier die "zwischen"-Adresse
+        comm_offset, //
+        arcfg_offset, //
+        src_tag, //
+        compression,//
+        buftype);//
+    int combine_rc = combine(
+        count, //
+        function, //
+        0, // einfach function auf das empfangene anwenden
+        X, // die zwischen-Adresse wieder
+        dst_addr, //
+        arcfg_offset, //
+        compression, //
+        buftype); //
+    return recv_rc | combine_rc;
+    */
+}
+
 //performs an accumulate using DMA1 and DMA0. DMA0 rx reads op1 DMA1 rx reads op2 while DMA1 tx back to dst buffer
 //use MOVE_IMMEDIATE
 int combine(unsigned int count,
@@ -2353,6 +2409,9 @@ void run() {
 
         switch (scenario)
         {
+            case ACCL_RECV_COMBINE: // New function
+                retval = recv_and_combine();
+                break;
             case ACCL_COPY:
                 retval = copy(count, op0_addr, res_addr, datapath_cfg, compression_flags, buftype_flags);
                 break;

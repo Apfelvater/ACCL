@@ -458,59 +458,37 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
 }
 
 ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
-                                    BaseBuffer &val, bool val_from_fpga = false, bool to_fpga = false, 
+                                    BaseBuffer &val, unsigned int src, bool val_from_fpga = false, bool to_fpga = false, 
                                     bool run_async = false) {
   std::cout << "**********************\n\r...recv_and_combine...\n\r**********************" << std::endl;
 
-  CCLO::Options options{};
-
-  if (to_fpga == false && run_async == true) {
-    std::cerr << "ACCL: async run returns data on FPGA, user must "
-                 "sync_from_device() after waiting"
-              << std::endl;
-  }
-  // Step 1:
-  options.scenario = operation::recv;
-  options.comm = communicators[comm_id].communicators_addr();
-  options.addr_2 = &dstbuf;
-  options.count = count;
-  options.root_src_dst = src;
-  options.tag = tag;
-  options.compress_dtype = compress_dtype;
-  options.waitfor = waitfor;
-  ACCLRequest *handle = call_async(options);
-
-/**
-  if (val1_from_fpga == false) {
+  if (val_from_fpga == false) {
     val1.sync_to_device();
   }
 
-  if (val2_from_fpga == false) {
-    val2.sync_to_device();
-  }
+  CCLO::Options options{};
 
-  // Step 2: Combine
-  options.scenario = operation::combine;
-  // Following is wrong, val1 is received, not argument. 
-  options.addr_0 = &val1;
-
-  options.addr_1 = &val2;
+  options.scenario = operation::recv_and_combine;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &val;
   options.addr_2 = &result;
   options.reduce_function = function;
   options.count = count;
-  options.waitfor = waitfor;
-  ACCLRequest *handle = call_async(options);
+  options.root_src_dst = src;
+  options.tag = tag;
+  
+  ACCLRequest* handle = call_async(options);
 
   if (run_async) {
     return handle;
   } else {
     wait(handle);
     if (to_fpga == false) {
-      result.sync_from_device();
+      dstbuf.sync_from_device();
     }
-    check_return_value("combine", handle);
+    check_return_value("recv_and_combine", handle);
   }
-*/
+
   return nullptr;
 }
 

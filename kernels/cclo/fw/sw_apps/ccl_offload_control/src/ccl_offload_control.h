@@ -78,6 +78,9 @@
 #define ACCL_ALLTOALL       13
 #define ACCL_NOP            255
 
+//New collectives by Nicholas Leerman
+#define ACCL_RECV_COMBINE   14
+
 //ACCL_CONFIG SUBFUNCTIONS
 #define HOUSEKEEP_SWRST                0
 #define HOUSEKEEP_PKTEN                1
