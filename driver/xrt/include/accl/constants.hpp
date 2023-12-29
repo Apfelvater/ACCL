@@ -188,7 +188,9 @@ enum class operation : int {
                              and scatter to all ranks */
   barrier = 12,         /**< barrier kernel */
   alltoall = 13,        /**< All-to-all kernel */
-  nop = 255             /**< NOP operation */
+  nop = 255,            /**< NOP operation */
+
+  recv_and_combine = 14
 };
 
 /**

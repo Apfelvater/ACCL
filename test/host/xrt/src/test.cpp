@@ -29,9 +29,51 @@
 
 TEST_F(ACCLTest, recv_and_combine) {
   
-  accl->recv_and_combine();
-  
-  GTEST_SUCCEED();
+  if(::size == 1){
+    GTEST_SKIP() << "Skipping recv_and_combine test on single-node setup";
+  }
+
+  unsigned int count = options.count;
+  unsigned int count_bytes = count * dataTypeSize.at(dataType::float32) / 8;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto op1_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  int next_rank = ::rank + 1;
+  int prev_rank = ::rank - 1;
+
+  if(::rank % 2 == 0){
+    if(next_rank < ::size){
+      test_debug("Sending data on " + std::to_string(::rank) + " to " +
+                    std::to_string(next_rank) + "...", options);
+      accl->send(*op_buf, count, next_rank, 0);
+    }
+  } else {
+      test_debug("Receiving data on " + std::to_string(::rank) + " from " +
+                    std::to_string(prev_rank) + "...", options);
+      accl->recv_and_combine(count, ACCL::reduceFunction::SUM, *res_buf, *op1_buf, prev_rank, 0);
+  }
+
+  if(::rank % 2 == 1){
+    test_debug("Sending data on " + std::to_string(::rank) + " to " +
+                  std::to_string(prev_rank) + "...", options);
+    accl->send(*res_buf, count, prev_rank, 1);
+  } else {
+    if(next_rank < ::size){
+      test_debug("Receiving data on " + std::to_string(::rank) + " from " +
+                    std::to_string(next_rank) + "...", options);
+      accl->recv_and_combine(count, ACCL::reduceFunction::SUM, *res_buf, *op1_buf, next_rank, 1);
+    }
+  }
+
+  if(next_rank < ::size){
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
+    }
+  } else {
+    SUCCEED();
+  }
 }
 
 TEST_F(ACCLTest, test_copy){

@@ -458,12 +458,12 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
 }
 
 ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
-                                    BaseBuffer &val, unsigned int src, bool val_from_fpga = false, bool to_fpga = false, 
-                                    bool run_async = false) {
+                                    BaseBuffer &val, unsigned int src, unsigned int tag, communicatorId comm_id, 
+                                    bool val_from_fpga, bool to_fpga, bool run_async) {
   std::cout << "**********************\n\r...recv_and_combine...\n\r**********************" << std::endl;
 
   if (val_from_fpga == false) {
-    val1.sync_to_device();
+    val.sync_to_device();
   }
 
   CCLO::Options options{};
@@ -484,7 +484,7 @@ ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function,
   } else {
     wait(handle);
     if (to_fpga == false) {
-      dstbuf.sync_from_device();
+      result.sync_from_device();
     }
     check_return_value("recv_and_combine", handle);
   }

@@ -433,8 +433,8 @@ public:
    * 
   */
   ACCLRequest *recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
-                                BaseBuffer &val, bool val_from_fpga = false, bool to_fpga = false, 
-                                bool run_async = false);
+                                    BaseBuffer &val, unsigned int src, unsigned int tag, communicatorId comm_id = GLOBAL_COMM, 
+                                    bool val_from_fpga = false, bool to_fpga = false, bool run_async = false);
 
   /**
    * Performs the broadcast operation on the FPGA.

@@ -561,7 +561,6 @@ int recv_and_combine(unsigned int src_rank,
                      unsigned int function,
                      unsigned int buftype) {
     
-    // what is this?
     unsigned int stream = buftype & 0xff;
     unsigned int host = (buftype >> 8) & 0xff;
 
@@ -574,7 +573,7 @@ int recv_and_combine(unsigned int src_rank,
                 addr_to_combine,                               // addr of "val2"
                 0,                                             // op1 = 0, 2nd value comes from src
                 dst_addr,                                      // destination address of result
-                0, 0, 0,                                       // what is stride again?
+                0, 0, 0,                                       // stride für große puffer
                 src_rank, src_tag,                             // receiving from source
                 0, 0                                           // transmitting to nothing
                 );
@@ -2410,7 +2409,9 @@ void run() {
         switch (scenario)
         {
             case ACCL_RECV_COMBINE: // New function
-                retval = recv_and_combine();
+                //retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);//recv_and_combine(root_src_dst,);
+                // Only for non-big values -> using address_low only
+                retval = recv_and_combine(root_src_dst, msg_tag, op0_addrl, count, res_addrl, comm, datapath_cfg, compression_flags, function, buftype_flags);
                 break;
             case ACCL_COPY:
                 retval = copy(count, op0_addr, res_addr, datapath_cfg, compression_flags, buftype_flags);
