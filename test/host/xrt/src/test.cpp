@@ -27,7 +27,65 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-TEST_F(ACCLTest, recv_and_combine) {
+TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
+  // 1 Send random buffer op_buf to all nodes
+  // 2 Recv op_buf on all nodes
+  // 3 Send random buffer op1_buf to all nodes
+  // 4 Recv (op1_buf) and combine (op_buf) on all nodes (SUM)
+  // 5 Get op_buf from node, manually combine with op1_buf and compare to result from 4
+
+  GTEST_SKIP() << "Not implemented yet.";
+
+  if(::size == 1){
+    GTEST_SKIP() << "Skipping recv_and_combine test on single-node setup";
+  }
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto op1_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  random_array(op1_buf->buffer(), count);
+  auto sum_buf = accl->create_buffer<float>(count, dataType::float32);
+  /*for (int i = 0; i < count; i++) {
+    (*sum_buf)[i] = (*op_buf)[i] + (*op1_buf)[i];
+  }*/
+
+  int next_rank = ::rank + 1;
+  int prev_rank = ::rank - 1;
+
+  // Sending combiner-values to the nodes
+  //if (next_rank < ::size) {
+  //  accl->send(*op_buf, count, next_rank);
+  //}
+
+  // send and receive from 
+  if (::rank % 2 == 0) {
+    if (next_rank < ::size) {
+      accl->send(*op_buf, count, next_rank);
+      accl->send(*op1_buf, count, next_rank);
+    }
+  } else {
+    accl->recv() // TODO: neuer zwischenpuffer? op und op1 wird noch benötigt.
+    accl->recv_and_combine();
+  }
+
+  if (::rank % 2 == 1) {
+    accl->send(*op_buf, count, prev_rank);
+    accl->send(*op1_buf, count, prev_rank);
+  }
+
+  // ASSERT
+  if(next_rank < ::size){
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*sum_buf)[i]); // ASSERT WITH AUF ALLEN RANKS AUSGEFÜHRT!!!!!!!!!
+    }
+  } else {
+    SUCCEED();
+  }
+
+}
+
+TEST_F(ACCLTest, recv_and_combine_ext) { // Combiner values is initially not on fpga
   
   if(::size == 1){
     GTEST_SKIP() << "Skipping recv_and_combine test on single-node setup";
@@ -40,9 +98,10 @@ TEST_F(ACCLTest, recv_and_combine) {
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   auto op1_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
+  
   int next_rank = ::rank + 1;
   int prev_rank = ::rank - 1;
-
+  
   if(::rank % 2 == 0){
     if(next_rank < ::size){
       test_debug("Sending data on " + std::to_string(::rank) + " to " +
@@ -54,7 +113,7 @@ TEST_F(ACCLTest, recv_and_combine) {
                     std::to_string(prev_rank) + "...", options);
       accl->recv_and_combine(count, ACCL::reduceFunction::SUM, *res_buf, *op1_buf, prev_rank, 0);
   }
-
+  
   if(::rank % 2 == 1){
     test_debug("Sending data on " + std::to_string(::rank) + " to " +
                   std::to_string(prev_rank) + "...", options);
@@ -66,10 +125,10 @@ TEST_F(ACCLTest, recv_and_combine) {
       accl->recv_and_combine(count, ACCL::reduceFunction::SUM, *res_buf, *op1_buf, next_rank, 1);
     }
   }
-
+  
   if(next_rank < ::size){
     for (unsigned int i = 0; i < count; ++i) {
-      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]); // ASSERT WITH AUF ALLEN RANKS AUSGEFÜHRT!!!!!!!!!
     }
   } else {
     SUCCEED();

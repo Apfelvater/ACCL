@@ -2389,9 +2389,9 @@ void run() {
             num_retry_pending--;
         }
 
-        op0_addr = ((uint64_t) op0_addrh << 32) | op0_addrl;
-        op1_addr = ((uint64_t) op1_addrh << 32) | op1_addrl;
-        res_addr = ((uint64_t) res_addrh << 32) | res_addrl;
+        op0_addr = ((uint64_t) op0_addrh << 32) | op0_addrl;    // = options.addr_0
+        op1_addr = ((uint64_t) op1_addrh << 32) | op1_addrl;    // = options.addr_1
+        res_addr = ((uint64_t) res_addrh << 32) | res_addrl;    // = options.addr_2
 
         //initialize arithmetic/compression config and communicator
         //NOTE: these are global because they're used in a lot of places but don't change during a call
@@ -2410,8 +2410,9 @@ void run() {
         {
             case ACCL_RECV_COMBINE: // New function
                 //retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);//recv_and_combine(root_src_dst,);
-                // Only for non-big values -> using address_low only
-                retval = recv_and_combine(root_src_dst, msg_tag, op0_addrl, count, res_addrl, comm, datapath_cfg, compression_flags, function, buftype_flags);
+                printf("Recv and combine\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\nres_addr=%i\ncomm=%i\n\n", 
+                        root_src_dst, msg_tag, op0_addr, count, res_addr, comm);
+                retval = recv_and_combine(root_src_dst, msg_tag, op0_addr, count, res_addr, comm, datapath_cfg, compression_flags, function, buftype_flags);
                 break;
             case ACCL_COPY:
                 retval = copy(count, op0_addr, res_addr, datapath_cfg, compression_flags, buftype_flags);
@@ -2420,9 +2421,13 @@ void run() {
                 retval = combine(count, function, op0_addr, op1_addr, res_addr, datapath_cfg, compression_flags, buftype_flags);
                 break;
             case ACCL_SEND:
+                printf("Send\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\ncomm=%i\n\n",
+                        root_src_dst, msg_tag, op0_addr, count, comm);
                 retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
                 break;
             case ACCL_RECV:
+                printf("Recv\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\ncomm=%i\n\n",
+                        root_src_dst, msg_tag, op0_addr, count, comm);
                 retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
                 break;
             case ACCL_BCAST:

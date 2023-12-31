@@ -1,0 +1,148 @@
+
+
+================================================================
+== Vitis HLS Report for 'cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2'
+================================================================
+* Date:           Sat Dec 30 12:25:00 2023
+
+* Version:        2022.2 (Build 3670227 on Oct 13 2022)
+* Project:        dummy_cyt_rdma_stack
+* Solution:       sol1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|      0 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_128_2  |        ?|        ?|         1|          1|          1|     ?|       yes|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|        2|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       27|    -|
+|Register             |        -|     -|        2|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|        2|       29|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|   2|           1|           1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-----------------------+----+-----------+-----+-----------+
+    |          Name         | LUT| Input Size| Bits| Total Bits|
+    +-----------------------+----+-----------+-----+-----------+
+    |ap_done_int            |   9|          2|    1|          2|
+    |recv_data_TDATA_blk_n  |   9|          2|    1|          2|
+    |rx_TDATA_blk_n         |   9|          2|    1|          2|
+    +-----------------------+----+-----------+-----+-----------+
+    |Total                  |  27|          6|    3|          6|
+    +-----------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------+---+----+-----+-----------+
+    |     Name    | FF| LUT| Bits| Const Bits|
+    +-------------+---+----+-----+-----------+
+    |ap_CS_fsm    |  1|   0|    1|          0|
+    |ap_done_reg  |  1|   0|    1|          0|
+    +-------------+---+----+-----+-----------+
+    |Total        |  2|   0|    2|          0|
+    +-------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------+-----+-----+------------+---------------------------------------+--------------+
+|     RTL Ports    | Dir | Bits|  Protocol  |             Source Object             |    C Type    |
++------------------+-----+-----+------------+---------------------------------------+--------------+
+|ap_clk            |   in|    1|  ap_ctrl_hs|  cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2|  return value|
+|ap_rst            |   in|    1|  ap_ctrl_hs|  cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2|  return value|
+|ap_start          |   in|    1|  ap_ctrl_hs|  cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2|  return value|
+|ap_done           |  out|    1|  ap_ctrl_hs|  cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2|  return value|
+|ap_idle           |  out|    1|  ap_ctrl_hs|  cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2|  return value|
+|ap_ready          |  out|    1|  ap_ctrl_hs|  cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2|  return value|
+|rx_TVALID         |   in|    1|        axis|                            rx_V_data_V|       pointer|
+|rx_TDATA          |   in|  512|        axis|                            rx_V_data_V|       pointer|
+|recv_data_TREADY  |   in|    1|        axis|                     recv_data_V_data_V|       pointer|
+|recv_data_TDATA   |  out|  512|        axis|                     recv_data_V_data_V|       pointer|
+|rx_TREADY         |  out|    1|        axis|                            rx_V_dest_V|       pointer|
+|rx_TDEST          |   in|    8|        axis|                            rx_V_dest_V|       pointer|
+|rx_TKEEP          |   in|   64|        axis|                            rx_V_keep_V|       pointer|
+|rx_TSTRB          |   in|   64|        axis|                            rx_V_strb_V|       pointer|
+|rx_TLAST          |   in|    1|        axis|                            rx_V_last_V|       pointer|
+|recv_data_TVALID  |  out|    1|        axis|                     recv_data_V_dest_V|       pointer|
+|recv_data_TDEST   |  out|    8|        axis|                     recv_data_V_dest_V|       pointer|
+|recv_data_TKEEP   |  out|   64|        axis|                     recv_data_V_keep_V|       pointer|
+|recv_data_TSTRB   |  out|   64|        axis|                     recv_data_V_strb_V|       pointer|
+|recv_data_TLAST   |  out|    1|        axis|                     recv_data_V_last_V|       pointer|
++------------------+-----+-----+------------+---------------------------------------+--------------+
+

@@ -1,0 +1,219 @@
+<xilinx:hls_fe_msgs>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_int_ref.h:678:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="and_reduce" ARG_PragmaIsValid="1" ARG_PragmaType="unroll" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_int_ref.h:692:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="or_reduce" ARG_PragmaIsValid="1" ARG_PragmaType="unroll" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_int_ref.h:706:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="xor_reduce" ARG_PragmaIsValid="1" ARG_PragmaType="unroll" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:76:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_user_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:80:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_id_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:84:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_dest_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:114:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_strb_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:118:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_user_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:122:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_id_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:126:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_dest_ptr" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:132:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_data" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:136:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_keep" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:140:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="get_last" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:145:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="set_data" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:149:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="set_keep" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:153:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="set_last" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:157:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="keep_all" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:163:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="qdma_axis&lt;WData, 0, 0, 0&gt;" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:167:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="qdma_axis&lt;WData, 0, 0, 0&gt;" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:171:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="qdma_axis&lt;WData, 0, 0, 0&gt;" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:176:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="qdma_axis&lt;WData, 0, 0, 0&gt;" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:181:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="qdma_axis&lt;WData, 0, 0, 0&gt;" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:185:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="operator=" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:220:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="empty" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:227:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="full" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:235:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="read" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:245:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="read" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:256:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="write" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:266:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="read_nb" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:281:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="write_nb" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:317:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="empty" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:324:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="full" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:332:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="read" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:342:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="read" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:353:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="write" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:363:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="read_nb" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_axi_sdata.h:379:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="write_nb" ARG_PragmaIsValid="1" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="../../../driver/hls/./accl_hls.h:151:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="start_call" ARG_PragmaIsValid="1" ARG_PragmaOptions="fixed" ARG_PragmaType="protocol" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:35:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_tx" ARG_PragmaIsValid="1" ARG_PragmaOptions="II=1 style=flp" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:36:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_tx" ARG_PragmaIsValid="1" ARG_PragmaOptions="off" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:37:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_tx" ARG_PragmaIsValid="1" ARG_PragmaOptions="variable=rdma_sq compact=bit" ARG_PragmaType="aggregate" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:66:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_tx" ARG_PragmaIsValid="1" ARG_PragmaOptions="II=1" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:94:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_rx" ARG_PragmaIsValid="1" ARG_PragmaOptions="II=1 style=flp" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:95:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_rx" ARG_PragmaIsValid="1" ARG_PragmaOptions="off" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:120:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_rx" ARG_PragmaIsValid="1" ARG_PragmaOptions="II=1" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:129:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_rx" ARG_PragmaIsValid="1" ARG_PragmaOptions="II=1" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:140:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_wr_sts" ARG_PragmaIsValid="1" ARG_PragmaOptions="II=1 style=flp" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:141:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma_wr_sts" ARG_PragmaIsValid="1" ARG_PragmaOptions="off" ARG_PragmaType="inline" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/scratch/hpc-lco-kenter/nleerman/ACCL/kernels/plugins/dummy_cyt_rdma_stack/build_cyt_rdma_stack.tcl:70:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaContext="directive" ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="name=cyt_rdma" ARG_PragmaType="top" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:158:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=rdma_sq" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:159:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=notif" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:160:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=send_data" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:161:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=recv_data" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:162:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=wr_data" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:163:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=wr_cmd" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:164:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=wr_sts" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:165:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=rx" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:166:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="axis register both port=tx" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:167:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="ap_ctrl_none port=return" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:169:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="disable_start_propagation" ARG_PragmaType="dataflow" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="dummy_cyt_rdma_stack.cpp:170:9" msg_body="HLS pragma dump">
+        <args ARG_PragmaFunction="cyt_rdma" ARG_PragmaIsValid="1" ARG_PragmaOptions="variable=rdma_sq compact=bit" ARG_PragmaType="aggregate" ClangWarningOption="dump-hls-pragmas"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:119:31" msg_body="Loop 'VITIS_LOOP_119_1' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_119_1"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:128:31" msg_body="Loop 'VITIS_LOOP_128_2' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_128_2"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:56:34" msg_body="Loop 'VITIS_LOOP_56_1' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_56_1"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:65:38" msg_body="Loop 'VITIS_LOOP_65_2' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_65_2"/>
+    </msg>
+    <msg msg_groups="PRAGMA_INLINE" msg_id="214-178" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:34:0" msg_body="Inlining function 'rdma_req_t::rdma_req_t()' into 'cyt_rdma_tx(hls::stream&lt;rdma_req_t, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)'">
+        <args Callee="rdma_req_t::rdma_req_t()" Caller="cyt_rdma_tx(hls::stream&lt;rdma_req_t, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="PRAGMA_INLINE" msg_id="214-178" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:34:0" msg_body="Inlining function 'rdma_req_t::operator ap_uint&lt;128&gt;()' into 'cyt_rdma_tx(hls::stream&lt;rdma_req_t, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)'">
+        <args Callee="rdma_req_t::operator ap_uint&lt;128&gt;()" Caller="cyt_rdma_tx(hls::stream&lt;rdma_req_t, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="PRAGMA_INLINE" msg_id="214-178" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:93:0" msg_body="Inlining function 'rdma_req_t::rdma_req_t(ap_uint&lt;128&gt;)' into 'cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)'">
+        <args Callee="rdma_req_t::rdma_req_t(ap_uint&lt;128&gt;)" Caller="cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="PRAGMA_INLINE" msg_id="214-178" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:93:0" msg_body="Inlining function 'unsigned int const&amp; std::min&lt;unsigned int&gt;(unsigned int const&amp;, unsigned int const&amp;)' into 'cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)'">
+        <args Callee="unsigned int const&amp; std::min&lt;unsigned int&gt;(unsigned int const&amp;, unsigned int const&amp;)" Caller="cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="PRAGMA_INLINE" msg_id="214-178" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:93:0" msg_body="Inlining function 'hlslib::axi::Command&lt;64ul, 23ul&gt;::Command()' into 'cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)'">
+        <args Callee="hlslib::axi::Command&lt;64ul, 23ul&gt;::Command()" Caller="cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="PRAGMA_INLINE" msg_id="214-178" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:93:0" msg_body="Inlining function 'hlslib::axi::Command&lt;64ul, 23ul&gt;::operator ap_uint&lt;104&gt;()' into 'cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)'">
+        <args Callee="hlslib::axi::Command&lt;64ul, 23ul&gt;::operator ap_uint&lt;104&gt;()" Caller="cyt_rdma_rx(hls::stream&lt;eth_notification, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0ul, 0ul, 8ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="PRAGMA_AGGREGATE" msg_id="214-241" msg_severity="INFO" msg_loc="dummy_cyt_rdma_stack.cpp:157:0" msg_body="Aggregating axis (hls::stream) variable 'rdma_sq' with compact=bit mode in 128-bits">
+        <args AggregateTypeName="compact=bit" Bitwidth="128" HwTyName="axis (hls::stream)" Name="rdma_sq"/>
+    </msg>
+</xilinx:hls_fe_msgs>
+

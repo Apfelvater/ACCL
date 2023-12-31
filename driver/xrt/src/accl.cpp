@@ -460,7 +460,6 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
 ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
                                     BaseBuffer &val, unsigned int src, unsigned int tag, communicatorId comm_id, 
                                     bool val_from_fpga, bool to_fpga, bool run_async) {
-  std::cout << "**********************\n\r...recv_and_combine...\n\r**********************" << std::endl;
 
   if (val_from_fpga == false) {
     val.sync_to_device();

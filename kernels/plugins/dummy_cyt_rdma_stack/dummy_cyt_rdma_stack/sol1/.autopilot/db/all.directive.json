@@ -1,0 +1,18 @@
+{"sourceFile": [{
+      "name": "",
+      "directive": [{
+          "functionName": "cyt_rdma",
+          "label": "",
+          "functionLabel": "",
+          "id": "1",
+          "sourceFile": "\/scratch\/hpc-lco-kenter\/nleerman\/ACCL\/kernels\/plugins\/dummy_cyt_rdma_stack\/build_cyt_rdma_stack.tcl",
+          "sourceLine": "70",
+          "pragma": {
+            "name": "TOP",
+            "option": [{
+                "name": "name",
+                "value": "cyt_rdma"
+              }]
+          }
+        }]
+    }]}

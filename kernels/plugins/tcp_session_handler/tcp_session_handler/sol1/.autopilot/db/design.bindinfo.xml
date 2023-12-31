@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BindInfo>
+	<BindNode BINDTYPE="op" DISPLAY="bind_op icmp" ID="" IMPL="auto" LATENCY="0" OPTYPE="icmp" PRAGMA="" RTLNAME="icmp_ln50_fu_268_p2" SOURCE="tcp_session_handler.cpp:50" VARIABLE="icmp_ln50" MODULE="tcp_session_handler" LOOP="" BUNDLEDNAME="" DSP="0" BRAM="0" URAM="0"/>
+	<BindNode BINDTYPE="op" DISPLAY="bind_op icmp" ID="" IMPL="auto" LATENCY="0" OPTYPE="icmp" PRAGMA="" RTLNAME="icmp_ln901_fu_275_p2" SOURCE="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_int_base.h:901" VARIABLE="icmp_ln901" MODULE="tcp_session_handler" LOOP="" BUNDLEDNAME="" DSP="0" BRAM="0" URAM="0"/>
+	<BindNode BINDTYPE="op" DISPLAY="bind_op icmp" ID="" IMPL="auto" LATENCY="0" OPTYPE="icmp" PRAGMA="" RTLNAME="icmp_ln63_fu_328_p2" SOURCE="tcp_session_handler.cpp:63" VARIABLE="icmp_ln63" MODULE="tcp_session_handler" LOOP="" BUNDLEDNAME="" DSP="0" BRAM="0" URAM="0"/>
+	<BindNode BINDTYPE="adapter" DISPLAY="bind_adapter axilite" ID="" IMPL="" LATENCY="" OPTYPE="" PRAGMA="yes" RTLNAME="control_s_axi_U" SOURCE="" VARIABLE="" MODULE="tcp_session_handler" LOOP="" BUNDLEDNAME="control" DSP="0" BRAM="0" URAM="0"/>
+</BindInfo>

@@ -1,0 +1,1038 @@
+<profile>
+    <ReportVersion>
+        <Version>2022.2</Version>
+    </ReportVersion>
+    <UserAssignments>
+        <unit>ns</unit>
+        <ProductFamily>virtexuplus</ProductFamily>
+        <Part>xcu280-fsvh2892-2L-e</Part>
+        <TopModelName>tcp_session_handler</TopModelName>
+        <TargetClockPeriod>4.00</TargetClockPeriod>
+        <ClockUncertainty>1.08</ClockUncertainty>
+        <FlowTarget>vivado</FlowTarget>
+    </UserAssignments>
+    <PerformanceEstimates>
+        <PipelineType>no</PipelineType>
+        <SummaryOfTimingAnalysis>
+            <unit>ns</unit>
+            <EstimatedClockPeriod>2.000</EstimatedClockPeriod>
+        </SummaryOfTimingAnalysis>
+        <SummaryOfOverallLatency>
+            <unit>clock cycles</unit>
+            <Best-caseLatency>2</Best-caseLatency>
+            <Average-caseLatency>2</Average-caseLatency>
+            <Worst-caseLatency>2</Worst-caseLatency>
+            <Best-caseRealTimeLatency>8.000 ns</Best-caseRealTimeLatency>
+            <Average-caseRealTimeLatency>8.000 ns</Average-caseRealTimeLatency>
+            <Worst-caseRealTimeLatency>8.000 ns</Worst-caseRealTimeLatency>
+            <Interval-min>3</Interval-min>
+            <Interval-max>3</Interval-max>
+        </SummaryOfOverallLatency>
+    </PerformanceEstimates>
+    <AreaEstimates>
+        <Resources>
+            <BRAM_18K>0</BRAM_18K>
+            <FF>250</FF>
+            <LUT>441</LUT>
+            <URAM>0</URAM>
+            <DSP>0</DSP>
+        </Resources>
+        <AvailableResources>
+            <BRAM_18K>4032</BRAM_18K>
+            <DSP>9024</DSP>
+            <FF>2607360</FF>
+            <LUT>1303680</LUT>
+            <URAM>960</URAM>
+        </AvailableResources>
+    </AreaEstimates>
+    <InterfaceSummary>
+        <RtlPorts>
+            <name>s_axi_control_AWVALID</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_AWREADY</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_AWADDR</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>6</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_WVALID</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_WREADY</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_WDATA</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>32</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_WSTRB</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>4</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_ARVALID</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_ARREADY</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_ARADDR</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>6</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_RVALID</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_RREADY</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_RDATA</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>32</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_RRESP</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>2</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_BVALID</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_BREADY</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axi_control_BRESP</name>
+            <Object>control</Object>
+            <Type>pointer</Type>
+            <IOProtocol>s_axi</IOProtocol>
+            <Dir>out</Dir>
+            <Bits>2</Bits>
+            <Attribute>unknown</Attribute>
+            <CType>bool</CType>
+            <HasCtrl>0</HasCtrl>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_clk</name>
+            <Object>tcp_session_handler</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_rst_n</name>
+            <Object>tcp_session_handler</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_start</name>
+            <Object>tcp_session_handler</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_done</name>
+            <Object>tcp_session_handler</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_idle</name>
+            <Object>tcp_session_handler</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_ready</name>
+            <Object>tcp_session_handler</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>listen_port_TDATA</name>
+            <Object>listen_port_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>16</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>listen_port_TVALID</name>
+            <Object>listen_port_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>listen_port_TREADY</name>
+            <Object>listen_port_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>listen_port_TLAST</name>
+            <Object>listen_port_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>listen_port_TKEEP</name>
+            <Object>listen_port_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>2</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>listen_port_TSTRB</name>
+            <Object>listen_port_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>2</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>port_status_TDATA</name>
+            <Object>port_status_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>port_status_TVALID</name>
+            <Object>port_status_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>port_status_TREADY</name>
+            <Object>port_status_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>port_status_TLAST</name>
+            <Object>port_status_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>port_status_TKEEP</name>
+            <Object>port_status_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>port_status_TSTRB</name>
+            <Object>port_status_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_connection_TDATA</name>
+            <Object>open_connection_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_connection_TVALID</name>
+            <Object>open_connection_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_connection_TREADY</name>
+            <Object>open_connection_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_connection_TLAST</name>
+            <Object>open_connection_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_connection_TKEEP</name>
+            <Object>open_connection_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_connection_TSTRB</name>
+            <Object>open_connection_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>close_connection_TDATA</name>
+            <Object>close_connection_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>16</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>close_connection_TVALID</name>
+            <Object>close_connection_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>close_connection_TREADY</name>
+            <Object>close_connection_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>close_connection_TLAST</name>
+            <Object>close_connection_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>close_connection_TKEEP</name>
+            <Object>close_connection_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>2</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>close_connection_TSTRB</name>
+            <Object>close_connection_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>2</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_status_TDATA</name>
+            <Object>open_status_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>128</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_status_TVALID</name>
+            <Object>open_status_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_status_TREADY</name>
+            <Object>open_status_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_status_TLAST</name>
+            <Object>open_status_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_status_TKEEP</name>
+            <Object>open_status_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>16</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>open_status_TSTRB</name>
+            <Object>open_status_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>16</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+    </InterfaceSummary>
+    <RTLDesignHierarchy>
+        <TopModule MAX_DEPTH="1">
+            <ModuleName>tcp_session_handler</ModuleName>
+        </TopModule>
+    </RTLDesignHierarchy>
+    <ModuleInformation>
+        <Module>
+            <Name>tcp_session_handler</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <EstimatedClockPeriod>2.000</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>2</Best-caseLatency>
+                    <Average-caseLatency>2</Average-caseLatency>
+                    <Worst-caseLatency>2</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>8.000 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>8.000 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>8.000 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>3</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <FF>250</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>441</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+    </ModuleInformation>
+    <FIFOInformation/>
+    <UserConfigCommands>
+        <config_export format="xo" library="ACCL" output="/scratch/hpc-lco-kenter/nleerman/ACCL/kernels/plugins/tcp_session_handler/tcp_session_handler.xo"/>
+    </UserConfigCommands>
+    <Args>
+        <Arg ArgName="ip" index="0" direction="in" srcType="unsigned int" srcSize="32">
+            <hwRefs>
+                <hwRef type="register" interface="s_axi_control" name="ip" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="port_nr" index="1" direction="in" srcType="unsigned int" srcSize="32">
+            <hwRefs>
+                <hwRef type="register" interface="s_axi_control" name="port_nr" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="close" index="2" direction="in" srcType="bool" srcSize="1">
+            <hwRefs>
+                <hwRef type="register" interface="s_axi_control" name="close" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="session_id" index="3" direction="inout" srcType="unsigned int*" srcSize="32">
+            <hwRefs>
+                <hwRef type="register" interface="s_axi_control" name="session_id_i" usage="data" direction="in"/>
+                <hwRef type="register" interface="s_axi_control" name="session_id_o" usage="data" direction="out"/>
+                <hwRef type="register" interface="s_axi_control" name="session_id_o_ctrl" usage="control" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="success" index="4" direction="out" srcType="bool*" srcSize="1">
+            <hwRefs>
+                <hwRef type="register" interface="s_axi_control" name="success" usage="data" direction="out"/>
+                <hwRef type="register" interface="s_axi_control" name="success_ctrl" usage="control" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="listen_port" index="5" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;16&gt;, 0, 0, 0&gt;, 0&gt;&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="interface" interface="listen_port" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="port_status" index="6" direction="in" srcType="stream&lt;hls::axis&lt;ap_uint&lt;8&gt;, 0, 0, 0&gt;, 0&gt;&amp;" srcSize="56">
+            <hwRefs>
+                <hwRef type="interface" interface="port_status" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="open_connection" index="7" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;64&gt;, 0, 0, 0&gt;, 0&gt;&amp;" srcSize="128">
+            <hwRefs>
+                <hwRef type="interface" interface="open_connection" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="close_connection" index="8" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;16&gt;, 0, 0, 0&gt;, 0&gt;&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="interface" interface="close_connection" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="open_status" index="9" direction="in" srcType="stream&lt;hls::axis&lt;ap_uint&lt;128&gt;, 0, 0, 0&gt;, 0&gt;&amp;" srcSize="256">
+            <hwRefs>
+                <hwRef type="interface" interface="open_status" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+    </Args>
+    <Interfaces>
+        <Interface InterfaceName="s_axi_control" type="axi4lite" busTypeName="aximm" mode="slave" dataWidth="32" addrWidth="6" portPrefix="s_axi_control_" paramPrefix="C_S_AXI_CONTROL_">
+            <ports>
+                <port>s_axi_control_ARADDR</port>
+                <port>s_axi_control_ARREADY</port>
+                <port>s_axi_control_ARVALID</port>
+                <port>s_axi_control_AWADDR</port>
+                <port>s_axi_control_AWREADY</port>
+                <port>s_axi_control_AWVALID</port>
+                <port>s_axi_control_BREADY</port>
+                <port>s_axi_control_BRESP</port>
+                <port>s_axi_control_BVALID</port>
+                <port>s_axi_control_RDATA</port>
+                <port>s_axi_control_RREADY</port>
+                <port>s_axi_control_RRESP</port>
+                <port>s_axi_control_RVALID</port>
+                <port>s_axi_control_WDATA</port>
+                <port>s_axi_control_WREADY</port>
+                <port>s_axi_control_WSTRB</port>
+                <port>s_axi_control_WVALID</port>
+            </ports>
+            <registers>
+                <register offset="0x10" name="ip" access="W" description="Data signal of ip" range="32">
+                    <fields>
+                        <field offset="0" width="32" name="ip" access="W" description="Bit 31 to 0 of ip"/>
+                    </fields>
+                </register>
+                <register offset="0x18" name="port_nr" access="W" description="Data signal of port_nr" range="32">
+                    <fields>
+                        <field offset="0" width="32" name="port_nr" access="W" description="Bit 31 to 0 of port_nr"/>
+                    </fields>
+                </register>
+                <register offset="0x20" name="close" access="W" description="Data signal of close" range="32">
+                    <fields>
+                        <field offset="0" width="1" name="close" access="W" description="Bit 0 to 0 of close"/>
+                        <field offset="1" width="31" name="RESERVED" access="R" description="Reserved.  0s on read."/>
+                    </fields>
+                </register>
+                <register offset="0x28" name="session_id_i" access="W" description="Data signal of session_id_i" range="32">
+                    <fields>
+                        <field offset="0" width="32" name="session_id_i" access="W" description="Bit 31 to 0 of session_id_i"/>
+                    </fields>
+                </register>
+                <register offset="0x30" name="session_id_o" access="R" description="Data signal of session_id_o" range="32">
+                    <fields>
+                        <field offset="0" width="32" name="session_id_o" access="R" description="Bit 31 to 0 of session_id_o"/>
+                    </fields>
+                </register>
+                <register offset="0x34" name="session_id_o_ctrl" access="R" description="Control signal of session_id_o" range="32">
+                    <fields>
+                        <field offset="0" width="1" name="session_id_o_ap_vld" access="R" description="Control signal session_id_o_ap_vld"/>
+                        <field offset="1" width="31" name="RESERVED" access="R" description="Reserved.  0s on read."/>
+                    </fields>
+                </register>
+                <register offset="0x38" name="success" access="R" description="Data signal of success" range="32">
+                    <fields>
+                        <field offset="0" width="1" name="success" access="R" description="Bit 0 to 0 of success"/>
+                        <field offset="1" width="31" name="RESERVED" access="R" description="Reserved.  0s on read."/>
+                    </fields>
+                </register>
+                <register offset="0x3c" name="success_ctrl" access="R" description="Control signal of success" range="32">
+                    <fields>
+                        <field offset="0" width="1" name="success_ap_vld" access="R" description="Control signal success_ap_vld"/>
+                        <field offset="1" width="31" name="RESERVED" access="R" description="Reserved.  0s on read."/>
+                    </fields>
+                </register>
+            </registers>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="s_axilite" register_option="0" offset="16" argName="ip"/>
+                <constraint constraint_type="pragma interface" mode="s_axilite" register_option="0" offset="24" argName="port_nr"/>
+                <constraint constraint_type="pragma interface" mode="s_axilite" register_option="0" offset="32" argName="close"/>
+                <constraint constraint_type="pragma interface" mode="s_axilite" register_option="0" offset="40" argName="session_id"/>
+                <constraint constraint_type="pragma interface" mode="s_axilite" register_option="0" offset="56" argName="success"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="ap_clk" type="clock" busTypeName="clock" mode="slave">
+            <busParams>
+                <busParam busParamName="ASSOCIATED_BUSIF">s_axi_control:listen_port:port_status:open_connection:close_connection:open_status</busParam>
+                <busParam busParamName="ASSOCIATED_RESET">ap_rst_n</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_clk">CLK</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_clk</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_rst_n" type="reset" busTypeName="reset" mode="slave">
+            <busParams>
+                <busParam busParamName="POLARITY">ACTIVE_LOW</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_rst_n">RST</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_rst_n</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_ctrl" type="ap_ctrl" busTypeName="acc_handshake" mode="slave">
+            <portMaps>
+                <portMap portMapName="ap_start">start</portMap>
+                <portMap portMapName="ap_done">done</portMap>
+                <portMap portMapName="ap_idle">idle</portMap>
+                <portMap portMapName="ap_ready">ready</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_done</port>
+                <port>ap_idle</port>
+                <port>ap_ready</port>
+                <port>ap_start</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="listen_port" type="axi4stream" busTypeName="axis" mode="master" dataWidth="16" portPrefix="listen_port_">
+            <ports>
+                <port>listen_port_TDATA</port>
+                <port>listen_port_TKEEP</port>
+                <port>listen_port_TLAST</port>
+                <port>listen_port_TREADY</port>
+                <port>listen_port_TSTRB</port>
+                <port>listen_port_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="listen_port"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="port_status" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="8" portPrefix="port_status_">
+            <ports>
+                <port>port_status_TDATA</port>
+                <port>port_status_TKEEP</port>
+                <port>port_status_TLAST</port>
+                <port>port_status_TREADY</port>
+                <port>port_status_TSTRB</port>
+                <port>port_status_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="port_status"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="open_connection" type="axi4stream" busTypeName="axis" mode="master" dataWidth="64" portPrefix="open_connection_">
+            <ports>
+                <port>open_connection_TDATA</port>
+                <port>open_connection_TKEEP</port>
+                <port>open_connection_TLAST</port>
+                <port>open_connection_TREADY</port>
+                <port>open_connection_TSTRB</port>
+                <port>open_connection_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="open_connection"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="close_connection" type="axi4stream" busTypeName="axis" mode="master" dataWidth="16" portPrefix="close_connection_">
+            <ports>
+                <port>close_connection_TDATA</port>
+                <port>close_connection_TKEEP</port>
+                <port>close_connection_TLAST</port>
+                <port>close_connection_TREADY</port>
+                <port>close_connection_TSTRB</port>
+                <port>close_connection_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="close_connection"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="open_status" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="128" portPrefix="open_status_">
+            <ports>
+                <port>open_status_TDATA</port>
+                <port>open_status_TKEEP</port>
+                <port>open_status_TLAST</port>
+                <port>open_status_TREADY</port>
+                <port>open_status_TSTRB</port>
+                <port>open_status_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="open_status"/>
+            </constraints>
+        </Interface>
+    </Interfaces>
+    <ReportHWInterface>
+        <section name="HW Interfaces" level="0">
+            <item name="S_AXILITE Interfaces">
+                <table isCollapsed="0">
+                    <keys size="5">Interface, Data Width, Address Width, Offset, Register</keys>
+                    <column name="s_axi_control">32, 6, 16, 0, , , , , </column>
+                </table>
+            </item>
+            <item name="S_AXILITE Registers">
+                <table isCollapsed="0">
+                    <keys size="7">Interface, Register, Offset, Width, Access, Description, Bit Fields</keys>
+                    <column name="s_axi_control">ip, 0x10, 32, W, Data signal of ip, </column>
+                    <column name="s_axi_control">port_nr, 0x18, 32, W, Data signal of port_nr, </column>
+                    <column name="s_axi_control">close, 0x20, 32, W, Data signal of close, </column>
+                    <column name="s_axi_control">session_id_i, 0x28, 32, W, Data signal of session_id_i, </column>
+                    <column name="s_axi_control">session_id_o, 0x30, 32, R, Data signal of session_id_o, </column>
+                    <column name="s_axi_control">session_id_o_ctrl, 0x34, 32, R, Control signal of session_id_o, 0=session_id_o_ap_vld</column>
+                    <column name="s_axi_control">success, 0x38, 32, R, Data signal of success, </column>
+                    <column name="s_axi_control">success_ctrl, 0x3c, 32, R, Control signal of success, 0=success_ap_vld</column>
+                </table>
+            </item>
+            <item name="AXIS">
+                <table isCollapsed="0">
+                    <keys size="8">Interface, Register Mode, TDATA, TKEEP, TLAST, TREADY, TSTRB, TVALID</keys>
+                    <column name="close_connection">both, 16, 2, 1, 1, 2, 1, , , , </column>
+                    <column name="listen_port">both, 16, 2, 1, 1, 2, 1, , , , </column>
+                    <column name="open_connection">both, 64, 8, 1, 1, 8, 1, , , , </column>
+                    <column name="open_status">both, 128, 16, 1, 1, 16, 1, , , , </column>
+                    <column name="port_status">both, 8, 1, 1, 1, 1, 1, , , , </column>
+                </table>
+            </item>
+            <item name="TOP LEVEL CONTROL">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Type, Ports</keys>
+                    <column name="ap_clk">clock, ap_clk, </column>
+                    <column name="ap_rst_n">reset, ap_rst_n, </column>
+                    <column name="ap_ctrl">ap_ctrl_hs, ap_done ap_idle ap_ready ap_start, </column>
+                </table>
+            </item>
+        </section>
+    </ReportHWInterface>
+    <ReportSWInterface>
+        <section name="SW I/O Information" level="0">
+            <item name="Top Function Arguments">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, Direction, Datatype</keys>
+                    <column name="ip">in, unsigned int</column>
+                    <column name="port_nr">in, unsigned int</column>
+                    <column name="close">in, bool</column>
+                    <column name="session_id">inout, unsigned int*</column>
+                    <column name="success">out, bool*</column>
+                    <column name="listen_port">out, stream&lt;hls::axis&lt;ap_uint&lt;16&gt; 0 0 0&gt; 0&gt;&amp;</column>
+                    <column name="port_status">in, stream&lt;hls::axis&lt;ap_uint&lt;8&gt; 0 0 0&gt; 0&gt;&amp;</column>
+                    <column name="open_connection">out, stream&lt;hls::axis&lt;ap_uint&lt;64&gt; 0 0 0&gt; 0&gt;&amp;</column>
+                    <column name="close_connection">out, stream&lt;hls::axis&lt;ap_uint&lt;16&gt; 0 0 0&gt; 0&gt;&amp;</column>
+                    <column name="open_status">in, stream&lt;hls::axis&lt;ap_uint&lt;128&gt; 0 0 0&gt; 0&gt;&amp;</column>
+                </table>
+            </item>
+            <item name="SW-to-HW Mapping">
+                <table isCollapsed="1">
+                    <keys size="4">Argument, HW Interface, HW Type, HW Info</keys>
+                    <column name="ip">s_axi_control, register, name=ip offset=0x10 range=32, </column>
+                    <column name="port_nr">s_axi_control, register, name=port_nr offset=0x18 range=32, </column>
+                    <column name="close">s_axi_control, register, name=close offset=0x20 range=32, </column>
+                    <column name="session_id">s_axi_control, register, name=session_id_i offset=0x28 range=32, </column>
+                    <column name="session_id">s_axi_control, register, name=session_id_o offset=0x30 range=32, </column>
+                    <column name="session_id">s_axi_control, register, name=session_id_o_ctrl offset=0x34 range=32, </column>
+                    <column name="success">s_axi_control, register, name=success offset=0x38 range=32, </column>
+                    <column name="success">s_axi_control, register, name=success_ctrl offset=0x3c range=32, </column>
+                    <column name="listen_port">listen_port, interface, , </column>
+                    <column name="port_status">port_status, interface, , </column>
+                    <column name="open_connection">open_connection, interface, , </column>
+                    <column name="close_connection">close_connection, interface, , </column>
+                    <column name="open_status">open_status, interface, , </column>
+                </table>
+            </item>
+        </section>
+    </ReportSWInterface>
+    <PragmaReport>
+        <Pragma type="protocol" location="../../../driver/hls/./accl_hls.h:151" status="valid" parentFunction="start_call" variable="" isDirective="0" options="fixed"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:33" status="valid" parentFunction="tcp_session_handler" variable="ip" isDirective="0" options="s_axilite port=ip"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:34" status="valid" parentFunction="tcp_session_handler" variable="port_nr" isDirective="0" options="s_axilite port=port_nr"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:35" status="valid" parentFunction="tcp_session_handler" variable="close" isDirective="0" options="s_axilite port=close"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:36" status="valid" parentFunction="tcp_session_handler" variable="success" isDirective="0" options="s_axilite port=success"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:37" status="valid" parentFunction="tcp_session_handler" variable="session_id" isDirective="0" options="s_axilite port=session_id"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:38" status="valid" parentFunction="tcp_session_handler" variable="listen_port" isDirective="0" options="axis register both port=listen_port"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:39" status="valid" parentFunction="tcp_session_handler" variable="port_status" isDirective="0" options="axis register both port=port_status"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:40" status="valid" parentFunction="tcp_session_handler" variable="open_connection" isDirective="0" options="axis register both port=open_connection"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:41" status="valid" parentFunction="tcp_session_handler" variable="close_connection" isDirective="0" options="axis register both port=close_connection"/>
+        <Pragma type="interface" location="tcp_session_handler.cpp:42" status="valid" parentFunction="tcp_session_handler" variable="open_status" isDirective="0" options="axis register both port=open_status"/>
+    </PragmaReport>
+</profile>
+

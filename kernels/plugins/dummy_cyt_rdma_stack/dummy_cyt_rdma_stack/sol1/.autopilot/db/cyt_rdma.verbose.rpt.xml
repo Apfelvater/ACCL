@@ -1,0 +1,161 @@
+<profile>
+
+<section name = "Vitis HLS Report for 'cyt_rdma'" level="0">
+<item name = "Date">Sat Dec 30 12:25:01 2023
+</item>
+<item name = "Version">2022.2 (Build 3670227 on Oct 13 2022)</item>
+<item name = "Project">dummy_cyt_rdma_stack</item>
+<item name = "Solution">sol1 (Vivado IP Flow Target)</item>
+<item name = "Product family">virtexuplus</item>
+<item name = "Target device">xcu280-fsvh2892-2L-e</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">4.00 ns, 2.353 ns, 1.08 ns</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="8">, min, max, min, max, min, max, Type</keys>
+<column name="">?, ?, ?, ?, ?, ?, dataflow</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
+<column name="cyt_rdma_tx_U0">cyt_rdma_tx, ?, ?, ?, ?, ?, ?, no</column>
+<column name="cyt_rdma_rx_U0">cyt_rdma_rx, ?, ?, ?, ?, ?, ?, no</column>
+<column name="cyt_rdma_wr_sts_U0">cyt_rdma_wr_sts, 0, 0, 0 ns, 0 ns, 1, 1, yes(flp)</column>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Utilization Estimates" level="0">
+<item name = "Summary"><table name="" hasTotal="1">
+<keys size="6">Name, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="DSP">-, -, -, -, -</column>
+<column name="Expression">-, -, -, -, -</column>
+<column name="FIFO">-, -, -, -, -</column>
+<column name="Instance">-, -, 486, 756, -</column>
+<column name="Memory">-, -, -, -, -</column>
+<column name="Multiplexer">-, -, -, -, -</column>
+<column name="Register">-, -, -, -, -</column>
+<specialColumn name="Available SLR">1344, 3008, 869120, 434560, 320</specialColumn>
+<specialColumn name="Utilization SLR (%)">0, 0, ~0, ~0, 0</specialColumn>
+<specialColumn name="Available">4032, 9024, 2607360, 1303680, 960</specialColumn>
+<specialColumn name="Utilization (%)">0, 0, ~0, ~0, 0</specialColumn>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="1">
+<keys size="7">Instance, Module, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="cyt_rdma_rx_U0">cyt_rdma_rx, 0, 0, 13, 217, 0</column>
+<column name="cyt_rdma_tx_U0">cyt_rdma_tx, 0, 0, 471, 517, 0</column>
+<column name="cyt_rdma_wr_sts_U0">cyt_rdma_wr_sts, 0, 0, 2, 22, 0</column>
+</table>
+</item>
+<item name = "DSP"><table name="" hasTotal="0">
+<keys size="3">Instance, Module, Expression</keys>
+</table>
+</item>
+<item name = "Memory"><table name="" hasTotal="1">
+<keys size="10">Memory, Module, BRAM_18K, FF, LUT, URAM, Words, Bits, Banks, W*Bits*Banks</keys>
+</table>
+</item>
+<item name = "FIFO"><table name="" hasTotal="1">
+<keys size="8">Name, BRAM_18K, FF, LUT, URAM, Depth, Bits, Size:D*B</keys>
+</table>
+</item>
+<item name = "Expression"><table name="" hasTotal="1">
+<keys size="7">Variable Name, Operation, DSP, FF, LUT, Bitwidth P0, Bitwidth P1</keys>
+</table>
+</item>
+<item name = "Multiplexer"><table name="" hasTotal="1">
+<keys size="5">Name, LUT, Input Size, Bits, Total Bits</keys>
+</table>
+</item>
+<item name = "Register"><table name="" hasTotal="1">
+<keys size="5">Name, FF, LUT, Bits, Const Bits</keys>
+</table>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Interface" level="0">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="6">RTL Ports, Dir, Bits, Protocol, Source Object, C Type</keys>
+<column name="rdma_sq_TDATA">in, 128, axis, rdma_sq, pointer</column>
+<column name="rdma_sq_TVALID">in, 1, axis, rdma_sq, pointer</column>
+<column name="rdma_sq_TREADY">out, 1, axis, rdma_sq, pointer</column>
+<column name="notif_TDATA">out, 64, axis, notif, pointer</column>
+<column name="notif_TVALID">out, 1, axis, notif, pointer</column>
+<column name="notif_TREADY">in, 1, axis, notif, pointer</column>
+<column name="send_data_TDATA">in, 512, axis, send_data_V_data_V, pointer</column>
+<column name="send_data_TKEEP">in, 64, axis, send_data_V_keep_V, pointer</column>
+<column name="send_data_TSTRB">in, 64, axis, send_data_V_strb_V, pointer</column>
+<column name="send_data_TLAST">in, 1, axis, send_data_V_last_V, pointer</column>
+<column name="send_data_TDEST">in, 8, axis, send_data_V_dest_V, pointer</column>
+<column name="send_data_TVALID">in, 1, axis, send_data_V_dest_V, pointer</column>
+<column name="send_data_TREADY">out, 1, axis, send_data_V_dest_V, pointer</column>
+<column name="recv_data_TDATA">out, 512, axis, recv_data_V_data_V, pointer</column>
+<column name="recv_data_TKEEP">out, 64, axis, recv_data_V_keep_V, pointer</column>
+<column name="recv_data_TSTRB">out, 64, axis, recv_data_V_strb_V, pointer</column>
+<column name="recv_data_TLAST">out, 1, axis, recv_data_V_last_V, pointer</column>
+<column name="recv_data_TDEST">out, 8, axis, recv_data_V_dest_V, pointer</column>
+<column name="recv_data_TVALID">out, 1, axis, recv_data_V_dest_V, pointer</column>
+<column name="recv_data_TREADY">in, 1, axis, recv_data_V_dest_V, pointer</column>
+<column name="wr_data_TDATA">out, 512, axis, wr_data_V_data_V, pointer</column>
+<column name="wr_data_TKEEP">out, 64, axis, wr_data_V_keep_V, pointer</column>
+<column name="wr_data_TSTRB">out, 64, axis, wr_data_V_strb_V, pointer</column>
+<column name="wr_data_TLAST">out, 1, axis, wr_data_V_last_V, pointer</column>
+<column name="wr_data_TDEST">out, 8, axis, wr_data_V_dest_V, pointer</column>
+<column name="wr_data_TVALID">out, 1, axis, wr_data_V_dest_V, pointer</column>
+<column name="wr_data_TREADY">in, 1, axis, wr_data_V_dest_V, pointer</column>
+<column name="wr_cmd_TDATA">out, 104, axis, wr_cmd_V_data_V, pointer</column>
+<column name="wr_cmd_TKEEP">out, 13, axis, wr_cmd_V_keep_V, pointer</column>
+<column name="wr_cmd_TSTRB">out, 13, axis, wr_cmd_V_strb_V, pointer</column>
+<column name="wr_cmd_TLAST">out, 1, axis, wr_cmd_V_last_V, pointer</column>
+<column name="wr_cmd_TDEST">out, 8, axis, wr_cmd_V_dest_V, pointer</column>
+<column name="wr_cmd_TVALID">out, 1, axis, wr_cmd_V_dest_V, pointer</column>
+<column name="wr_cmd_TREADY">in, 1, axis, wr_cmd_V_dest_V, pointer</column>
+<column name="wr_sts_TDATA">in, 32, axis, wr_sts, pointer</column>
+<column name="wr_sts_TVALID">in, 1, axis, wr_sts, pointer</column>
+<column name="wr_sts_TREADY">out, 1, axis, wr_sts, pointer</column>
+<column name="rx_TDATA">in, 512, axis, rx_V_data_V, pointer</column>
+<column name="rx_TKEEP">in, 64, axis, rx_V_keep_V, pointer</column>
+<column name="rx_TSTRB">in, 64, axis, rx_V_strb_V, pointer</column>
+<column name="rx_TLAST">in, 1, axis, rx_V_last_V, pointer</column>
+<column name="rx_TDEST">in, 8, axis, rx_V_dest_V, pointer</column>
+<column name="rx_TVALID">in, 1, axis, rx_V_dest_V, pointer</column>
+<column name="rx_TREADY">out, 1, axis, rx_V_dest_V, pointer</column>
+<column name="tx_TDATA">out, 512, axis, tx_V_data_V, pointer</column>
+<column name="tx_TKEEP">out, 64, axis, tx_V_keep_V, pointer</column>
+<column name="tx_TSTRB">out, 64, axis, tx_V_strb_V, pointer</column>
+<column name="tx_TLAST">out, 1, axis, tx_V_last_V, pointer</column>
+<column name="tx_TDEST">out, 8, axis, tx_V_dest_V, pointer</column>
+<column name="tx_TVALID">out, 1, axis, tx_V_dest_V, pointer</column>
+<column name="tx_TREADY">in, 1, axis, tx_V_dest_V, pointer</column>
+<column name="ap_clk">in, 1, ap_ctrl_none, cyt_rdma, return value</column>
+<column name="ap_rst_n">in, 1, ap_ctrl_none, cyt_rdma, return value</column>
+</table>
+</item>
+</section>
+</profile>

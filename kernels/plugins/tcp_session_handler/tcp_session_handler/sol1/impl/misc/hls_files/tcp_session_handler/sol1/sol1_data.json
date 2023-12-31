@@ -1,0 +1,876 @@
+{
+  "Top": "tcp_session_handler",
+  "RtlTop": "tcp_session_handler",
+  "RtlPrefix": "",
+  "RtlSubPrefix": "tcp_session_handler_",
+  "SourceLanguage": "cpp",
+  "HostMachineBits": "64",
+  "FunctionProtocol": "ap_ctrl_hs",
+  "ResetStyle": "control",
+  "Target": {
+    "Family": "virtexuplushbm",
+    "Device": "xcu280",
+    "Package": "-fsvh2892",
+    "Speed": "-2L-e",
+    "Triple": "fpga64-xilinx-none"
+  },
+  "Args": {
+    "ip": {
+      "index": "0",
+      "direction": "in",
+      "srcType": "unsigned int",
+      "srcSize": "32",
+      "hwRefs": [{
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "ip",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "port_nr": {
+      "index": "1",
+      "direction": "in",
+      "srcType": "unsigned int",
+      "srcSize": "32",
+      "hwRefs": [{
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "port_nr",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "close": {
+      "index": "2",
+      "direction": "in",
+      "srcType": "bool",
+      "srcSize": "1",
+      "hwRefs": [{
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "close",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "session_id": {
+      "index": "3",
+      "direction": "inout",
+      "srcType": "unsigned int*",
+      "srcSize": "32",
+      "hwRefs": [
+        {
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "session_id_i",
+          "usage": "data",
+          "direction": "in"
+        },
+        {
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "session_id_o",
+          "usage": "data",
+          "direction": "out"
+        },
+        {
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "session_id_o_ctrl",
+          "usage": "control",
+          "direction": "out"
+        }
+      ]
+    },
+    "success": {
+      "index": "4",
+      "direction": "out",
+      "srcType": "bool*",
+      "srcSize": "1",
+      "hwRefs": [
+        {
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "success",
+          "usage": "data",
+          "direction": "out"
+        },
+        {
+          "type": "register",
+          "interface": "s_axi_control",
+          "name": "success_ctrl",
+          "usage": "control",
+          "direction": "out"
+        }
+      ]
+    },
+    "listen_port": {
+      "index": "5",
+      "direction": "out",
+      "srcType": "stream<hls::axis<ap_uint<16>, 0, 0, 0>, 0>&",
+      "srcSize": "64",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "listen_port",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "port_status": {
+      "index": "6",
+      "direction": "in",
+      "srcType": "stream<hls::axis<ap_uint<8>, 0, 0, 0>, 0>&",
+      "srcSize": "56",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "port_status",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "open_connection": {
+      "index": "7",
+      "direction": "out",
+      "srcType": "stream<hls::axis<ap_uint<64>, 0, 0, 0>, 0>&",
+      "srcSize": "128",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "open_connection",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "close_connection": {
+      "index": "8",
+      "direction": "out",
+      "srcType": "stream<hls::axis<ap_uint<16>, 0, 0, 0>, 0>&",
+      "srcSize": "64",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "close_connection",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "open_status": {
+      "index": "9",
+      "direction": "in",
+      "srcType": "stream<hls::axis<ap_uint<128>, 0, 0, 0>, 0>&",
+      "srcSize": "256",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "open_status",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    }
+  },
+  "HlsSolution": {
+    "FlowTarget": "vivado",
+    "ConfigTcl": [
+      "config_interface -m_axi_latency=0",
+      "config_export -format=xo",
+      "config_export -library=ACCL",
+      "config_export -output=\/scratch\/hpc-lco-kenter\/nleerman\/ACCL\/kernels\/plugins\/tcp_session_handler\/tcp_session_handler.xo"
+    ],
+    "DirectiveTcl": ["set_directive_top tcp_session_handler -name tcp_session_handler"],
+    "ProfileOption": "0",
+    "ProfileType": "none",
+    "KernelName": "tcp_session_handler"
+  },
+  "ClockInfo": {
+    "ClockName": "ap_clk",
+    "ClockPeriod": "4",
+    "Uncertainty": "1.08",
+    "IsCombinational": "0",
+    "II": "3",
+    "Latency": "2"
+  },
+  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 4.000 [get_ports ap_clk]"]},
+  "Ipx": {
+    "Vendor": "xilinx.com",
+    "Library": "ACCL",
+    "Name": "tcp_session_handler",
+    "Version": "1.0",
+    "DisplayName": "Tcp_session_handler",
+    "Revision": "2113361425",
+    "Description": "An IP generated by Vitis HLS",
+    "Taxonomy": "\/VITIS_HLS_IP",
+    "AutoFamilySupport": "",
+    "ZipFile": "xilinx_com_ACCL_tcp_session_handler_1_0.zip"
+  },
+  "Files": {
+    "CSource": ["..\/..\/tcp_session_handler.cpp"],
+    "Vhdl": [
+      "impl\/vhdl\/tcp_session_handler_control_s_axi.vhd",
+      "impl\/vhdl\/tcp_session_handler_regslice_both.vhd",
+      "impl\/vhdl\/tcp_session_handler.vhd"
+    ],
+    "Verilog": [
+      "impl\/verilog\/tcp_session_handler_control_s_axi.v",
+      "impl\/verilog\/tcp_session_handler_regslice_both.v",
+      "impl\/verilog\/tcp_session_handler.v"
+    ],
+    "SwDriver": [
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/data\/tcp_session_handler.mdd",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/data\/tcp_session_handler.tcl",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/src\/Makefile",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/src\/xtcp_session_handler.c",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/src\/xtcp_session_handler.h",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/src\/xtcp_session_handler_hw.h",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/src\/xtcp_session_handler_linux.c",
+      "impl\/misc\/drivers\/tcp_session_handler_v1_0\/src\/xtcp_session_handler_sinit.c"
+    ],
+    "IpMisc": ["impl\/misc\/logo.png"],
+    "CsynthXml": "syn\/report\/csynth.xml",
+    "DebugDir": ".debug",
+    "KernelXml": "..\/kernel.xml",
+    "Xo": "..\/..\/tcp_session_handler.xo",
+    "XoHlsDir": "",
+    "ProtoInst": [".debug\/tcp_session_handler.protoinst"]
+  },
+  "SubcoreInfo": {
+    "HasXpmMemory": false,
+    "HasClockedDsp": false,
+    "Ip": []
+  },
+  "Interfaces": {
+    "s_axi_control": {
+      "type": "axi4lite",
+      "busTypeName": "aximm",
+      "mode": "slave",
+      "dataWidth": "32",
+      "addrWidth": "6",
+      "portPrefix": "s_axi_control_",
+      "paramPrefix": "C_S_AXI_CONTROL_",
+      "ports": [
+        "s_axi_control_ARADDR",
+        "s_axi_control_ARREADY",
+        "s_axi_control_ARVALID",
+        "s_axi_control_AWADDR",
+        "s_axi_control_AWREADY",
+        "s_axi_control_AWVALID",
+        "s_axi_control_BREADY",
+        "s_axi_control_BRESP",
+        "s_axi_control_BVALID",
+        "s_axi_control_RDATA",
+        "s_axi_control_RREADY",
+        "s_axi_control_RRESP",
+        "s_axi_control_RVALID",
+        "s_axi_control_WDATA",
+        "s_axi_control_WREADY",
+        "s_axi_control_WSTRB",
+        "s_axi_control_WVALID"
+      ],
+      "registers": [
+        {
+          "offset": "0x10",
+          "name": "ip",
+          "access": "W",
+          "description": "Data signal of ip",
+          "range": "32",
+          "fields": [{
+              "offset": "0",
+              "width": "32",
+              "name": "ip",
+              "access": "W",
+              "description": "Bit 31 to 0 of ip"
+            }]
+        },
+        {
+          "offset": "0x18",
+          "name": "port_nr",
+          "access": "W",
+          "description": "Data signal of port_nr",
+          "range": "32",
+          "fields": [{
+              "offset": "0",
+              "width": "32",
+              "name": "port_nr",
+              "access": "W",
+              "description": "Bit 31 to 0 of port_nr"
+            }]
+        },
+        {
+          "offset": "0x20",
+          "name": "close",
+          "access": "W",
+          "description": "Data signal of close",
+          "range": "32",
+          "fields": [
+            {
+              "offset": "0",
+              "width": "1",
+              "name": "close",
+              "access": "W",
+              "description": "Bit 0 to 0 of close"
+            },
+            {
+              "offset": "1",
+              "width": "31",
+              "name": "RESERVED",
+              "access": "R",
+              "description": "Reserved.  0s on read."
+            }
+          ]
+        },
+        {
+          "offset": "0x28",
+          "name": "session_id_i",
+          "access": "W",
+          "description": "Data signal of session_id_i",
+          "range": "32",
+          "fields": [{
+              "offset": "0",
+              "width": "32",
+              "name": "session_id_i",
+              "access": "W",
+              "description": "Bit 31 to 0 of session_id_i"
+            }]
+        },
+        {
+          "offset": "0x30",
+          "name": "session_id_o",
+          "access": "R",
+          "description": "Data signal of session_id_o",
+          "range": "32",
+          "fields": [{
+              "offset": "0",
+              "width": "32",
+              "name": "session_id_o",
+              "access": "R",
+              "description": "Bit 31 to 0 of session_id_o"
+            }]
+        },
+        {
+          "offset": "0x34",
+          "name": "session_id_o_ctrl",
+          "access": "R",
+          "description": "Control signal of session_id_o",
+          "range": "32",
+          "fields": [
+            {
+              "offset": "0",
+              "width": "1",
+              "name": "session_id_o_ap_vld",
+              "access": "R",
+              "description": "Control signal session_id_o_ap_vld"
+            },
+            {
+              "offset": "1",
+              "width": "31",
+              "name": "RESERVED",
+              "access": "R",
+              "description": "Reserved.  0s on read."
+            }
+          ]
+        },
+        {
+          "offset": "0x38",
+          "name": "success",
+          "access": "R",
+          "description": "Data signal of success",
+          "range": "32",
+          "fields": [
+            {
+              "offset": "0",
+              "width": "1",
+              "name": "success",
+              "access": "R",
+              "description": "Bit 0 to 0 of success"
+            },
+            {
+              "offset": "1",
+              "width": "31",
+              "name": "RESERVED",
+              "access": "R",
+              "description": "Reserved.  0s on read."
+            }
+          ]
+        },
+        {
+          "offset": "0x3c",
+          "name": "success_ctrl",
+          "access": "R",
+          "description": "Control signal of success",
+          "range": "32",
+          "fields": [
+            {
+              "offset": "0",
+              "width": "1",
+              "name": "success_ap_vld",
+              "access": "R",
+              "description": "Control signal success_ap_vld"
+            },
+            {
+              "offset": "1",
+              "width": "31",
+              "name": "RESERVED",
+              "access": "R",
+              "description": "Reserved.  0s on read."
+            }
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_type": "pragma interface",
+          "mode": "s_axilite",
+          "register_option": "0",
+          "offset": "16",
+          "argName": "ip"
+        },
+        {
+          "constraint_type": "pragma interface",
+          "mode": "s_axilite",
+          "register_option": "0",
+          "offset": "24",
+          "argName": "port_nr"
+        },
+        {
+          "constraint_type": "pragma interface",
+          "mode": "s_axilite",
+          "register_option": "0",
+          "offset": "32",
+          "argName": "close"
+        },
+        {
+          "constraint_type": "pragma interface",
+          "mode": "s_axilite",
+          "register_option": "0",
+          "offset": "40",
+          "argName": "session_id"
+        },
+        {
+          "constraint_type": "pragma interface",
+          "mode": "s_axilite",
+          "register_option": "0",
+          "offset": "56",
+          "argName": "success"
+        }
+      ]
+    },
+    "ap_clk": {
+      "type": "clock",
+      "busTypeName": "clock",
+      "mode": "slave",
+      "busParams": {
+        "ASSOCIATED_BUSIF": "s_axi_control:listen_port:port_status:open_connection:close_connection:open_status",
+        "ASSOCIATED_RESET": "ap_rst_n"
+      },
+      "portMap": {"ap_clk": "CLK"},
+      "ports": ["ap_clk"]
+    },
+    "ap_rst_n": {
+      "type": "reset",
+      "busTypeName": "reset",
+      "mode": "slave",
+      "busParams": {"POLARITY": "ACTIVE_LOW"},
+      "portMap": {"ap_rst_n": "RST"},
+      "ports": ["ap_rst_n"]
+    },
+    "ap_ctrl": {
+      "type": "ap_ctrl",
+      "busTypeName": "acc_handshake",
+      "mode": "slave",
+      "portMap": {
+        "ap_start": "start",
+        "ap_done": "done",
+        "ap_idle": "idle",
+        "ap_ready": "ready"
+      },
+      "ports": [
+        "ap_done",
+        "ap_idle",
+        "ap_ready",
+        "ap_start"
+      ]
+    },
+    "listen_port": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "16",
+      "portPrefix": "listen_port_",
+      "ports": [
+        "listen_port_TDATA",
+        "listen_port_TKEEP",
+        "listen_port_TLAST",
+        "listen_port_TREADY",
+        "listen_port_TSTRB",
+        "listen_port_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "listen_port"
+        }]
+    },
+    "port_status": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "8",
+      "portPrefix": "port_status_",
+      "ports": [
+        "port_status_TDATA",
+        "port_status_TKEEP",
+        "port_status_TLAST",
+        "port_status_TREADY",
+        "port_status_TSTRB",
+        "port_status_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "port_status"
+        }]
+    },
+    "open_connection": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "64",
+      "portPrefix": "open_connection_",
+      "ports": [
+        "open_connection_TDATA",
+        "open_connection_TKEEP",
+        "open_connection_TLAST",
+        "open_connection_TREADY",
+        "open_connection_TSTRB",
+        "open_connection_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "open_connection"
+        }]
+    },
+    "close_connection": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "16",
+      "portPrefix": "close_connection_",
+      "ports": [
+        "close_connection_TDATA",
+        "close_connection_TKEEP",
+        "close_connection_TLAST",
+        "close_connection_TREADY",
+        "close_connection_TSTRB",
+        "close_connection_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "close_connection"
+        }]
+    },
+    "open_status": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "128",
+      "portPrefix": "open_status_",
+      "ports": [
+        "open_status_TDATA",
+        "open_status_TKEEP",
+        "open_status_TLAST",
+        "open_status_TREADY",
+        "open_status_TSTRB",
+        "open_status_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "open_status"
+        }]
+    }
+  },
+  "RtlPorts": {
+    "s_axi_control_AWVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axi_control_AWREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axi_control_AWADDR": {
+      "dir": "in",
+      "width": "6"
+    },
+    "s_axi_control_WVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axi_control_WREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axi_control_WDATA": {
+      "dir": "in",
+      "width": "32"
+    },
+    "s_axi_control_WSTRB": {
+      "dir": "in",
+      "width": "4"
+    },
+    "s_axi_control_ARVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axi_control_ARREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axi_control_ARADDR": {
+      "dir": "in",
+      "width": "6"
+    },
+    "s_axi_control_RVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axi_control_RREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axi_control_RDATA": {
+      "dir": "out",
+      "width": "32"
+    },
+    "s_axi_control_RRESP": {
+      "dir": "out",
+      "width": "2"
+    },
+    "s_axi_control_BVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axi_control_BREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axi_control_BRESP": {
+      "dir": "out",
+      "width": "2"
+    },
+    "ap_clk": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_rst_n": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_start": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_done": {
+      "dir": "out",
+      "width": "1"
+    },
+    "ap_idle": {
+      "dir": "out",
+      "width": "1"
+    },
+    "ap_ready": {
+      "dir": "out",
+      "width": "1"
+    },
+    "listen_port_TDATA": {
+      "dir": "out",
+      "width": "16"
+    },
+    "listen_port_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "listen_port_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "listen_port_TLAST": {
+      "dir": "out",
+      "width": "1",
+      "isVector": "true"
+    },
+    "listen_port_TKEEP": {
+      "dir": "out",
+      "width": "2"
+    },
+    "listen_port_TSTRB": {
+      "dir": "out",
+      "width": "2"
+    },
+    "port_status_TDATA": {
+      "dir": "in",
+      "width": "8"
+    },
+    "port_status_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "port_status_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "port_status_TLAST": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "port_status_TKEEP": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "port_status_TSTRB": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "open_connection_TDATA": {
+      "dir": "out",
+      "width": "64"
+    },
+    "open_connection_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "open_connection_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "open_connection_TLAST": {
+      "dir": "out",
+      "width": "1",
+      "isVector": "true"
+    },
+    "open_connection_TKEEP": {
+      "dir": "out",
+      "width": "8"
+    },
+    "open_connection_TSTRB": {
+      "dir": "out",
+      "width": "8"
+    },
+    "close_connection_TDATA": {
+      "dir": "out",
+      "width": "16"
+    },
+    "close_connection_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "close_connection_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "close_connection_TLAST": {
+      "dir": "out",
+      "width": "1",
+      "isVector": "true"
+    },
+    "close_connection_TKEEP": {
+      "dir": "out",
+      "width": "2"
+    },
+    "close_connection_TSTRB": {
+      "dir": "out",
+      "width": "2"
+    },
+    "open_status_TDATA": {
+      "dir": "in",
+      "width": "128"
+    },
+    "open_status_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "open_status_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "open_status_TLAST": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "open_status_TKEEP": {
+      "dir": "in",
+      "width": "16"
+    },
+    "open_status_TSTRB": {
+      "dir": "in",
+      "width": "16"
+    }
+  },
+  "ModuleInfo": {
+    "Hierarchy": {"ModuleName": "tcp_session_handler"},
+    "Info": {"tcp_session_handler": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "0",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      }},
+    "Metrics": {"tcp_session_handler": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "3",
+          "PipelineDepth": "",
+          "PipelineType": "no"
+        },
+        "Timing": {
+          "Target": "4.00",
+          "Uncertainty": "1.08",
+          "Estimate": "2.000"
+        },
+        "Area": {
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "FF": "250",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "441",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0"
+        }
+      }}
+  },
+  "GenerateBdFiles": "0",
+  "GenData": {
+    "DataVersion": "0.2",
+    "Time": "2023-12-30 12:25:46 CET",
+    "ToolName": "vitis_hls",
+    "ToolVersion": "2022.2"
+  }
+}
