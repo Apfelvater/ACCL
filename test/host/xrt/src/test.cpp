@@ -27,6 +27,7 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+/*
 TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
   // 1 Send random buffer op_buf to all nodes
   // 2 Recv op_buf on all nodes
@@ -34,11 +35,14 @@ TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
   // 4 Recv (op1_buf) and combine (op_buf) on all nodes (SUM)
   // 5 Get op_buf from node, manually combine with op1_buf and compare to result from 4
 
-  GTEST_SKIP() << "Not implemented yet.";
+  //GTEST_SKIP() << "Not implemented yet.";
 
   if(::size == 1){
     GTEST_SKIP() << "Skipping recv_and_combine test on single-node setup";
   }
+
+  unsigned int count = options.count;
+  unsigned int count_bytes = count * dataTypeSize.at(dataType::float32) / 8;
 
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
@@ -46,33 +50,44 @@ TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
   random_array(op_buf->buffer(), count);
   random_array(op1_buf->buffer(), count);
   auto sum_buf = accl->create_buffer<float>(count, dataType::float32);
-  /*for (int i = 0; i < count; i++) {
-    (*sum_buf)[i] = (*op_buf)[i] + (*op1_buf)[i];
-  }*/
+
+  // NON-Randomized initial test TODO: remove
+  for (int i = 0; i < count; i++) {
+    (*op_buf)[i] = 1.0f;
+    (*op1_buf)[i] = 2.0f;
+    (*sum_buf)[i] = 3.0f;
+  }
 
   int next_rank = ::rank + 1;
   int prev_rank = ::rank - 1;
 
-  // Sending combiner-values to the nodes
-  //if (next_rank < ::size) {
-  //  accl->send(*op_buf, count, next_rank);
-  //}
-
-  // send and receive from 
+  // send and receive from EVEN ranks to ODD ranks
   if (::rank % 2 == 0) {
     if (next_rank < ::size) {
       accl->send(*op_buf, count, next_rank);
       accl->send(*op1_buf, count, next_rank);
     }
   } else {
-    accl->recv() // TODO: neuer zwischenpuffer? op und op1 wird noch benötigt.
-    accl->recv_and_combine();
+    accl->recv(*sum_buf, count, prev_rank); // should load op_buf into sum_buf (send-recv-test) 
+    accl->recv_and_combine(count, reduceFunction::SUM, *res_buf, *op_buf, prev_rank, val_from_fpga = true);
   }
 
+  // send and receive from ODD ranks to EVEN ranks
   if (::rank % 2 == 1) {
     accl->send(*op_buf, count, prev_rank);
     accl->send(*op1_buf, count, prev_rank);
+  } else {
+    accl->recv(*sum_buf, count, next_rank); // should load op_buf into sum_buf (send-recv-test) 
+    for (unsigned int i = 0; i < count; ++i) { // Making sure, op_buf was loaded into sum_buf
+      EXPECT_FLOAT_EQ((*op_buf)[i], (*sum_buf)[i]);
+    }
+    accl->recv_and_combine(count, reduceFunction::SUM, *res_buf, *op_buf, next_rank, val_from_fpga = true);
   }
+
+  // Calculate proof-sum
+  //for (unsigned int i = 0; i < count; ++i) {
+  //  (*sum_buf)[i] += MPI_sen
+  //}
 
   // ASSERT
   if(next_rank < ::size){
@@ -83,7 +98,7 @@ TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
     SUCCEED();
   }
 
-}
+}*/
 
 TEST_F(ACCLTest, recv_and_combine_ext) { // Combiner values is initially not on fpga
   
@@ -128,7 +143,7 @@ TEST_F(ACCLTest, recv_and_combine_ext) { // Combiner values is initially not on 
   
   if(next_rank < ::size){
     for (unsigned int i = 0; i < count; ++i) {
-      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]); // ASSERT WITH AUF ALLEN RANKS AUSGEFÜHRT!!!!!!!!!
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]); // ASSERT WITH AUF ALLEN RANKS AUSGEFÜHRT... ausser auf letztem?
     }
   } else {
     SUCCEED();

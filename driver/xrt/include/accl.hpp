@@ -420,8 +420,9 @@ public:
    * @param val             First buffer that should be used for reduce
    *                        operation. Create a buffer using
    *                        ACCL::create_buffer. (Second buffer is received value)
-   * @param result          Buffer where the result should be stored to. Create
-   *                        a buffer using ACCL::create_buffer.
+   * @param src             Source rank to receive data from.
+   * @param tag             Message tag.
+   * @param comm_id         Id of the communicator area.
    * @param val_from_fpga   Set to true if the data of the first buffer is
    *                        already on the FPGA.
    * @param to_fpga         Set to true if the copied data will be used on the
