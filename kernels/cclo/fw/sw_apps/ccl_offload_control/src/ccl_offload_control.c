@@ -578,28 +578,6 @@ int recv_and_combine(unsigned int src_rank,
                 0, 0                                           // transmitting to nothing
                 );
     // Frage: Wenn op1_addr = 0 und statdessen rx_src_rank != 0, welcher opcode (op0,op1,res) wird für src genutzt?
-
-    /* attempt.1
-    int recv_rc = recv(
-        src_rank,//
-        count, //
-        X, // Hier die "zwischen"-Adresse
-        comm_offset, //
-        arcfg_offset, //
-        src_tag, //
-        compression,//
-        buftype);//
-    int combine_rc = combine(
-        count, //
-        function, //
-        0, // einfach function auf das empfangene anwenden
-        X, // die zwischen-Adresse wieder
-        dst_addr, //
-        arcfg_offset, //
-        compression, //
-        buftype); //
-    return recv_rc | combine_rc;
-    */
 }
 
 //performs an accumulate using DMA1 and DMA0. DMA0 rx reads op1 DMA1 rx reads op2 while DMA1 tx back to dst buffer
@@ -1154,11 +1132,12 @@ int scatter(unsigned int count,
                     0, 0, i, TAG_ANY
                 );
             }
+            //TODO? expected ack count against pipe overloading?
             for(int i=0; i < world.size; i++){
                 err |= end_move();
             }
         } else{
-            //on non-root odes we only care about ETH_COMPRESSED and RES_COMPRESSED
+            //on non-root nodes we only care about ETH_COMPRESSED and RES_COMPRESSED
             //so replace OP0_COMPRESSED with the value of ETH_COMPRESSED
             compression = compression | ((compression & ETH_COMPRESSED) >> 2);
             err |= move(
@@ -1285,7 +1264,7 @@ int gather( unsigned int count,
             );
 
             //receive from all members of the communicator
-            curr_pos = world.local_rank;
+            curr_pos = world.local_rank; 
             for(i=0; i<world.size; i++){
                 start_move(
                     (i==0) ? MOVE_IMMEDIATE : MOVE_NONE,
