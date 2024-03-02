@@ -220,6 +220,22 @@ public:
                     unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
                     dataType compress_dtype = dataType::none, bool run_async = false,
                     std::vector<ACCLRequest *> waitfor = {});
+  /**
+   * Nur halt hier zu testzwecken.
+  */
+  std::chrono::_V2::system_clock::rep send_benchmark(BaseBuffer &srcbuf, unsigned int count, unsigned int dst,
+                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
+                    bool from_fpga = false,
+                    dataType compress_dtype = dataType::none, bool run_async = false,
+                    std::vector<ACCLRequest *> waitfor = {});
+  /**
+   * Test hier zu halt nurzwecken.
+  */
+  std::chrono::_V2::system_clock::rep recv_benchmark(BaseBuffer &dstbuf, unsigned int count, unsigned int src,
+                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
+                    bool to_fpga = false,
+                    dataType compress_dtype = dataType::none, bool run_async = false,
+                    std::vector<ACCLRequest *> waitfor = {});
 
   /**
    * Performs a one-sided put to a stream on a remote FPGA.

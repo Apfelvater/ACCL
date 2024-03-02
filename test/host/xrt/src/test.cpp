@@ -100,6 +100,45 @@ TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
 
 }*/
 
+// Simply times the send function
+TEST_F(ACCLTest, send_benchmark) {
+
+  unsigned int count = options.count;
+  std::time_t send_time, recv_time;
+  int next_rank = (::rank + 1) % ::size;
+  int prev_rank = (::rank + ::size - 1) % ::size;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  if (::rank % 2 == 0) {
+    send_time = accl->send_benchmark(*op_buf, count, next_rank, 0);
+    recv_time = accl->recv_benchmark(*op_buf, count, prev_rank, 0);
+  } else {
+    recv_time = accl->recv_benchmark(*op_buf, count, prev_rank, 0);
+    send_time = accl->send_benchmark(*op_buf, count, next_rank, 0);
+  }
+
+  std::cout << "Rank " << ::rank << " / " << ::size << " sent " << count * 4 << " bytes in " << send_time << " ns." << std::endl;
+  std::cout << "Rank " << ::rank << " / " << ::size << " received " << count * 4 << " bytes in " << recv_time << " ns." << std::endl;
+}
+
+// Simply times the send function without syncing from host to device
+TEST_F(ACCLTest, send_benchmark_no_sync) {
+
+  unsigned int count = options.count;
+  std::time_t runtime;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  if (::rank % 2 == 0) {
+    runtime = accl->send_benchmark(*op_buf, count, (::rank + 1) % ::size, 0, 0, true);
+  } else {
+    runtime = accl->recv_benchmark(*op_buf, count, ::rank - 1, 0, 0, true);
+  }
+
+  std::cout << "Rank " << ::rank << " / " << ::size << " send/recieved in " << runtime << " ns. [w/o sync_device]" << std::endl;
+}
+
 TEST_F(ACCLTest, recv_and_combine_ext) { // Combiner values is initially not on fpga
   
   if(::size == 1){

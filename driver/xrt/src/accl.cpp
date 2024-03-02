@@ -218,6 +218,74 @@ ACCLRequest *ACCL::send(dataType src_data_type, unsigned int count,
   return nullptr;
 }
 
+#include <chrono>
+// cclo send does start_move and end_move
+std::chrono::_V2::system_clock::rep ACCL::send_benchmark(BaseBuffer &srcbuf, unsigned int count,
+                        unsigned int dst, unsigned int tag, communicatorId comm_id,
+                        bool from_fpga, dataType compress_dtype, bool run_async,
+                        std::vector<ACCLRequest *> waitfor) {
+  CCLO::Options options{};
+
+  if (from_fpga == false) {
+    srcbuf.sync_to_device();
+  }
+
+  options.scenario = operation::send;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &srcbuf;
+  options.count = count;
+  options.root_src_dst = dst;
+  options.tag = tag;
+  options.compress_dtype = compress_dtype;
+  options.waitfor = waitfor;
+
+  auto start = std::chrono::high_resolution_clock::now();
+  ACCLRequest *handle = call_async(options);
+  if (!run_async)  {
+    wait(handle);
+    check_return_value("send", handle);
+  }
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+}
+
+std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, unsigned int count,
+                        unsigned int src, unsigned int tag, communicatorId comm_id,
+                        bool to_fpga, dataType compress_dtype, bool run_async,
+                        std::vector<ACCLRequest *> waitfor) {
+  CCLO::Options options{};
+
+  if (to_fpga == false && run_async == true) {
+    std::cerr << "ACCL: async run returns data on FPGA, user must "
+                 "sync_from_device() after waiting"
+              << std::endl;
+  }
+
+  options.scenario = operation::recv;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_2 = &dstbuf;
+  options.count = count;
+  options.root_src_dst = src;
+  options.tag = tag;
+  options.compress_dtype = compress_dtype;
+  options.waitfor = waitfor;
+
+
+  auto start = std::chrono::high_resolution_clock::now();
+  ACCLRequest *handle = call_async(options);
+  if (!run_async)  {
+    wait(handle);
+    if (to_fpga == false) {
+      dstbuf.sync_from_device();
+    }
+    check_return_value("recv", handle);
+  }
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+}
+
 ACCLRequest *ACCL::stream_put(BaseBuffer &srcbuf, unsigned int count,
                         unsigned int dst, unsigned int stream_id, communicatorId comm_id,
                         bool from_fpga, dataType compress_dtype, bool run_async,
