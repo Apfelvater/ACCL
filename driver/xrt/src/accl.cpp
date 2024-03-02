@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 #include <bitset>
+#include <chrono>
 #include <cmath>
 #include <set>
 #include <stdexcept>
@@ -218,7 +219,6 @@ ACCLRequest *ACCL::send(dataType src_data_type, unsigned int count,
   return nullptr;
 }
 
-#include <chrono>
 // cclo send does start_move and end_move
 std::chrono::_V2::system_clock::rep ACCL::send_benchmark(BaseBuffer &srcbuf, unsigned int count,
                         unsigned int dst, unsigned int tag, communicatorId comm_id,
@@ -281,6 +281,16 @@ std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, uns
     }
     check_return_value("recv", handle);
   }
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+}
+
+std::chrono::_V2::system_clock::rep ping_pong() {
+  CCLO::Options options{};
+
+  auto start = std::chrono::high_resolution_clock::now();
+  
   auto finish = std::chrono::high_resolution_clock::now();
 
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();

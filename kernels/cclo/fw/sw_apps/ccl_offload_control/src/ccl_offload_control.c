@@ -527,6 +527,76 @@ int move(
     return end_move();
 }
 
+// ping of the "PingPong" latency benchmark
+// Sends a small package to one other rank and wait for the pong response.
+// To simplify things, and since we only need one buffer on each FPGA, all buffer addresses are the same. (src_addr = dst_addr)
+// TODO: Test which is better: start_move, end_move, start_move, end_move VS. start, start, end, end
+int ping( unsigned int count,
+    uint64_t src_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    uint32_t dst_rank,
+    uint32_t rx_tag,
+    uint32_t tx_tag) {
+    unsigned int ret = NO_ERROR;
+
+    // TODO: "Init" buffer/address here? 
+
+    // *start* sending PING
+    start_move(
+        MOVE_IMMEDIATE, MOVE_NONE, MOVE_NONE,
+        pack_flags(0, 0, 0),
+        0,
+        count,
+        comm_offset,
+        arcfg_offset,
+        src_addr, 0, 0,
+        0, 0, 0,
+        0, 0, dst_rank, tx_tag
+    );
+    
+    // *start* receiving PONG
+    start_move(
+        MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+        pack_flags(0, 0, 0),
+        0,
+        count,
+        comm_offset,
+        arcfg_offset,
+        0, 0, src_addr,
+        0, 0, 0,
+        dst_rank, rx_tag, 0, 0
+    );
+
+    // Finish 
+    ret |= end_move();
+    ret |= end_move();
+
+    return ret;
+}
+
+// pong of the "PingPong" latency benchmark
+// As soon as the ping package arrives, send another small package back.
+int pong(
+    uint32_t src_rank,
+    uint32_t rx_tag,
+    uint32_t tx_tag
+    ) {
+    unsigned int ret = NO_ERROR;
+
+    // *start* receiving PONG
+    start_move(...);
+    //...
+    // *start* sending PING
+    start_move(...);
+
+    // Finish 
+    ret |= end_move();
+    ret |= end_move();
+
+    return ret;
+}
+
 //performs a copy using DMA0. DMA0 rx reads while DMA1 tx overwrites
 //use MOVE_IMMEDIATE
 static inline int copy(	unsigned int count,
@@ -2387,10 +2457,18 @@ void run() {
 
         switch (scenario)
         {
+            case PING:
+                printf("Starting PING-PONG.pIng() latency test...");
+
+                break;
+            case PONG:
+                printf("Starting PING-PONG.pOng() latency test...");
+
+                break;
             case ACCL_RECV_COMBINE: // New function
                 //retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);//recv_and_combine(root_src_dst,);
                 printf("Recv and combine\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\nres_addr=%i\ncomm=%i\n\n", 
-                        root_src_dst, msg_tag, op0_addr, count, res_addr, comm);
+                                                            root_src_dst, msg_tag,     op0_addr, count,      res_addr, comm);
                 retval = recv_and_combine(root_src_dst, msg_tag, op0_addr, count, res_addr, comm, datapath_cfg, compression_flags, function, buftype_flags);
                 break;
             case ACCL_COPY:
