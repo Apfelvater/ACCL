@@ -286,14 +286,52 @@ std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, uns
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
 
-std::chrono::_V2::system_clock::rep ping_pong() {
-  CCLO::Options options{};
+
+std::chrono::_V2::system_clock::rep ping(BaseBuffer& srcbuf, unsigned int count, unsigned int dst, 
+                                         communicatorId comm_id, bool run_async, unsigned int n_reps) {
+  CCLO::Options ping_options{};
+
+  ping_options.scenario = operation::ping;
+  ping_options.comm = communicators[comm_id].communicators_addr();
+  ping_options.addr_2 = &srcbuf;
+  ping_options.count = count;
+  ping_options.root_src_dst = dst;
 
   auto start = std::chrono::high_resolution_clock::now();
-  
+
+  // ping gets looped >n_reps< times.
+  ACCLRequest* ping_handle = call_async(ping_options);
+
+  if (!run_async) {
+    wait(ping_handle);
+    check_return_value("ping", ping_handle);
+  }
+
   auto finish = std::chrono::high_resolution_clock::now();
 
-  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+  auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>((finish-start)/n_reps).count();
+
+  return ret;
+}
+
+std::chrono::_V2::system_clock::rep pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
+                                         communicatorId comm_id, bool run_async, unsigned int n_reps) {
+  CCLO::Options pong_options{};
+
+  pong_options.scenario = operation::pong;
+  pong_options.comm = communicators[comm_id].communicators_addr();
+  pong_options.addr_2 = &dstbuf;
+  pong_options.count = count;
+  pong_options.root_src_dst = src;
+  pong_options.tag = n_reps;
+
+  auto start = std::chrono::high_resolution_clock::now();
+
+  ACCLRequest* pong_handle = call_async(pong_options);
+
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>((finish-start)/n_reps).count();
 }
 
 ACCLRequest *ACCL::stream_put(BaseBuffer &srcbuf, unsigned int count,

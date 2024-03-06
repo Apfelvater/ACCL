@@ -224,18 +224,32 @@ public:
    * Nur halt hier zu testzwecken.
   */
   std::chrono::_V2::system_clock::rep send_benchmark(BaseBuffer &srcbuf, unsigned int count, unsigned int dst,
-                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
-                    bool from_fpga = false,
-                    dataType compress_dtype = dataType::none, bool run_async = false,
-                    std::vector<ACCLRequest *> waitfor = {});
+                                                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
+                                                    bool from_fpga = false,
+                                                    dataType compress_dtype = dataType::none, bool run_async = false,
+                                                    std::vector<ACCLRequest *> waitfor = {});
   /**
    * Test hier zu halt nurzwecken.
   */
   std::chrono::_V2::system_clock::rep recv_benchmark(BaseBuffer &dstbuf, unsigned int count, unsigned int src,
-                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
-                    bool to_fpga = false,
-                    dataType compress_dtype = dataType::none, bool run_async = false,
-                    std::vector<ACCLRequest *> waitfor = {});
+                                                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
+                                                    bool to_fpga = false,
+                                                    dataType compress_dtype = dataType::none, bool run_async = false,
+                                                    std::vector<ACCLRequest *> waitfor = {});
+
+  /**
+   * Returns the AVERAGE (over n_reps repititions) time for one ping.
+  */
+  std::chrono::_V2::system_clock::rep ping(BaseBuffer& srcbuf, unsigned int count, unsigned int dst, 
+                                           unsigned int n_reps = 1, communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
+
+  /**
+   * Returns time for one pong.
+   * Not really useful time-measurement, i think...
+   * MAKE SURE n_reps IS THE SAME AS IN THE ping-CALL!!
+  */
+  std::chrono::_V2::system_clock::rep pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
+                                           unsigned int n_reps = 1, communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
 
   /**
    * Performs a one-sided put to a stream on a remote FPGA.

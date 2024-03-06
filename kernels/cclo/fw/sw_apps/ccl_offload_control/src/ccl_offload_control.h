@@ -82,6 +82,7 @@
 #define ACCL_RECV_COMBINE   14
 #define PING                15
 #define PONG                16
+#define PING_PONG           17
 
 //ACCL_CONFIG SUBFUNCTIONS
 #define HOUSEKEEP_SWRST                0

@@ -531,42 +531,48 @@ int move(
 // Sends a small package to one other rank and wait for the pong response.
 // To simplify things, and since we only need one buffer on each FPGA, all buffer addresses are the same. (src_addr = dst_addr)
 // TODO: Test which is better: start_move, end_move, start_move, end_move VS. start, start, end, end
-int ping( unsigned int count,
+int ping( 
+    uint32_t dst_rank,
+    unsigned int count,
     uint64_t src_addr,
+    uint64_t dst_addr,
     unsigned int comm_offset,
     unsigned int arcfg_offset,
-    uint32_t dst_rank,
-    uint32_t rx_tag,
-    uint32_t tx_tag) {
+    unsigned int n_reps
+    ) {
+
     unsigned int ret = NO_ERROR;
 
-    // TODO: "Init" buffer/address here? 
+    for (int i = 0; i < n_reps; i++) {
 
-    // *start* sending PING
-    start_move(
-        MOVE_IMMEDIATE, MOVE_NONE, MOVE_NONE,
-        pack_flags(0, 0, 0),
-        0,
-        count,
-        comm_offset,
-        arcfg_offset,
-        src_addr, 0, 0,
-        0, 0, 0,
-        0, 0, dst_rank, tx_tag
-    );
-    
-    // *start* receiving PONG
-    start_move(
-        MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
-        pack_flags(0, 0, 0),
-        0,
-        count,
-        comm_offset,
-        arcfg_offset,
-        0, 0, src_addr,
-        0, 0, 0,
-        dst_rank, rx_tag, 0, 0
-    );
+        // *start* sending PING
+        start_move(
+            MOVE_IMMEDIATE, MOVE_NONE, MOVE_NONE,
+            pack_flags(0, 0, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            src_addr, 0, 0,
+            0, 0, 0,
+            0, 0, dst_rank, TAG_ANY
+        );
+        
+        // *start* receiving PONG
+        start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(0, 0, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            0, 0, dst_addr,
+            0, 0, 0,
+            dst_rank, TAG_ANY, 0, 0
+        );
+
+        // TODO: Count expected acks, if greater than 8, do some acks (end_move)
+    }
 
     // Finish 
     ret |= end_move();
@@ -577,21 +583,33 @@ int ping( unsigned int count,
 
 // pong of the "PingPong" latency benchmark
 // As soon as the ping package arrives, send another small package back.
-int pong(
+int pong( 
     uint32_t src_rank,
-    uint32_t rx_tag,
-    uint32_t tx_tag
+    unsigned int count,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps
     ) {
+    
     unsigned int ret = NO_ERROR;
 
-    // *start* receiving PONG
-    start_move(...);
-    //...
-    // *start* sending PING
-    start_move(...);
+    for (int i = 0; i < n_reps; i++) {
 
+        // when receiving PING, instantly PONG back.
+        start_move(
+                        MOVE_NONE,
+                        MOVE_ON_RECV,
+                        MOVE_IMMEDIATE,
+                        pack_flags(0, RES_REMOTE, NO_HOST),
+                        0,
+                        count,
+                        comm_offset, arcfg_offset,
+                        0, 0, 0, 0, 0, 0,
+                        src_rank, TAG_ANY, src_rank, TAG_ANY
+                    );
+                    
+    }
     // Finish 
-    ret |= end_move();
     ret |= end_move();
 
     return ret;
@@ -2459,10 +2477,14 @@ void run() {
         {
             case PING:
                 printf("Starting PING-PONG.pIng() latency test...");
+                
+                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
 
                 break;
             case PONG:
                 printf("Starting PING-PONG.pOng() latency test...");
+                
+                retval = pong(root_src_dst, count, comm, datapath_cfg, msg_tag);
 
                 break;
             case ACCL_RECV_COMBINE: // New function

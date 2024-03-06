@@ -190,7 +190,10 @@ enum class operation : int {
   alltoall = 13,        /**< All-to-all kernel */
   nop = 255,            /**< NOP operation */
 
-  recv_and_combine = 14
+  recv_and_combine = 14,
+  ping = 15,
+  pong = 16,
+  ping_pong = 17
 };
 
 /**
