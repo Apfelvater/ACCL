@@ -1,0 +1,179 @@
+<profile>
+
+<section name = "Vitis HLS Report for 'tcp_session_handler'" level="0">
+<item name = "Date">Sat Dec 30 12:25:45 2023
+</item>
+<item name = "Version">2022.2 (Build 3670227 on Oct 13 2022)</item>
+<item name = "Project">tcp_session_handler</item>
+<item name = "Solution">sol1 (Vivado IP Flow Target)</item>
+<item name = "Product family">virtexuplus</item>
+<item name = "Target device">xcu280-fsvh2892-2L-e</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">4.00 ns, 2.000 ns, 1.08 ns</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="8">, min, max, min, max, min, max, Type</keys>
+<column name="">2, 2, 8.000 ns, 8.000 ns, 3, 3, no</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Utilization Estimates" level="0">
+<item name = "Summary"><table name="" hasTotal="1">
+<keys size="6">Name, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="DSP">-, -, -, -, -</column>
+<column name="Expression">-, -, 0, 47, -</column>
+<column name="FIFO">-, -, -, -, -</column>
+<column name="Instance">0, -, 196, 300, 0</column>
+<column name="Memory">-, -, -, -, -</column>
+<column name="Multiplexer">-, -, -, 94, -</column>
+<column name="Register">-, -, 54, -, -</column>
+<specialColumn name="Available SLR">1344, 3008, 869120, 434560, 320</specialColumn>
+<specialColumn name="Utilization SLR (%)">0, 0, ~0, ~0, 0</specialColumn>
+<specialColumn name="Available">4032, 9024, 2607360, 1303680, 960</specialColumn>
+<specialColumn name="Utilization (%)">0, 0, ~0, ~0, 0</specialColumn>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="1">
+<keys size="7">Instance, Module, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="control_s_axi_U">control_s_axi, 0, 0, 196, 300, 0</column>
+</table>
+</item>
+<item name = "DSP"><table name="" hasTotal="0">
+<keys size="3">Instance, Module, Expression</keys>
+</table>
+</item>
+<item name = "Memory"><table name="" hasTotal="1">
+<keys size="10">Memory, Module, BRAM_18K, FF, LUT, URAM, Words, Bits, Banks, W*Bits*Banks</keys>
+</table>
+</item>
+<item name = "FIFO"><table name="" hasTotal="1">
+<keys size="8">Name, BRAM_18K, FF, LUT, URAM, Depth, Bits, Size:D*B</keys>
+</table>
+</item>
+<item name = "Expression"><table name="" hasTotal="1">
+<keys size="7">Variable Name, Operation, DSP, FF, LUT, Bitwidth P0, Bitwidth P1</keys>
+<column name="ap_block_state3_io">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op78_write_state3">and, 0, 0, 2, 1, 1</column>
+<column name="icmp_ln50_fu_268_p2">icmp, 0, 0, 11, 8, 1</column>
+<column name="icmp_ln63_fu_328_p2">icmp, 0, 0, 11, 8, 1</column>
+<column name="icmp_ln901_fu_275_p2">icmp, 0, 0, 11, 8, 1</column>
+<column name="ap_block_state1">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state1_io">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state2">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state2_io">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state3">or, 0, 0, 2, 1, 1</column>
+</table>
+</item>
+<item name = "Multiplexer"><table name="" hasTotal="1">
+<keys size="5">Name, LUT, Input Size, Bits, Total Bits</keys>
+<column name="ap_NS_fsm">26, 5, 1, 5</column>
+<column name="close_connection_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="listen_port_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="open_connection_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="open_status_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="port_status_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="session_id_o">9, 2, 32, 64</column>
+<column name="success">14, 3, 1, 3</column>
+</table>
+</item>
+<item name = "Register"><table name="" hasTotal="1">
+<keys size="5">Name, FF, LUT, Bits, Const Bits</keys>
+<column name="ap_CS_fsm">4, 0, 4, 0</column>
+<column name="close_read_reg_335">1, 0, 1, 0</column>
+<column name="icmp_ln901_reg_350">1, 0, 1, 0</column>
+<column name="ip_read_reg_339">32, 0, 32, 0</column>
+<column name="tmp_reg_344">16, 0, 16, 0</column>
+</table>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Interface" level="0">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="6">RTL Ports, Dir, Bits, Protocol, Source Object, C Type</keys>
+<column name="s_axi_control_AWVALID">in, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_AWREADY">out, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_AWADDR">in, 6, s_axi, control, pointer</column>
+<column name="s_axi_control_WVALID">in, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_WREADY">out, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_WDATA">in, 32, s_axi, control, pointer</column>
+<column name="s_axi_control_WSTRB">in, 4, s_axi, control, pointer</column>
+<column name="s_axi_control_ARVALID">in, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_ARREADY">out, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_ARADDR">in, 6, s_axi, control, pointer</column>
+<column name="s_axi_control_RVALID">out, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_RREADY">in, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_RDATA">out, 32, s_axi, control, pointer</column>
+<column name="s_axi_control_RRESP">out, 2, s_axi, control, pointer</column>
+<column name="s_axi_control_BVALID">out, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_BREADY">in, 1, s_axi, control, pointer</column>
+<column name="s_axi_control_BRESP">out, 2, s_axi, control, pointer</column>
+<column name="ap_clk">in, 1, ap_ctrl_hs, tcp_session_handler, return value</column>
+<column name="ap_rst_n">in, 1, ap_ctrl_hs, tcp_session_handler, return value</column>
+<column name="ap_start">in, 1, ap_ctrl_hs, tcp_session_handler, return value</column>
+<column name="ap_done">out, 1, ap_ctrl_hs, tcp_session_handler, return value</column>
+<column name="ap_idle">out, 1, ap_ctrl_hs, tcp_session_handler, return value</column>
+<column name="ap_ready">out, 1, ap_ctrl_hs, tcp_session_handler, return value</column>
+<column name="listen_port_TDATA">out, 16, axis, listen_port_V_data_V, pointer</column>
+<column name="listen_port_TVALID">out, 1, axis, listen_port_V_last_V, pointer</column>
+<column name="listen_port_TREADY">in, 1, axis, listen_port_V_last_V, pointer</column>
+<column name="listen_port_TLAST">out, 1, axis, listen_port_V_last_V, pointer</column>
+<column name="listen_port_TKEEP">out, 2, axis, listen_port_V_keep_V, pointer</column>
+<column name="listen_port_TSTRB">out, 2, axis, listen_port_V_strb_V, pointer</column>
+<column name="port_status_TDATA">in, 8, axis, port_status_V_data_V, pointer</column>
+<column name="port_status_TVALID">in, 1, axis, port_status_V_last_V, pointer</column>
+<column name="port_status_TREADY">out, 1, axis, port_status_V_last_V, pointer</column>
+<column name="port_status_TLAST">in, 1, axis, port_status_V_last_V, pointer</column>
+<column name="port_status_TKEEP">in, 1, axis, port_status_V_keep_V, pointer</column>
+<column name="port_status_TSTRB">in, 1, axis, port_status_V_strb_V, pointer</column>
+<column name="open_connection_TDATA">out, 64, axis, open_connection_V_data_V, pointer</column>
+<column name="open_connection_TVALID">out, 1, axis, open_connection_V_last_V, pointer</column>
+<column name="open_connection_TREADY">in, 1, axis, open_connection_V_last_V, pointer</column>
+<column name="open_connection_TLAST">out, 1, axis, open_connection_V_last_V, pointer</column>
+<column name="open_connection_TKEEP">out, 8, axis, open_connection_V_keep_V, pointer</column>
+<column name="open_connection_TSTRB">out, 8, axis, open_connection_V_strb_V, pointer</column>
+<column name="close_connection_TDATA">out, 16, axis, close_connection_V_data_V, pointer</column>
+<column name="close_connection_TVALID">out, 1, axis, close_connection_V_last_V, pointer</column>
+<column name="close_connection_TREADY">in, 1, axis, close_connection_V_last_V, pointer</column>
+<column name="close_connection_TLAST">out, 1, axis, close_connection_V_last_V, pointer</column>
+<column name="close_connection_TKEEP">out, 2, axis, close_connection_V_keep_V, pointer</column>
+<column name="close_connection_TSTRB">out, 2, axis, close_connection_V_strb_V, pointer</column>
+<column name="open_status_TDATA">in, 128, axis, open_status_V_data_V, pointer</column>
+<column name="open_status_TVALID">in, 1, axis, open_status_V_last_V, pointer</column>
+<column name="open_status_TREADY">out, 1, axis, open_status_V_last_V, pointer</column>
+<column name="open_status_TLAST">in, 1, axis, open_status_V_last_V, pointer</column>
+<column name="open_status_TKEEP">in, 16, axis, open_status_V_keep_V, pointer</column>
+<column name="open_status_TSTRB">in, 16, axis, open_status_V_strb_V, pointer</column>
+</table>
+</item>
+</section>
+</profile>

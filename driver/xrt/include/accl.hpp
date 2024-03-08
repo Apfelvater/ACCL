@@ -225,6 +225,36 @@ public:
                     unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
                     dataType compress_dtype = dataType::none, bool run_async = false,
                     std::vector<ACCLRequest *> waitfor = {});
+  /**
+   * Nur halt hier zu testzwecken.
+  */
+  std::chrono::_V2::system_clock::rep send_benchmark(BaseBuffer &srcbuf, unsigned int count, unsigned int dst,
+                                                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
+                                                    bool from_fpga = false,
+                                                    dataType compress_dtype = dataType::none, bool run_async = false,
+                                                    std::vector<ACCLRequest *> waitfor = {});
+  /**
+   * Test hier zu halt nurzwecken.
+  */
+  std::chrono::_V2::system_clock::rep recv_benchmark(BaseBuffer &dstbuf, unsigned int count, unsigned int src,
+                                                    unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
+                                                    bool to_fpga = false,
+                                                    dataType compress_dtype = dataType::none, bool run_async = false,
+                                                    std::vector<ACCLRequest *> waitfor = {});
+
+  /**
+   * Returns the AVERAGE (over n_reps repititions) time for one ping.
+  */
+  std::chrono::_V2::system_clock::rep ping(BaseBuffer& srcbuf, unsigned int count, unsigned int dst, 
+                                           unsigned int n_reps = 1, communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
+
+  /**
+   * Returns time for one pong.
+   * Not really useful time-measurement, i think...
+   * MAKE SURE n_reps IS THE SAME AS IN THE ping-CALL!!
+  */
+  std::chrono::_V2::system_clock::rep pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
+                                           unsigned int n_reps = 1, communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
 
   /**
    * Performs a one-sided put to a stream on a remote FPGA.
@@ -413,6 +443,32 @@ public:
                       bool val1_from_fpga = false, bool val2_from_fpga = false,
                       bool to_fpga = false, bool run_async = false,
                       std::vector<ACCLRequest *> waitfor = {});
+
+  /**
+   * Performs the receive operation on the FPGA and performs a reduce operation 
+   * on the result buffer and a local buffer on the FPGA.
+   * 
+   * @param count           Amount of elements to work on.. (?)
+   * @param function        Reduce operation to perform.
+   * @param result          Buffer where the result should be stored to. Create
+   *                        a buffer using ACCL::create_buffer.
+   * @param val             First buffer that should be used for reduce
+   *                        operation. Create a buffer using
+   *                        ACCL::create_buffer. (Second buffer is received value)
+   * @param src             Source rank to receive data from.
+   * @param tag             Message tag.
+   * @param comm_id         Id of the communicator area.
+   * @param val_from_fpga   Set to true if the data of the first buffer is
+   *                        already on the FPGA.
+   * @param to_fpga         Set to true if the copied data will be used on the
+   *                        FPGA only.
+   * @param run_async       Run the ACCL call asynchronously.
+   * 
+   * 
+  */
+  ACCLRequest *recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
+                                    BaseBuffer &val, unsigned int src, unsigned int tag, communicatorId comm_id = GLOBAL_COMM, 
+                                    bool val_from_fpga = false, bool to_fpga = false, bool run_async = false);
 
   /**
    * Performs the broadcast operation on the FPGA.

@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'cyt_rdma'
+================================================================
+* Date:           Sat Dec 30 12:25:00 2023
+
+* Version:        2022.2 (Build 3670227 on Oct 13 2022)
+* Project:        dummy_cyt_rdma_stack
+* Solution:       sol1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.353 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+----------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline |
+    |   min   |   max   |    min   |    max   | min | max |   Type   |
+    +---------+---------+----------+----------+-----+-----+----------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|  dataflow|
+    +---------+---------+----------+----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 4
+* Pipeline : 0
+* Dataflow Pipeline: 1
+  DF-Pipeline-0: Size = 4, States = { 1 2 3 4 }
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 5 [2/2] (0.00ns)   --->   "%call_ln172 = call void @cyt_rdma_tx, i128 %rdma_sq, i512 %send_data_V_data_V, i64 %send_data_V_keep_V, i64 %send_data_V_strb_V, i1 %send_data_V_last_V, i8 %send_data_V_dest_V, i512 %tx_V_data_V, i64 %tx_V_keep_V, i64 %tx_V_strb_V, i1 %tx_V_last_V, i8 %tx_V_dest_V, i1 %txFsmState, i32 %command_len_V, i64 %command_vaddr_V, i8 %command_host_V, i16 %command_qpn_V, i8 %command_opcode_V" [dummy_cyt_rdma_stack.cpp:172]   --->   Operation 5 'call' 'call_ln172' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 6 [2/2] (0.00ns)   --->   "%call_ln173 = call void @cyt_rdma_rx, i64 %notif, i512 %recv_data_V_data_V, i64 %recv_data_V_keep_V, i64 %recv_data_V_strb_V, i1 %recv_data_V_last_V, i8 %recv_data_V_dest_V, i512 %wr_data_V_data_V, i64 %wr_data_V_keep_V, i64 %wr_data_V_strb_V, i1 %wr_data_V_last_V, i8 %wr_data_V_dest_V, i104 %wr_cmd_V_data_V, i13 %wr_cmd_V_keep_V, i13 %wr_cmd_V_strb_V, i1 %wr_cmd_V_last_V, i8 %wr_cmd_V_dest_V, i512 %rx_V_data_V, i64 %rx_V_keep_V, i64 %rx_V_strb_V, i1 %rx_V_last_V, i8 %rx_V_dest_V" [dummy_cyt_rdma_stack.cpp:173]   --->   Operation 6 'call' 'call_ln173' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 3 <SV = 2> <Delay = 0.00>
+ST_3 : Operation 7 [1/2] (0.00ns)   --->   "%call_ln172 = call void @cyt_rdma_tx, i128 %rdma_sq, i512 %send_data_V_data_V, i64 %send_data_V_keep_V, i64 %send_data_V_strb_V, i1 %send_data_V_last_V, i8 %send_data_V_dest_V, i512 %tx_V_data_V, i64 %tx_V_keep_V, i64 %tx_V_strb_V, i1 %tx_V_last_V, i8 %tx_V_dest_V, i1 %txFsmState, i32 %command_len_V, i64 %command_vaddr_V, i8 %command_host_V, i16 %command_qpn_V, i8 %command_opcode_V" [dummy_cyt_rdma_stack.cpp:172]   --->   Operation 7 'call' 'call_ln172' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_3 : Operation 8 [1/2] (0.00ns)   --->   "%call_ln173 = call void @cyt_rdma_rx, i64 %notif, i512 %recv_data_V_data_V, i64 %recv_data_V_keep_V, i64 %recv_data_V_strb_V, i1 %recv_data_V_last_V, i8 %recv_data_V_dest_V, i512 %wr_data_V_data_V, i64 %wr_data_V_keep_V, i64 %wr_data_V_strb_V, i1 %wr_data_V_last_V, i8 %wr_data_V_dest_V, i104 %wr_cmd_V_data_V, i13 %wr_cmd_V_keep_V, i13 %wr_cmd_V_strb_V, i1 %wr_cmd_V_last_V, i8 %wr_cmd_V_dest_V, i512 %rx_V_data_V, i64 %rx_V_keep_V, i64 %rx_V_strb_V, i1 %rx_V_last_V, i8 %rx_V_dest_V" [dummy_cyt_rdma_stack.cpp:173]   --->   Operation 8 'call' 'call_ln173' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 4 <SV = 3> <Delay = 0.00>
+ST_4 : Operation 9 [1/1] (0.00ns)   --->   "%specdataflowpipeline_ln169 = specdataflowpipeline void @_ssdm_op_SpecDataflowPipeline, i32 4294967295, i32 1, void @empty_6" [dummy_cyt_rdma_stack.cpp:169]   --->   Operation 9 'specdataflowpipeline' 'specdataflowpipeline_ln169' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 10 [1/1] (0.00ns)   --->   "%spectopmodule_ln147 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty" [dummy_cyt_rdma_stack.cpp:147]   --->   Operation 10 'spectopmodule' 'spectopmodule_ln147' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 11 [1/1] (0.00ns)   --->   "%specinterface_ln147 = specinterface void @_ssdm_op_SpecInterface, i32 0, void @empty_10, i32 0, i32 0, void @empty_6, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0" [dummy_cyt_rdma_stack.cpp:147]   --->   Operation 11 'specinterface' 'specinterface_ln147' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 12 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i128 %rdma_sq, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 12 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 13 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i128 %rdma_sq"   --->   Operation 13 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 14 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %notif, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 14 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 15 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %notif"   --->   Operation 15 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 16 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %send_data_V_data_V, i64 %send_data_V_keep_V, i64 %send_data_V_strb_V, i1 %send_data_V_last_V, i8 %send_data_V_dest_V, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 16 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 17 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i512 %send_data_V_data_V"   --->   Operation 17 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 18 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %send_data_V_keep_V"   --->   Operation 18 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 19 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %send_data_V_strb_V"   --->   Operation 19 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 20 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %send_data_V_last_V"   --->   Operation 20 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 21 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %send_data_V_dest_V"   --->   Operation 21 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 22 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %recv_data_V_data_V, i64 %recv_data_V_keep_V, i64 %recv_data_V_strb_V, i1 %recv_data_V_last_V, i8 %recv_data_V_dest_V, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 22 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 23 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i512 %recv_data_V_data_V"   --->   Operation 23 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 24 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %recv_data_V_keep_V"   --->   Operation 24 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 25 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %recv_data_V_strb_V"   --->   Operation 25 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 26 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %recv_data_V_last_V"   --->   Operation 26 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 27 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %recv_data_V_dest_V"   --->   Operation 27 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 28 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %wr_data_V_data_V, i64 %wr_data_V_keep_V, i64 %wr_data_V_strb_V, i1 %wr_data_V_last_V, i8 %wr_data_V_dest_V, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 28 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 29 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i512 %wr_data_V_data_V"   --->   Operation 29 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 30 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %wr_data_V_keep_V"   --->   Operation 30 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 31 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %wr_data_V_strb_V"   --->   Operation 31 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 32 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %wr_data_V_last_V"   --->   Operation 32 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 33 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %wr_data_V_dest_V"   --->   Operation 33 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 34 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i104 %wr_cmd_V_data_V, i13 %wr_cmd_V_keep_V, i13 %wr_cmd_V_strb_V, i1 %wr_cmd_V_last_V, i8 %wr_cmd_V_dest_V, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 34 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 35 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i104 %wr_cmd_V_data_V"   --->   Operation 35 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 36 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i13 %wr_cmd_V_keep_V"   --->   Operation 36 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 37 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i13 %wr_cmd_V_strb_V"   --->   Operation 37 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 38 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %wr_cmd_V_last_V"   --->   Operation 38 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 39 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %wr_cmd_V_dest_V"   --->   Operation 39 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 40 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %wr_sts, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 40 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 41 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i32 %wr_sts"   --->   Operation 41 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 42 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_V_data_V, i64 %rx_V_keep_V, i64 %rx_V_strb_V, i1 %rx_V_last_V, i8 %rx_V_dest_V, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 42 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 43 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i512 %rx_V_data_V"   --->   Operation 43 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 44 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %rx_V_keep_V"   --->   Operation 44 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 45 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %rx_V_strb_V"   --->   Operation 45 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 46 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %rx_V_last_V"   --->   Operation 46 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 47 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %rx_V_dest_V"   --->   Operation 47 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 48 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %tx_V_data_V, i64 %tx_V_keep_V, i64 %tx_V_strb_V, i1 %tx_V_last_V, i8 %tx_V_dest_V, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 48 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 49 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i512 %tx_V_data_V"   --->   Operation 49 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 50 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %tx_V_keep_V"   --->   Operation 50 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 51 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %tx_V_strb_V"   --->   Operation 51 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 52 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %tx_V_last_V"   --->   Operation 52 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 53 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %tx_V_dest_V"   --->   Operation 53 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 54 [1/1] (0.00ns)   --->   "%specaxissidechannel_ln176 = specaxissidechannel void @_ssdm_op_SpecAXISSideChannel, i512 %rx_V_data_V, i64 %rx_V_keep_V, i64 %rx_V_strb_V, i1 0, i1 %rx_V_last_V, i1 0, i8 %rx_V_dest_V, void @empty_9" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 54 'specaxissidechannel' 'specaxissidechannel_ln176' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 55 [1/1] (0.00ns)   --->   "%specaxissidechannel_ln176 = specaxissidechannel void @_ssdm_op_SpecAXISSideChannel, i512 %send_data_V_data_V, i64 %send_data_V_keep_V, i64 %send_data_V_strb_V, i1 0, i1 %send_data_V_last_V, i1 0, i8 %send_data_V_dest_V, void @empty_4" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 55 'specaxissidechannel' 'specaxissidechannel_ln176' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 56 [1/1] (0.00ns)   --->   "%specaxissidechannel_ln176 = specaxissidechannel void @_ssdm_op_SpecAXISSideChannel, i512 %wr_data_V_data_V, i64 %wr_data_V_keep_V, i64 %wr_data_V_strb_V, i1 0, i1 %wr_data_V_last_V, i1 0, i8 %wr_data_V_dest_V, void @empty_5" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 56 'specaxissidechannel' 'specaxissidechannel_ln176' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 57 [1/1] (0.00ns)   --->   "%specaxissidechannel_ln176 = specaxissidechannel void @_ssdm_op_SpecAXISSideChannel, i512 %recv_data_V_data_V, i64 %recv_data_V_keep_V, i64 %recv_data_V_strb_V, i1 0, i1 %recv_data_V_last_V, i1 0, i8 %recv_data_V_dest_V, void @empty_7" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 57 'specaxissidechannel' 'specaxissidechannel_ln176' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 58 [1/1] (0.00ns)   --->   "%specaxissidechannel_ln176 = specaxissidechannel void @_ssdm_op_SpecAXISSideChannel, i512 %tx_V_data_V, i64 %tx_V_keep_V, i64 %tx_V_strb_V, i1 0, i1 %tx_V_last_V, i1 0, i8 %tx_V_dest_V, void @empty_1" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 58 'specaxissidechannel' 'specaxissidechannel_ln176' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 59 [1/1] (0.00ns)   --->   "%specaxissidechannel_ln176 = specaxissidechannel void @_ssdm_op_SpecAXISSideChannel, i104 %wr_cmd_V_data_V, i13 %wr_cmd_V_keep_V, i13 %wr_cmd_V_strb_V, i1 0, i1 %wr_cmd_V_last_V, i1 0, i8 %wr_cmd_V_dest_V, void @empty_0" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 59 'specaxissidechannel' 'specaxissidechannel_ln176' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 60 [1/1] (0.00ns)   --->   "%call_ln174 = call void @cyt_rdma_wr_sts, i32 %wr_sts" [dummy_cyt_rdma_stack.cpp:174]   --->   Operation 60 'call' 'call_ln174' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_4 : Operation 61 [1/1] (0.00ns)   --->   "%ret_ln176 = ret" [dummy_cyt_rdma_stack.cpp:176]   --->   Operation 61 'ret' 'ret_ln176' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 4ns, clock uncertainty: 1.08ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 0ns
+The critical path consists of the following:
+
+ <State 3>: 0ns
+The critical path consists of the following:
+
+ <State 4>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

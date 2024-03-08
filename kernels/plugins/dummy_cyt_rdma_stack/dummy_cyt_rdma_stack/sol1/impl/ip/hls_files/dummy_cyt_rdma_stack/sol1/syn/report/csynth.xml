@@ -1,0 +1,1367 @@
+<profile>
+    <ReportVersion>
+        <Version>2022.2</Version>
+    </ReportVersion>
+    <UserAssignments>
+        <unit>ns</unit>
+        <ProductFamily>virtexuplus</ProductFamily>
+        <Part>xcu280-fsvh2892-2L-e</Part>
+        <TopModelName>cyt_rdma</TopModelName>
+        <TargetClockPeriod>4.00</TargetClockPeriod>
+        <ClockUncertainty>1.08</ClockUncertainty>
+        <FlowTarget>vivado</FlowTarget>
+    </UserAssignments>
+    <PerformanceEstimates>
+        <PipelineType>dataflow</PipelineType>
+        <SummaryOfTimingAnalysis>
+            <unit>ns</unit>
+            <EstimatedClockPeriod>2.353</EstimatedClockPeriod>
+        </SummaryOfTimingAnalysis>
+        <SummaryOfOverallLatency>
+            <unit>clock cycles</unit>
+            <Best-caseLatency>undef</Best-caseLatency>
+            <Average-caseLatency>undef</Average-caseLatency>
+            <Worst-caseLatency>undef</Worst-caseLatency>
+            <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+            <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+            <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+            <DataflowPipelineThroughput>undef</DataflowPipelineThroughput>
+            <Interval-min>undef</Interval-min>
+            <Interval-max>undef</Interval-max>
+        </SummaryOfOverallLatency>
+    </PerformanceEstimates>
+    <AreaEstimates>
+        <Resources>
+            <FF>486</FF>
+            <LUT>756</LUT>
+            <BRAM_18K>0</BRAM_18K>
+            <DSP>0</DSP>
+            <URAM>0</URAM>
+        </Resources>
+        <AvailableResources>
+            <BRAM_18K>4032</BRAM_18K>
+            <DSP>9024</DSP>
+            <FF>2607360</FF>
+            <LUT>1303680</LUT>
+            <URAM>960</URAM>
+        </AvailableResources>
+    </AreaEstimates>
+    <InterfaceSummary>
+        <RtlPorts>
+            <name>rdma_sq_TDATA</name>
+            <Object>rdma_sq</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>128</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rdma_sq_TVALID</name>
+            <Object>rdma_sq</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rdma_sq_TREADY</name>
+            <Object>rdma_sq</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>notif_TDATA</name>
+            <Object>notif</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>notif_TVALID</name>
+            <Object>notif</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>notif_TREADY</name>
+            <Object>notif</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TDATA</name>
+            <Object>send_data_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>512</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TKEEP</name>
+            <Object>send_data_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TSTRB</name>
+            <Object>send_data_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TLAST</name>
+            <Object>send_data_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TDEST</name>
+            <Object>send_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TVALID</name>
+            <Object>send_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>send_data_TREADY</name>
+            <Object>send_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TDATA</name>
+            <Object>recv_data_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>512</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TKEEP</name>
+            <Object>recv_data_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TSTRB</name>
+            <Object>recv_data_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TLAST</name>
+            <Object>recv_data_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TDEST</name>
+            <Object>recv_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TVALID</name>
+            <Object>recv_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>recv_data_TREADY</name>
+            <Object>recv_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TDATA</name>
+            <Object>wr_data_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>512</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TKEEP</name>
+            <Object>wr_data_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TSTRB</name>
+            <Object>wr_data_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TLAST</name>
+            <Object>wr_data_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TDEST</name>
+            <Object>wr_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TVALID</name>
+            <Object>wr_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_data_TREADY</name>
+            <Object>wr_data_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TDATA</name>
+            <Object>wr_cmd_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>104</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TKEEP</name>
+            <Object>wr_cmd_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>13</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TSTRB</name>
+            <Object>wr_cmd_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>13</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TLAST</name>
+            <Object>wr_cmd_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TDEST</name>
+            <Object>wr_cmd_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TVALID</name>
+            <Object>wr_cmd_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_cmd_TREADY</name>
+            <Object>wr_cmd_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_sts_TDATA</name>
+            <Object>wr_sts</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>32</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_sts_TVALID</name>
+            <Object>wr_sts</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>wr_sts_TREADY</name>
+            <Object>wr_sts</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TDATA</name>
+            <Object>rx_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>512</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TKEEP</name>
+            <Object>rx_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TSTRB</name>
+            <Object>rx_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TLAST</name>
+            <Object>rx_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TDEST</name>
+            <Object>rx_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TVALID</name>
+            <Object>rx_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>rx_TREADY</name>
+            <Object>rx_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TDATA</name>
+            <Object>tx_V_data_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>512</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TKEEP</name>
+            <Object>tx_V_keep_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TSTRB</name>
+            <Object>tx_V_strb_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TLAST</name>
+            <Object>tx_V_last_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TDEST</name>
+            <Object>tx_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TVALID</name>
+            <Object>tx_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>tx_TREADY</name>
+            <Object>tx_V_dest_V</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_clk</name>
+            <Object>cyt_rdma</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_none</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_rst_n</name>
+            <Object>cyt_rdma</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_none</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+    </InterfaceSummary>
+    <RTLDesignHierarchy>
+        <TopModule MAX_DEPTH="4">
+            <ModuleName>cyt_rdma</ModuleName>
+            <InstancesList>
+                <Instance>
+                    <InstName>cyt_rdma_tx_U0</InstName>
+                    <ModuleName>cyt_rdma_tx</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>124</ID>
+                    <InstancesList>
+                        <Instance>
+                            <InstName>grp_cyt_rdma_tx_Pipeline_VITIS_LOOP_65_2_fu_197</InstName>
+                            <ModuleName>cyt_rdma_tx_Pipeline_VITIS_LOOP_65_2</ModuleName>
+                            <IsCompInst>true</IsCompInst>
+                            <ID>197</ID>
+                            <BindInstances>i_3_fu_175_p2</BindInstances>
+                        </Instance>
+                    </InstancesList>
+                    <BindInstances>sub_ln73_fu_378_p2 add_ln840_fu_395_p2</BindInstances>
+                </Instance>
+                <Instance>
+                    <InstName>cyt_rdma_rx_U0</InstName>
+                    <ModuleName>cyt_rdma_rx</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>162</ID>
+                    <InstancesList>
+                        <Instance>
+                            <InstName>grp_cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2_fu_187</InstName>
+                            <ModuleName>cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2</ModuleName>
+                            <IsCompInst>true</IsCompInst>
+                            <ID>187</ID>
+                        </Instance>
+                        <Instance>
+                            <InstName>grp_cyt_rdma_rx_Pipeline_VITIS_LOOP_119_1_fu_211</InstName>
+                            <ModuleName>cyt_rdma_rx_Pipeline_VITIS_LOOP_119_1</ModuleName>
+                            <IsCompInst>true</IsCompInst>
+                            <ID>211</ID>
+                        </Instance>
+                    </InstancesList>
+                </Instance>
+                <Instance>
+                    <InstName>cyt_rdma_wr_sts_U0</InstName>
+                    <ModuleName>cyt_rdma_wr_sts</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>208</ID>
+                </Instance>
+            </InstancesList>
+        </TopModule>
+    </RTLDesignHierarchy>
+    <ModuleInformation>
+        <Module>
+            <Name>cyt_rdma_tx_Pipeline_VITIS_LOOP_65_2</Name>
+            <Loops>
+                <VITIS_LOOP_65_2/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>2.111</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <VITIS_LOOP_65_2>
+                        <Name>VITIS_LOOP_65_2</Name>
+                        <Slack>2.92</Slack>
+                        <TripCount>undef</TripCount>
+                        <Latency>undef</Latency>
+                        <AbsoluteTimeLatency>undef</AbsoluteTimeLatency>
+                        <PipelineII>1</PipelineII>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>yes</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_65_2>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>34</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>126</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_65_2" OPTYPE="add" PRAGMA="" RTLNAME="i_3_fu_175_p2" SOURCE="dummy_cyt_rdma_stack.cpp:65" URAM="0" VARIABLE="i_3"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>cyt_rdma_tx</Name>
+            <Loops>
+                <VITIS_LOOP_56_1/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>2.353</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <VITIS_LOOP_56_1>
+                        <Name>VITIS_LOOP_56_1</Name>
+                        <Slack>2.92</Slack>
+                        <TripCount>undef</TripCount>
+                        <Latency>undef</Latency>
+                        <AbsoluteTimeLatency>undef</AbsoluteTimeLatency>
+                        <IterationLatency>undef</IterationLatency>
+                        <PipelineDepth>undef</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList>
+                            <Instance>grp_cyt_rdma_tx_Pipeline_VITIS_LOOP_65_2_fu_197</Instance>
+                        </InstanceList>
+                    </VITIS_LOOP_56_1>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>471</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>517</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op sub" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_56_1" OPTYPE="sub" PRAGMA="" RTLNAME="sub_ln73_fu_378_p2" SOURCE="dummy_cyt_rdma_stack.cpp:73" URAM="0" VARIABLE="sub_ln73"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_56_1" OPTYPE="add" PRAGMA="" RTLNAME="add_ln840_fu_395_p2" SOURCE="/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/common/technology/autopilot/ap_int_base.h:840" URAM="0" VARIABLE="add_ln840"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2</Name>
+            <Loops>
+                <VITIS_LOOP_128_2/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>0.000</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <VITIS_LOOP_128_2>
+                        <Name>VITIS_LOOP_128_2</Name>
+                        <Slack>2.92</Slack>
+                        <TripCount>undef</TripCount>
+                        <Latency>undef</Latency>
+                        <AbsoluteTimeLatency>undef</AbsoluteTimeLatency>
+                        <PipelineII>1</PipelineII>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>yes</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_128_2>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>2</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>29</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+        <Module>
+            <Name>cyt_rdma_rx_Pipeline_VITIS_LOOP_119_1</Name>
+            <Loops>
+                <VITIS_LOOP_119_1/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>0.000</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <VITIS_LOOP_119_1>
+                        <Name>VITIS_LOOP_119_1</Name>
+                        <Slack>2.92</Slack>
+                        <TripCount>undef</TripCount>
+                        <Latency>undef</Latency>
+                        <AbsoluteTimeLatency>undef</AbsoluteTimeLatency>
+                        <PipelineII>1</PipelineII>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>yes</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_119_1>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>2</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>29</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+        <Module>
+            <Name>cyt_rdma_rx</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>1.216</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>13</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>217</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+        <Module>
+            <Name>cyt_rdma_wr_sts</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>0.000</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>0</Best-caseLatency>
+                    <Average-caseLatency>0</Average-caseLatency>
+                    <Worst-caseLatency>0</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>0 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>0 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>0 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>1</PipelineInitiationInterval>
+                    <PipelineDepth>1</PipelineDepth>
+                    <PipelineType>yes(flp)</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>2</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>22</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+        <Module>
+            <Name>cyt_rdma</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>4.00</TargetClockPeriod>
+                    <ClockUncertainty>1.08</ClockUncertainty>
+                    <EstimatedClockPeriod>2.353</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <DataflowPipelineThroughput>undef</DataflowPipelineThroughput>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>dataflow</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>486</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>756</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+    </ModuleInformation>
+    <FIFOInformation/>
+    <UserConfigCommands>
+        <config_export format="xo" library="ACCL" output="/scratch/hpc-lco-kenter/nleerman/ACCL/kernels/plugins/dummy_cyt_rdma_stack/dummy_cyt_rdma_stack.xo"/>
+    </UserConfigCommands>
+    <Args>
+        <Arg ArgName="rdma_sq" index="0" direction="in" srcType="stream&lt;rdma_req_t, 0&gt;&amp;" srcSize="192">
+            <hwRefs>
+                <hwRef type="interface" interface="rdma_sq" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="notif" index="1" direction="out" srcType="stream&lt;eth_notification, 0&gt;&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="interface" interface="notif" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="send_data" index="2" direction="in" srcType="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="send_data" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="recv_data" index="3" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="recv_data" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="wr_data" index="4" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="wr_data" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="wr_cmd" index="5" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0, 0, 8&gt;, 0&gt;&amp;" srcSize="256">
+            <hwRefs>
+                <hwRef type="interface" interface="wr_cmd" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="wr_sts" index="6" direction="in" srcType="stream&lt;ap_uint&lt;32&gt;, 0&gt;&amp;" srcSize="32">
+            <hwRefs>
+                <hwRef type="interface" interface="wr_sts" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="rx" index="7" direction="in" srcType="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="rx" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="tx" index="8" direction="out" srcType="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="tx" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+    </Args>
+    <Interfaces>
+        <Interface InterfaceName="rdma_sq" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="128" portPrefix="rdma_sq_">
+            <ports>
+                <port>rdma_sq_TDATA</port>
+                <port>rdma_sq_TREADY</port>
+                <port>rdma_sq_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="rdma_sq"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="notif" type="axi4stream" busTypeName="axis" mode="master" dataWidth="64" portPrefix="notif_">
+            <ports>
+                <port>notif_TDATA</port>
+                <port>notif_TREADY</port>
+                <port>notif_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="notif"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="send_data" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="512" portPrefix="send_data_">
+            <ports>
+                <port>send_data_TDATA</port>
+                <port>send_data_TDEST</port>
+                <port>send_data_TKEEP</port>
+                <port>send_data_TLAST</port>
+                <port>send_data_TREADY</port>
+                <port>send_data_TSTRB</port>
+                <port>send_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="send_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="recv_data" type="axi4stream" busTypeName="axis" mode="master" dataWidth="512" portPrefix="recv_data_">
+            <ports>
+                <port>recv_data_TDATA</port>
+                <port>recv_data_TDEST</port>
+                <port>recv_data_TKEEP</port>
+                <port>recv_data_TLAST</port>
+                <port>recv_data_TREADY</port>
+                <port>recv_data_TSTRB</port>
+                <port>recv_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="recv_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="wr_data" type="axi4stream" busTypeName="axis" mode="master" dataWidth="512" portPrefix="wr_data_">
+            <ports>
+                <port>wr_data_TDATA</port>
+                <port>wr_data_TDEST</port>
+                <port>wr_data_TKEEP</port>
+                <port>wr_data_TLAST</port>
+                <port>wr_data_TREADY</port>
+                <port>wr_data_TSTRB</port>
+                <port>wr_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="wr_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="wr_cmd" type="axi4stream" busTypeName="axis" mode="master" dataWidth="104" portPrefix="wr_cmd_">
+            <ports>
+                <port>wr_cmd_TDATA</port>
+                <port>wr_cmd_TDEST</port>
+                <port>wr_cmd_TKEEP</port>
+                <port>wr_cmd_TLAST</port>
+                <port>wr_cmd_TREADY</port>
+                <port>wr_cmd_TSTRB</port>
+                <port>wr_cmd_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="wr_cmd"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="wr_sts" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="32" portPrefix="wr_sts_">
+            <ports>
+                <port>wr_sts_TDATA</port>
+                <port>wr_sts_TREADY</port>
+                <port>wr_sts_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="wr_sts"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="rx" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="512" portPrefix="rx_">
+            <ports>
+                <port>rx_TDATA</port>
+                <port>rx_TDEST</port>
+                <port>rx_TKEEP</port>
+                <port>rx_TLAST</port>
+                <port>rx_TREADY</port>
+                <port>rx_TSTRB</port>
+                <port>rx_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="rx"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="tx" type="axi4stream" busTypeName="axis" mode="master" dataWidth="512" portPrefix="tx_">
+            <ports>
+                <port>tx_TDATA</port>
+                <port>tx_TDEST</port>
+                <port>tx_TKEEP</port>
+                <port>tx_TLAST</port>
+                <port>tx_TREADY</port>
+                <port>tx_TSTRB</port>
+                <port>tx_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="tx"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="ap_clk" type="clock" busTypeName="clock" mode="slave">
+            <busParams>
+                <busParam busParamName="ASSOCIATED_BUSIF">rdma_sq:notif:send_data:recv_data:wr_data:wr_cmd:wr_sts:rx:tx</busParam>
+                <busParam busParamName="ASSOCIATED_RESET">ap_rst_n</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_clk">CLK</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_clk</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_rst_n" type="reset" busTypeName="reset" mode="slave">
+            <busParams>
+                <busParam busParamName="POLARITY">ACTIVE_LOW</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_rst_n">RST</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_rst_n</port>
+            </ports>
+        </Interface>
+    </Interfaces>
+    <ReportHWInterface>
+        <section name="HW Interfaces" level="0">
+            <item name="AXIS">
+                <table isCollapsed="0">
+                    <keys size="9">Interface, Register Mode, TDATA, TDEST, TKEEP, TLAST, TREADY, TSTRB, TVALID</keys>
+                    <column name="notif">both, 64, , , , 1, , 1, , , </column>
+                    <column name="rdma_sq">both, 128, , , , 1, , 1, , , </column>
+                    <column name="recv_data">both, 512, 8, 64, 1, 1, 64, 1, , , </column>
+                    <column name="rx">both, 512, 8, 64, 1, 1, 64, 1, , , </column>
+                    <column name="send_data">both, 512, 8, 64, 1, 1, 64, 1, , , </column>
+                    <column name="tx">both, 512, 8, 64, 1, 1, 64, 1, , , </column>
+                    <column name="wr_cmd">both, 104, 8, 13, 1, 1, 13, 1, , , </column>
+                    <column name="wr_data">both, 512, 8, 64, 1, 1, 64, 1, , , </column>
+                    <column name="wr_sts">both, 32, , , , 1, , 1, , , </column>
+                </table>
+            </item>
+            <item name="TOP LEVEL CONTROL">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Type, Ports</keys>
+                    <column name="ap_clk">clock, ap_clk, </column>
+                    <column name="ap_rst_n">reset, ap_rst_n, </column>
+                    <column name="ap_ctrl">ap_ctrl_none, , </column>
+                </table>
+            </item>
+        </section>
+    </ReportHWInterface>
+    <ReportSWInterface>
+        <section name="SW I/O Information" level="0">
+            <item name="Top Function Arguments">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, Direction, Datatype</keys>
+                    <column name="rdma_sq">in, stream&lt;rdma_req_t 0&gt;&amp;</column>
+                    <column name="notif">out, stream&lt;eth_notification 0&gt;&amp;</column>
+                    <column name="send_data">in, stream&lt;hls::axis&lt;ap_uint&lt;512&gt; 0 0 8&gt; 0&gt;&amp;</column>
+                    <column name="recv_data">out, stream&lt;hls::axis&lt;ap_uint&lt;512&gt; 0 0 8&gt; 0&gt;&amp;</column>
+                    <column name="wr_data">out, stream&lt;hls::axis&lt;ap_uint&lt;512&gt; 0 0 8&gt; 0&gt;&amp;</column>
+                    <column name="wr_cmd">out, stream&lt;hls::axis&lt;ap_uint&lt;104&gt; 0 0 8&gt; 0&gt;&amp;</column>
+                    <column name="wr_sts">in, stream&lt;ap_uint&lt;32&gt; 0&gt;&amp;</column>
+                    <column name="rx">in, stream&lt;hls::axis&lt;ap_uint&lt;512&gt; 0 0 8&gt; 0&gt;&amp;</column>
+                    <column name="tx">out, stream&lt;hls::axis&lt;ap_uint&lt;512&gt; 0 0 8&gt; 0&gt;&amp;</column>
+                </table>
+            </item>
+            <item name="SW-to-HW Mapping">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, HW Interface, HW Type</keys>
+                    <column name="rdma_sq">rdma_sq, interface, , </column>
+                    <column name="notif">notif, interface, , </column>
+                    <column name="send_data">send_data, interface, , </column>
+                    <column name="recv_data">recv_data, interface, , </column>
+                    <column name="wr_data">wr_data, interface, , </column>
+                    <column name="wr_cmd">wr_cmd, interface, , </column>
+                    <column name="wr_sts">wr_sts, interface, , </column>
+                    <column name="rx">rx, interface, , </column>
+                    <column name="tx">tx, interface, , </column>
+                </table>
+            </item>
+        </section>
+    </ReportSWInterface>
+    <ReportBurst>
+        <section name="M_AXI Burst Information" level="0" HEADER_NOTE="Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings."/>
+    </ReportBurst>
+    <PragmaReport>
+        <Pragma type="protocol" location="../../../driver/hls/./accl_hls.h:151" status="valid" parentFunction="start_call" variable="" isDirective="0" options="fixed"/>
+        <Pragma type="pipeline" location="dummy_cyt_rdma_stack.cpp:35" status="valid" parentFunction="cyt_rdma_tx" variable="" isDirective="0" options="II=1 style=flp"/>
+        <Pragma type="inline" location="dummy_cyt_rdma_stack.cpp:36" status="valid" parentFunction="cyt_rdma_tx" variable="" isDirective="0" options="off"/>
+        <Pragma type="aggregate" location="dummy_cyt_rdma_stack.cpp:37" status="valid" parentFunction="cyt_rdma_tx" variable="rdma_sq" isDirective="0" options="variable=rdma_sq compact=bit"/>
+        <Pragma type="pipeline" location="dummy_cyt_rdma_stack.cpp:66" status="valid" parentFunction="cyt_rdma_tx" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="pipeline" location="dummy_cyt_rdma_stack.cpp:94" status="valid" parentFunction="cyt_rdma_rx" variable="" isDirective="0" options="II=1 style=flp"/>
+        <Pragma type="inline" location="dummy_cyt_rdma_stack.cpp:95" status="valid" parentFunction="cyt_rdma_rx" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="dummy_cyt_rdma_stack.cpp:120" status="valid" parentFunction="cyt_rdma_rx" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="pipeline" location="dummy_cyt_rdma_stack.cpp:129" status="valid" parentFunction="cyt_rdma_rx" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="pipeline" location="dummy_cyt_rdma_stack.cpp:140" status="valid" parentFunction="cyt_rdma_wr_sts" variable="" isDirective="0" options="II=1 style=flp"/>
+        <Pragma type="inline" location="dummy_cyt_rdma_stack.cpp:141" status="valid" parentFunction="cyt_rdma_wr_sts" variable="" isDirective="0" options="off"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:158" status="valid" parentFunction="cyt_rdma" variable="rdma_sq" isDirective="0" options="axis register both port=rdma_sq"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:159" status="valid" parentFunction="cyt_rdma" variable="notif" isDirective="0" options="axis register both port=notif"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:160" status="valid" parentFunction="cyt_rdma" variable="send_data" isDirective="0" options="axis register both port=send_data"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:161" status="valid" parentFunction="cyt_rdma" variable="recv_data" isDirective="0" options="axis register both port=recv_data"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:162" status="valid" parentFunction="cyt_rdma" variable="wr_data" isDirective="0" options="axis register both port=wr_data"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:163" status="valid" parentFunction="cyt_rdma" variable="wr_cmd" isDirective="0" options="axis register both port=wr_cmd"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:164" status="valid" parentFunction="cyt_rdma" variable="wr_sts" isDirective="0" options="axis register both port=wr_sts"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:165" status="valid" parentFunction="cyt_rdma" variable="rx" isDirective="0" options="axis register both port=rx"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:166" status="valid" parentFunction="cyt_rdma" variable="tx" isDirective="0" options="axis register both port=tx"/>
+        <Pragma type="interface" location="dummy_cyt_rdma_stack.cpp:167" status="valid" parentFunction="cyt_rdma" variable="return" isDirective="0" options="ap_ctrl_none port=return"/>
+        <Pragma type="dataflow" location="dummy_cyt_rdma_stack.cpp:169" status="valid" parentFunction="cyt_rdma" variable="" isDirective="0" options="disable_start_propagation"/>
+        <Pragma type="aggregate" location="dummy_cyt_rdma_stack.cpp:170" status="valid" parentFunction="cyt_rdma" variable="rdma_sq" isDirective="0" options="variable=rdma_sq compact=bit"/>
+    </PragmaReport>
+</profile>
+

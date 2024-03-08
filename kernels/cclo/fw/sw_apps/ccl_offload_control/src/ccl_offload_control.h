@@ -78,6 +78,12 @@
 #define ACCL_ALLTOALL       13
 #define ACCL_NOP            255
 
+//New collectives by NicholasL
+#define ACCL_RECV_COMBINE   14
+#define PING                15
+#define PONG                16
+#define PING_PONG           17
+
 //ACCL_CONFIG SUBFUNCTIONS
 #define HOUSEKEEP_SWRST                0
 #define HOUSEKEEP_PKTEN                1

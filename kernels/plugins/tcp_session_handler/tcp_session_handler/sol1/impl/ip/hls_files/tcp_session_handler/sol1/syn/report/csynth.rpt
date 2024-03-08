@@ -1,0 +1,140 @@
+
+
+================================================================
+== Synthesis Summary Report of 'tcp_session_handler'
+================================================================
++ General Information: 
+    * Date:           Sat Dec 30 12:25:45 2023
+    * Version:        2022.2 (Build 3670227 on Oct 13 2022)
+    * Project:        tcp_session_handler
+    * Solution:       sol1 (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcu280-fsvh2892-2L-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +-----------------------+------+------+---------+--------+----------+---------+------+----------+------+----+-----------+-----------+-----+
+    |        Modules        | Issue|      | Latency | Latency| Iteration|         | Trip |          |      |    |           |           |     |
+    |        & Loops        | Type | Slack| (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined| BRAM | DSP|     FF    |    LUT    | URAM|
+    +-----------------------+------+------+---------+--------+----------+---------+------+----------+------+----+-----------+-----------+-----+
+    |+ tcp_session_handler  |     -|  0.92|        2|   8.000|         -|        3|     -|        no|     -|   -|  250 (~0%)|  441 (~0%)|    -|
+    +-----------------------+------+------+---------+--------+----------+---------+------+----------+------+----+-----------+-----------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 6             | 16     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+-------------------+--------+-------+--------+--------------------------------+-----------------------+
+| Interface     | Register          | Offset | Width | Access | Description                    | Bit Fields            |
++---------------+-------------------+--------+-------+--------+--------------------------------+-----------------------+
+| s_axi_control | ip                | 0x10   | 32    | W      | Data signal of ip              |                       |
+| s_axi_control | port_nr           | 0x18   | 32    | W      | Data signal of port_nr         |                       |
+| s_axi_control | close             | 0x20   | 32    | W      | Data signal of close           |                       |
+| s_axi_control | session_id_i      | 0x28   | 32    | W      | Data signal of session_id_i    |                       |
+| s_axi_control | session_id_o      | 0x30   | 32    | R      | Data signal of session_id_o    |                       |
+| s_axi_control | session_id_o_ctrl | 0x34   | 32    | R      | Control signal of session_id_o | 0=session_id_o_ap_vld |
+| s_axi_control | success           | 0x38   | 32    | R      | Data signal of success         |                       |
+| s_axi_control | success_ctrl      | 0x3c   | 32    | R      | Control signal of success      | 0=success_ap_vld      |
++---------------+-------------------+--------+-------+--------+--------------------------------+-----------------------+
+
+* AXIS
++------------------+---------------+-------+-------+-------+--------+-------+--------+
+| Interface        | Register Mode | TDATA | TKEEP | TLAST | TREADY | TSTRB | TVALID |
++------------------+---------------+-------+-------+-------+--------+-------+--------+
+| close_connection | both          | 16    | 2     | 1     | 1      | 2     | 1      |
+| listen_port      | both          | 16    | 2     | 1     | 1      | 2     | 1      |
+| open_connection  | both          | 64    | 8     | 1     | 1      | 8     | 1      |
+| open_status      | both          | 128   | 16    | 1     | 1      | 16    | 1      |
+| port_status      | both          | 8     | 1     | 1     | 1      | 1     | 1      |
++------------------+---------------+-------+-------+-------+--------+-------+--------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst_n  | reset      | ap_rst_n                          |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++------------------+-----------+----------------------------------------------+
+| Argument         | Direction | Datatype                                     |
++------------------+-----------+----------------------------------------------+
+| ip               | in        | unsigned int                                 |
+| port_nr          | in        | unsigned int                                 |
+| close            | in        | bool                                         |
+| session_id       | inout     | unsigned int*                                |
+| success          | out       | bool*                                        |
+| listen_port      | out       | stream<hls::axis<ap_uint<16>, 0, 0, 0>, 0>&  |
+| port_status      | in        | stream<hls::axis<ap_uint<8>, 0, 0, 0>, 0>&   |
+| open_connection  | out       | stream<hls::axis<ap_uint<64>, 0, 0, 0>, 0>&  |
+| close_connection | out       | stream<hls::axis<ap_uint<16>, 0, 0, 0>, 0>&  |
+| open_status      | in        | stream<hls::axis<ap_uint<128>, 0, 0, 0>, 0>& |
++------------------+-----------+----------------------------------------------+
+
+* SW-to-HW Mapping
++------------------+------------------+-----------+---------------------------------------------+
+| Argument         | HW Interface     | HW Type   | HW Info                                     |
++------------------+------------------+-----------+---------------------------------------------+
+| ip               | s_axi_control    | register  | name=ip offset=0x10 range=32                |
+| port_nr          | s_axi_control    | register  | name=port_nr offset=0x18 range=32           |
+| close            | s_axi_control    | register  | name=close offset=0x20 range=32             |
+| session_id       | s_axi_control    | register  | name=session_id_i offset=0x28 range=32      |
+| session_id       | s_axi_control    | register  | name=session_id_o offset=0x30 range=32      |
+| session_id       | s_axi_control    | register  | name=session_id_o_ctrl offset=0x34 range=32 |
+| success          | s_axi_control    | register  | name=success offset=0x38 range=32           |
+| success          | s_axi_control    | register  | name=success_ctrl offset=0x3c range=32      |
+| listen_port      | listen_port      | interface |                                             |
+| port_status      | port_status      | interface |                                             |
+| open_connection  | open_connection  | interface |                                             |
+| close_connection | close_connection | interface |                                             |
+| open_status      | open_status      | interface |                                             |
++------------------+------------------+-----------+---------------------------------------------+
+
+
+================================================================
+== Bind Op Report
+================================================================
+  No bind op info in design
+
+================================================================
+== Bind Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------+------------------------------------------+---------------------------------------------------------------------+
+| Type      | Options                                  | Location                                                            |
++-----------+------------------------------------------+---------------------------------------------------------------------+
+| protocol  | fixed                                    | ../../../driver/hls/./accl_hls.h:151 in start_call                  |
+| interface | s_axilite port=ip                        | tcp_session_handler.cpp:33 in tcp_session_handler, ip               |
+| interface | s_axilite port=port_nr                   | tcp_session_handler.cpp:34 in tcp_session_handler, port_nr          |
+| interface | s_axilite port=close                     | tcp_session_handler.cpp:35 in tcp_session_handler, close            |
+| interface | s_axilite port=success                   | tcp_session_handler.cpp:36 in tcp_session_handler, success          |
+| interface | s_axilite port=session_id                | tcp_session_handler.cpp:37 in tcp_session_handler, session_id       |
+| interface | axis register both port=listen_port      | tcp_session_handler.cpp:38 in tcp_session_handler, listen_port      |
+| interface | axis register both port=port_status      | tcp_session_handler.cpp:39 in tcp_session_handler, port_status      |
+| interface | axis register both port=open_connection  | tcp_session_handler.cpp:40 in tcp_session_handler, open_connection  |
+| interface | axis register both port=close_connection | tcp_session_handler.cpp:41 in tcp_session_handler, close_connection |
+| interface | axis register both port=open_status      | tcp_session_handler.cpp:42 in tcp_session_handler, open_status      |
++-----------+------------------------------------------+---------------------------------------------------------------------+
+
+

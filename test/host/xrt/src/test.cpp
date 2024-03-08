@@ -27,6 +27,187 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+/*
+TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
+  // 1 Send random buffer op_buf to all nodes
+  // 2 Recv op_buf on all nodes
+  // 3 Send random buffer op1_buf to all nodes
+  // 4 Recv (op1_buf) and combine (op_buf) on all nodes (SUM)
+  // 5 Get op_buf from node, manually combine with op1_buf and compare to result from 4
+
+  //GTEST_SKIP() << "Not implemented yet.";
+
+  if(::size == 1){
+    GTEST_SKIP() << "Skipping recv_and_combine test on single-node setup";
+  }
+
+  unsigned int count = options.count;
+  unsigned int count_bytes = count * dataTypeSize.at(dataType::float32) / 8;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto op1_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  random_array(op1_buf->buffer(), count);
+  auto sum_buf = accl->create_buffer<float>(count, dataType::float32);
+
+  // NON-Randomized initial test TODO: remove
+  for (int i = 0; i < count; i++) {
+    (*op_buf)[i] = 1.0f;
+    (*op1_buf)[i] = 2.0f;
+    (*sum_buf)[i] = 3.0f;
+  }
+
+  int next_rank = ::rank + 1;
+  int prev_rank = ::rank - 1;
+
+  // send and receive from EVEN ranks to ODD ranks
+  if (::rank % 2 == 0) {
+    if (next_rank < ::size) {
+      accl->send(*op_buf, count, next_rank);
+      accl->send(*op1_buf, count, next_rank);
+    }
+  } else {
+    accl->recv(*sum_buf, count, prev_rank); // should load op_buf into sum_buf (send-recv-test) 
+    accl->recv_and_combine(count, reduceFunction::SUM, *res_buf, *op_buf, prev_rank, val_from_fpga = true);
+  }
+
+  // send and receive from ODD ranks to EVEN ranks
+  if (::rank % 2 == 1) {
+    accl->send(*op_buf, count, prev_rank);
+    accl->send(*op1_buf, count, prev_rank);
+  } else {
+    accl->recv(*sum_buf, count, next_rank); // should load op_buf into sum_buf (send-recv-test) 
+    for (unsigned int i = 0; i < count; ++i) { // Making sure, op_buf was loaded into sum_buf
+      EXPECT_FLOAT_EQ((*op_buf)[i], (*sum_buf)[i]);
+    }
+    accl->recv_and_combine(count, reduceFunction::SUM, *res_buf, *op_buf, next_rank, val_from_fpga = true);
+  }
+
+  // Calculate proof-sum
+  //for (unsigned int i = 0; i < count; ++i) {
+  //  (*sum_buf)[i] += MPI_sen
+  //}
+
+  // ASSERT
+  if(next_rank < ::size){
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*sum_buf)[i]); // ASSERT WITH AUF ALLEN RANKS AUSGEFÜHRT!!!!!!!!!
+    }
+  } else {
+    SUCCEED();
+  }
+
+}*/
+
+// Ping-Pong Test/Benchmark
+TEST_F(ACCLTest, pingpong_benchmark) {
+  unsigned int count = 16; // 16*32b = 64Bytes
+  std::time_t avg_time_pingpong, avg_time_pongping;
+  unsigned int n_reps = options.count; // On hardware: do sth. like 10k
+
+  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
+  if (::rank % 2 == 1) {
+    std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
+    avg_time_pongping = accl->pong(*src_buf, count, ::rank-1, n_reps, 0, true);
+  } else if (::rank < ::size - 1) {
+    std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
+    avg_time_pingpong = accl->ping(*src_buf, count, ::rank+1, n_reps, 0, true);
+    std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived answer after: " << avg_time_pingpong << " ns\n";
+  } else { // No partner to ping-pong with
+    cout << "Rank " << ::rank << "/" << ::size << " does nothing x)\n";
+  }
+}
+
+// Simply times the send function
+TEST_F(ACCLTest, send_benchmark) {
+
+  unsigned int count = options.count;
+  std::time_t send_time, recv_time;
+  int next_rank = (::rank + 1) % ::size;
+  int prev_rank = (::rank + ::size - 1) % ::size;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  if (::rank % 2 == 0) {
+    send_time = accl->send_benchmark(*op_buf, count, next_rank, 0);
+    recv_time = accl->recv_benchmark(*op_buf, count, prev_rank, 0);
+  } else {
+    recv_time = accl->recv_benchmark(*op_buf, count, prev_rank, 0);
+    send_time = accl->send_benchmark(*op_buf, count, next_rank, 0);
+  }
+
+  std::cout << "Rank " << ::rank << " / " << ::size << " sent " << count * 4 << " bytes in " << send_time << " ns." << std::endl;
+  std::cout << "Rank " << ::rank << " / " << ::size << " received " << count * 4 << " bytes in " << recv_time << " ns." << std::endl;
+}
+
+// Simply times the send function without syncing from host to device
+TEST_F(ACCLTest, send_benchmark_no_sync) {
+
+  unsigned int count = options.count;
+  std::time_t runtime;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  if (::rank % 2 == 0) {
+    runtime = accl->send_benchmark(*op_buf, count, (::rank + 1) % ::size, 0, 0, true);
+  } else {
+    runtime = accl->recv_benchmark(*op_buf, count, ::rank - 1, 0, 0, true);
+  }
+
+  std::cout << "Rank " << ::rank << " / " << ::size << " send/recieved in " << runtime << " ns. [w/o sync_device]" << std::endl;
+}
+
+TEST_F(ACCLTest, recv_and_combine_ext) { // Combiner values is initially not on fpga
+  
+  if(::size == 1){
+    GTEST_SKIP() << "Skipping recv_and_combine test on single-node setup";
+  }
+
+  unsigned int count = options.count;
+  unsigned int count_bytes = count * dataTypeSize.at(dataType::float32) / 8;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto op1_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  
+  int next_rank = ::rank + 1;
+  int prev_rank = ::rank - 1;
+  
+  if(::rank % 2 == 0){
+    if(next_rank < ::size){
+      test_debug("Sending data on " + std::to_string(::rank) + " to " +
+                    std::to_string(next_rank) + "...", options);
+      accl->send(*op_buf, count, next_rank, 0);
+    }
+  } else {
+      test_debug("Receiving data on " + std::to_string(::rank) + " from " +
+                    std::to_string(prev_rank) + "...", options);
+      accl->recv_and_combine(count, ACCL::reduceFunction::SUM, *res_buf, *op1_buf, prev_rank, 0);
+  }
+  
+  if(::rank % 2 == 1){
+    test_debug("Sending data on " + std::to_string(::rank) + " to " +
+                  std::to_string(prev_rank) + "...", options);
+    accl->send(*res_buf, count, prev_rank, 1);
+  } else {
+    if(next_rank < ::size){
+      test_debug("Receiving data on " + std::to_string(::rank) + " from " +
+                    std::to_string(next_rank) + "...", options);
+      accl->recv_and_combine(count, ACCL::reduceFunction::SUM, *res_buf, *op1_buf, next_rank, 1);
+    }
+  }
+  
+  if(next_rank < ::size){
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]); // ASSERT WITH AUF ALLEN RANKS AUSGEFÜHRT... ausser auf letztem?
+    }
+  } else {
+    SUCCEED();
+  }
+}
+
 TEST_F(ACCLTest, test_copy){
   if(::size > 1){
     GTEST_SKIP() << "Skipping single-node test on multi-node setup";

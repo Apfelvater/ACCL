@@ -1,0 +1,170 @@
+
+
+================================================================
+== Vitis HLS Report for 'cyt_rdma'
+================================================================
+* Date:           Sat Dec 30 12:25:01 2023
+
+* Version:        2022.2 (Build 3670227 on Oct 13 2022)
+* Project:        dummy_cyt_rdma_stack
+* Solution:       sol1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.353 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+----------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline |
+    |   min   |   max   |    min   |    max   | min | max |   Type   |
+    +---------+---------+----------+----------+-----+-----+----------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|  dataflow|
+    +---------+---------+----------+----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------+-----------------+---------+---------+----------+----------+-----+-----+----------+
+        |                    |                 |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline |
+        |      Instance      |      Module     |   min   |   max   |    min   |    max   | min | max |   Type   |
+        +--------------------+-----------------+---------+---------+----------+----------+-----+-----+----------+
+        |cyt_rdma_tx_U0      |cyt_rdma_tx      |        ?|        ?|         ?|         ?|    ?|    ?|        no|
+        |cyt_rdma_rx_U0      |cyt_rdma_rx      |        ?|        ?|         ?|         ?|    ?|    ?|        no|
+        |cyt_rdma_wr_sts_U0  |cyt_rdma_wr_sts  |        0|        0|      0 ns|      0 ns|    1|    1|  yes(flp)|
+        +--------------------+-----------------+---------+---------+----------+----------+-----+-----+----------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        -|        -|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|      486|      756|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|        -|    -|
+|Register             |        -|     -|        -|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      486|      756|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+    |      Instance      |      Module     | BRAM_18K| DSP|  FF | LUT | URAM|
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+    |cyt_rdma_rx_U0      |cyt_rdma_rx      |        0|   0|   13|  217|    0|
+    |cyt_rdma_tx_U0      |cyt_rdma_tx      |        0|   0|  471|  517|    0|
+    |cyt_rdma_wr_sts_U0  |cyt_rdma_wr_sts  |        0|   0|    2|   22|    0|
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+    |Total               |                 |        0|   0|  486|  756|    0|
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------+-----+-----+--------------+--------------------+--------------+
+|     RTL Ports    | Dir | Bits|   Protocol   |    Source Object   |    C Type    |
++------------------+-----+-----+--------------+--------------------+--------------+
+|rdma_sq_TDATA     |   in|  128|          axis|             rdma_sq|       pointer|
+|rdma_sq_TVALID    |   in|    1|          axis|             rdma_sq|       pointer|
+|rdma_sq_TREADY    |  out|    1|          axis|             rdma_sq|       pointer|
+|notif_TDATA       |  out|   64|          axis|               notif|       pointer|
+|notif_TVALID      |  out|    1|          axis|               notif|       pointer|
+|notif_TREADY      |   in|    1|          axis|               notif|       pointer|
+|send_data_TDATA   |   in|  512|          axis|  send_data_V_data_V|       pointer|
+|send_data_TKEEP   |   in|   64|          axis|  send_data_V_keep_V|       pointer|
+|send_data_TSTRB   |   in|   64|          axis|  send_data_V_strb_V|       pointer|
+|send_data_TLAST   |   in|    1|          axis|  send_data_V_last_V|       pointer|
+|send_data_TDEST   |   in|    8|          axis|  send_data_V_dest_V|       pointer|
+|send_data_TVALID  |   in|    1|          axis|  send_data_V_dest_V|       pointer|
+|send_data_TREADY  |  out|    1|          axis|  send_data_V_dest_V|       pointer|
+|recv_data_TDATA   |  out|  512|          axis|  recv_data_V_data_V|       pointer|
+|recv_data_TKEEP   |  out|   64|          axis|  recv_data_V_keep_V|       pointer|
+|recv_data_TSTRB   |  out|   64|          axis|  recv_data_V_strb_V|       pointer|
+|recv_data_TLAST   |  out|    1|          axis|  recv_data_V_last_V|       pointer|
+|recv_data_TDEST   |  out|    8|          axis|  recv_data_V_dest_V|       pointer|
+|recv_data_TVALID  |  out|    1|          axis|  recv_data_V_dest_V|       pointer|
+|recv_data_TREADY  |   in|    1|          axis|  recv_data_V_dest_V|       pointer|
+|wr_data_TDATA     |  out|  512|          axis|    wr_data_V_data_V|       pointer|
+|wr_data_TKEEP     |  out|   64|          axis|    wr_data_V_keep_V|       pointer|
+|wr_data_TSTRB     |  out|   64|          axis|    wr_data_V_strb_V|       pointer|
+|wr_data_TLAST     |  out|    1|          axis|    wr_data_V_last_V|       pointer|
+|wr_data_TDEST     |  out|    8|          axis|    wr_data_V_dest_V|       pointer|
+|wr_data_TVALID    |  out|    1|          axis|    wr_data_V_dest_V|       pointer|
+|wr_data_TREADY    |   in|    1|          axis|    wr_data_V_dest_V|       pointer|
+|wr_cmd_TDATA      |  out|  104|          axis|     wr_cmd_V_data_V|       pointer|
+|wr_cmd_TKEEP      |  out|   13|          axis|     wr_cmd_V_keep_V|       pointer|
+|wr_cmd_TSTRB      |  out|   13|          axis|     wr_cmd_V_strb_V|       pointer|
+|wr_cmd_TLAST      |  out|    1|          axis|     wr_cmd_V_last_V|       pointer|
+|wr_cmd_TDEST      |  out|    8|          axis|     wr_cmd_V_dest_V|       pointer|
+|wr_cmd_TVALID     |  out|    1|          axis|     wr_cmd_V_dest_V|       pointer|
+|wr_cmd_TREADY     |   in|    1|          axis|     wr_cmd_V_dest_V|       pointer|
+|wr_sts_TDATA      |   in|   32|          axis|              wr_sts|       pointer|
+|wr_sts_TVALID     |   in|    1|          axis|              wr_sts|       pointer|
+|wr_sts_TREADY     |  out|    1|          axis|              wr_sts|       pointer|
+|rx_TDATA          |   in|  512|          axis|         rx_V_data_V|       pointer|
+|rx_TKEEP          |   in|   64|          axis|         rx_V_keep_V|       pointer|
+|rx_TSTRB          |   in|   64|          axis|         rx_V_strb_V|       pointer|
+|rx_TLAST          |   in|    1|          axis|         rx_V_last_V|       pointer|
+|rx_TDEST          |   in|    8|          axis|         rx_V_dest_V|       pointer|
+|rx_TVALID         |   in|    1|          axis|         rx_V_dest_V|       pointer|
+|rx_TREADY         |  out|    1|          axis|         rx_V_dest_V|       pointer|
+|tx_TDATA          |  out|  512|          axis|         tx_V_data_V|       pointer|
+|tx_TKEEP          |  out|   64|          axis|         tx_V_keep_V|       pointer|
+|tx_TSTRB          |  out|   64|          axis|         tx_V_strb_V|       pointer|
+|tx_TLAST          |  out|    1|          axis|         tx_V_last_V|       pointer|
+|tx_TDEST          |  out|    8|          axis|         tx_V_dest_V|       pointer|
+|tx_TVALID         |  out|    1|          axis|         tx_V_dest_V|       pointer|
+|tx_TREADY         |   in|    1|          axis|         tx_V_dest_V|       pointer|
+|ap_clk            |   in|    1|  ap_ctrl_none|            cyt_rdma|  return value|
+|ap_rst_n          |   in|    1|  ap_ctrl_none|            cyt_rdma|  return value|
++------------------+-----+-----+--------------+--------------------+--------------+
+

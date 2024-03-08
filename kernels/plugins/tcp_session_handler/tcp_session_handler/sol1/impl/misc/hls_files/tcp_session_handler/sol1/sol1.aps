@@ -1,0 +1,26 @@
+<AutoPilot:solution xmlns:AutoPilot="com.autoesl.autopilot.solution">
+    <name>
+        <value string="sol1"/>
+    </name>
+    <project>
+        <value string="tcp_session_handler"/>
+    </project>
+    <flowTarget value="vivado"/>
+    <config>
+        <config_interface m_axi_latency="0"/>
+        <config_export format="xo" library="ACCL" output="/scratch/hpc-lco-kenter/nleerman/ACCL/kernels/plugins/tcp_session_handler/tcp_session_handler.xo"/>
+    </config>
+    <targetInfo>
+        <TargetInfo value="xcu280:-fsvh2892:-2L-e"/>
+    </targetInfo>
+    <libraryList>
+        <library value="xilinx/virtexuplus/virtexuplus" name="DefaultPlatform"/>
+    </libraryList>
+    <clockList>
+        <clock name="default" period="4" default="false"/>
+    </clockList>
+    <ExportDesign askAgain="true" evaluate="false" rtl="verilog" formatName="xo">
+        <Format formatName="xo"/>
+    </ExportDesign>
+</AutoPilot:solution>
+

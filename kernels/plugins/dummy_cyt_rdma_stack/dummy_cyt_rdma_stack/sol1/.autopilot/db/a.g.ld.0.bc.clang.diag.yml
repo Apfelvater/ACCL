@@ -1,0 +1,290 @@
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 119, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_119_1
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 128, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_128_2
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 56, Column: 34 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_56_1
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 65, Column: 38 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_65_2
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-inliner
+Name:            AutoInline
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 34, Column: 0 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Inlining function '''
+  - Callee:          'rdma_req_t::rdma_req_t()'
+    DebugLoc:        { File: ../../cclo/hls/eth_intf/./eth_intf.h, Line: 66, 
+                       Column: 0 }
+  - String:          ''' into '''
+  - Caller:          'cyt_rdma_tx(hls::stream<rdma_req_t, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 34, Column: 0 }
+  - String:          ''''
+...
+--- !Passed
+Pass:            reflow-inliner
+Name:            AutoInline
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 34, Column: 0 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Inlining function '''
+  - Callee:          'rdma_req_t::operator ap_uint<128>()'
+    DebugLoc:        { File: ../../cclo/hls/eth_intf/./eth_intf.h, Line: 82, 
+                       Column: 0 }
+  - String:          ''' into '''
+  - Caller:          'cyt_rdma_tx(hls::stream<rdma_req_t, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 34, Column: 0 }
+  - String:          ''''
+...
+--- !Passed
+Pass:            reflow-inliner
+Name:            AutoInline
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Inlining function '''
+  - Callee:          'rdma_req_t::rdma_req_t(ap_uint<128>)'
+    DebugLoc:        { File: ../../cclo/hls/eth_intf/./eth_intf.h, Line: 73, 
+                       Column: 0 }
+  - String:          ''' into '''
+  - Caller:          'cyt_rdma_rx(hls::stream<eth_notification, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<104>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+  - String:          ''''
+...
+--- !Passed
+Pass:            reflow-inliner
+Name:            AutoInline
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Inlining function '''
+  - Callee:          'unsigned int const& std::min<unsigned int>(unsigned int const&, unsigned int const&)'
+    DebugLoc:        { File: '/opt/software/FPGA/Xilinx/Vitis_HLS/2022.2/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/stl_algobase.h', 
+                       Line: 196, Column: 0 }
+  - String:          ''' into '''
+  - Caller:          'cyt_rdma_rx(hls::stream<eth_notification, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<104>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+  - String:          ''''
+...
+--- !Passed
+Pass:            reflow-inliner
+Name:            AutoInline
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Inlining function '''
+  - Callee:          'hlslib::axi::Command<64ul, 23ul>::Command()'
+    DebugLoc:        { File: ../../../hlslib/include/hlslib/xilinx/Axi.h, 
+                       Line: 58, Column: 0 }
+  - String:          ''' into '''
+  - Caller:          'cyt_rdma_rx(hls::stream<eth_notification, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<104>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+  - String:          ''''
+...
+--- !Passed
+Pass:            reflow-inliner
+Name:            AutoInline
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Inlining function '''
+  - Callee:          'hlslib::axi::Command<64ul, 23ul>::operator ap_uint<104>()'
+    DebugLoc:        { File: ../../../hlslib/include/hlslib/xilinx/Axi.h, 
+                       Line: 61, Column: 0 }
+  - String:          ''' into '''
+  - Caller:          'cyt_rdma_rx(hls::stream<eth_notification, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<104>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+  - String:          ''''
+...
+--- !Passed
+Pass:            reflow-aggr
+Name:            AggrSucc
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 157, Column: 0 }
+Function:        _Z8cyt_rdmaRN3hls6streamI10rdma_req_tLi0EEERNS0_I16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEESC_SC_RNS0_INS7_IS8_ILi104EELm0ELm0ELm8EEELi0EEERNS0_IS8_ILi32EELi0EEESC_SC_
+Args:            
+  - String:          'Aggregating '
+  - HwTyName:        'axis (hls::stream)'
+  - String:          ' variable '''
+  - Name:            rdma_sq
+  - String:          ''' with '
+  - AggregateTypeName: 'compact=bit'
+  - String:          ' mode in '
+  - Bitwidth:        '128'
+  - String:          '-bits'
+...
+--- !Missed
+Pass:            reflow-burst-inference
+Name:            CouldNotAnalyzeBoundsPattern
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 65, Column: 38 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          Could not analyze the loop bounds
+  - String:          ' _XLX_SEP_ '
+  - LoopName:        VITIS_LOOP_65_2
+  - String:          ' '
+  - LoopLoc:         'dummy_cyt_rdma_stack.cpp:65:38'
+  - String:          ' '
+  - Function:        'cyt_rdma_tx(hls::stream<rdma_req_t, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 34, Column: 0 }
+  - String:          ' '
+...
+--- !Missed
+Pass:            reflow-burst-inference
+Name:            CouldNotAnalyzeBoundsPattern
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 56, Column: 34 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          Could not analyze the loop bounds
+  - String:          ' _XLX_SEP_ '
+  - LoopName:        VITIS_LOOP_56_1
+  - String:          ' '
+  - LoopLoc:         'dummy_cyt_rdma_stack.cpp:56:34'
+  - String:          ' '
+  - Function:        'cyt_rdma_tx(hls::stream<rdma_req_t, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 34, Column: 0 }
+  - String:          ' '
+...
+--- !Missed
+Pass:            reflow-burst-inference
+Name:            CouldNotAnalyzeBoundsPattern
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 119, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          Could not analyze the loop bounds
+  - String:          ' _XLX_SEP_ '
+  - LoopName:        VITIS_LOOP_119_1
+  - String:          ' '
+  - LoopLoc:         'dummy_cyt_rdma_stack.cpp:119:31'
+  - String:          ' '
+  - Function:        'cyt_rdma_rx(hls::stream<eth_notification, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<104>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+  - String:          ' '
+...
+--- !Missed
+Pass:            reflow-burst-inference
+Name:            CouldNotAnalyzeBoundsPattern
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 128, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          Could not analyze the loop bounds
+  - String:          ' _XLX_SEP_ '
+  - LoopName:        VITIS_LOOP_128_2
+  - String:          ' '
+  - LoopLoc:         'dummy_cyt_rdma_stack.cpp:128:31'
+  - String:          ' '
+  - Function:        'cyt_rdma_rx(hls::stream<eth_notification, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<104>, 0ul, 0ul, 8ul>, 0>&, hls::stream<hls::axis<ap_uint<512>, 0ul, 0ul, 8ul>, 0>&)'
+    DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 93, Column: 0 }
+  - String:          ' '
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 119, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_119_1
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 128, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_128_2
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 56, Column: 34 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_56_1
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 65, Column: 38 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_65_2
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 119, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_.1
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_119_1
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 128, Column: 31 }
+Function:        _Z11cyt_rdma_rxRN3hls6streamI16eth_notificationLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_RNS0_INS4_IS5_ILi104EELm0ELm0ELm8EEELi0EEES9_.1
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_128_2
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 56, Column: 34 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_.1
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_56_1
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: dummy_cyt_rdma_stack.cpp, Line: 65, Column: 38 }
+Function:        _Z11cyt_rdma_txRN3hls6streamI10rdma_req_tLi0EEERNS0_INS_4axisI7ap_uintILi512EELm0ELm0ELm8EEELi0EEES9_.1
+Args:            
+  - String:          'Loop '''
+  - LoopName:        VITIS_LOOP_65_2
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...

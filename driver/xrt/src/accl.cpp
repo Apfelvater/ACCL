@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 #include <bitset>
+#include <chrono>
 #include <cmath>
 #include <set>
 #include <stdexcept>
@@ -222,6 +223,127 @@ ACCLRequest *ACCL::send(dataType src_data_type, unsigned int count,
   }
 
   return nullptr;
+}
+
+// cclo send does start_move and end_move
+std::chrono::_V2::system_clock::rep ACCL::send_benchmark(BaseBuffer &srcbuf, unsigned int count,
+                        unsigned int dst, unsigned int tag, communicatorId comm_id,
+                        bool from_fpga, dataType compress_dtype, bool run_async,
+                        std::vector<ACCLRequest *> waitfor) {
+  CCLO::Options options{};
+
+  if (from_fpga == false) {
+    srcbuf.sync_to_device();
+  }
+
+  options.scenario = operation::send;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &srcbuf;
+  options.count = count;
+  options.root_src_dst = dst;
+  options.tag = tag;
+  options.compress_dtype = compress_dtype;
+  options.waitfor = waitfor;
+
+  auto start = std::chrono::high_resolution_clock::now();
+  ACCLRequest *handle = call_async(options);
+  if (!run_async)  {
+    wait(handle);
+    check_return_value("send", handle);
+  }
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+}
+
+std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, unsigned int count,
+                        unsigned int src, unsigned int tag, communicatorId comm_id,
+                        bool to_fpga, dataType compress_dtype, bool run_async,
+                        std::vector<ACCLRequest *> waitfor) {
+  CCLO::Options options{};
+
+  if (to_fpga == false && run_async == true) {
+    std::cerr << "ACCL: async run returns data on FPGA, user must "
+                 "sync_from_device() after waiting"
+              << std::endl;
+  }
+
+  options.scenario = operation::recv;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_2 = &dstbuf;
+  options.count = count;
+  options.root_src_dst = src;
+  options.tag = tag;
+  options.compress_dtype = compress_dtype;
+  options.waitfor = waitfor;
+
+
+  auto start = std::chrono::high_resolution_clock::now();
+  ACCLRequest *handle = call_async(options);
+  if (!run_async)  {
+    wait(handle);
+    if (to_fpga == false) {
+      dstbuf.sync_from_device();
+    }
+    check_return_value("recv", handle);
+  }
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+}
+
+
+std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, unsigned int count, unsigned int dst, 
+                                               unsigned int n_reps, communicatorId comm_id, bool run_async) {
+
+  srcbuf.sync_to_device();
+
+  CCLO::Options ping_options{};
+
+  ping_options.scenario = operation::ping;
+  ping_options.comm = communicators[comm_id].communicators_addr();
+  ping_options.addr_0 = &srcbuf;
+  ping_options.count = count;
+  ping_options.root_src_dst = dst;
+  ping_options.tag = n_reps;
+
+  auto start = std::chrono::high_resolution_clock::now();
+
+  // ping gets looped >n_reps< times.
+  ACCLRequest* ping_handle = call_async(ping_options);
+
+  if (!run_async) {
+    wait(ping_handle);
+    check_return_value("ping", ping_handle);
+  }
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  // Just in case we wanna check the transmitted values some day...
+  srcbuf.sync_from_device(); 
+
+  auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>((finish-start)/n_reps).count();
+
+  return ret;
+}
+
+std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
+                                               unsigned int n_reps, communicatorId comm_id, bool run_async) {
+  CCLO::Options pong_options{};
+
+  pong_options.scenario = operation::pong;
+  pong_options.comm = communicators[comm_id].communicators_addr();
+  pong_options.addr_0 = &dstbuf;
+  pong_options.count = count;
+  pong_options.root_src_dst = src;
+  pong_options.tag = n_reps;
+
+  auto start = std::chrono::high_resolution_clock::now();
+
+  ACCLRequest* pong_handle = call_async(pong_options);
+
+  auto finish = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::nanoseconds>((finish-start)/n_reps).count();
 }
 
 ACCLRequest *ACCL::stream_put(BaseBuffer &srcbuf, unsigned int count,
@@ -458,6 +580,40 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
       result.sync_from_device();
     }
     check_return_value("combine", handle);
+  }
+
+  return nullptr;
+}
+
+ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
+                                    BaseBuffer &val, unsigned int src, unsigned int tag, communicatorId comm_id, 
+                                    bool val_from_fpga, bool to_fpga, bool run_async) {
+
+  if (val_from_fpga == false) {
+    val.sync_to_device();
+  }
+
+  CCLO::Options options{};
+
+  options.scenario = operation::recv_and_combine;
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &val;
+  options.addr_2 = &result;
+  options.reduce_function = function;
+  options.count = count;
+  options.root_src_dst = src;
+  options.tag = tag;
+  
+  ACCLRequest* handle = call_async(options);
+
+  if (run_async) {
+    return handle;
+  } else {
+    wait(handle);
+    if (to_fpga == false) {
+      result.sync_from_device();
+    }
+    check_return_value("recv_and_combine", handle);
   }
 
   return nullptr;

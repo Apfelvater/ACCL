@@ -527,6 +527,134 @@ int move(
     return end_move();
 }
 
+// ping of the "PingPong" latency benchmark
+// Sends a small package to one other rank and wait for the pong response.
+// To simplify things, and since we only need one buffer on each FPGA, all buffer addresses are the same. (src_addr = dst_addr)
+// TODO: Test which is better: start_move, end_move, start_move, end_move VS. start, start, end, end
+int ping( 
+    uint32_t dst_rank,
+    unsigned int count,
+    uint64_t src_addr,
+    uint64_t dst_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps
+    ) {
+
+    unsigned int ret = NO_ERROR;
+
+    for (int i = 0; i < n_reps; i++) {
+
+        //printf(">>Iteration_%d: Ping on rank %d sending to %d...\n", i, world.local_rank, dst_rank);
+
+        // *start* sending PING
+        start_move(
+            MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
+            pack_flags(0, RES_REMOTE, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            src_addr, 0, 0,
+            0, 0, 0,
+            0, 0, dst_rank, TAG_ANY
+        );
+        
+        //printf(">>Iteration_%d: Ping on rank %d receiving from %d...\n", i, world.local_rank, dst_rank);
+
+        // *start* receiving PONG
+        start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(0, 0, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            0, 0, dst_addr,
+            0, 0, 0,
+            dst_rank, TAG_ANY, 0, 0
+        );
+
+        // TODO: Count expected acks, if greater than 8, do some acks (end_move)
+    }
+
+    // Finish 
+    for (int i = 0; i < n_reps; i++) {
+        ret |= end_move();
+        ret |= end_move();
+        //printf(">>Iteration_%d: Ping on rank %d ended a total of %d move operations.\n", i, world.local_rank, 2*i);
+    }
+
+    return ret;
+}
+
+// pong of the "PingPong" latency benchmark
+// As soon as the ping package arrives, send another small package back.
+int pong( 
+    uint32_t src_rank,
+    unsigned int count,
+    uint64_t mid_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps
+    ) {
+    
+    unsigned int ret = NO_ERROR;
+
+    for (int i = 0; i < n_reps; i++) {
+
+        //printf(">>%d: Relaying back to %d...\n", i, src_rank);
+        // when receiving PING, instantly PONG back.
+        start_move(
+                        MOVE_NONE,
+                        MOVE_ON_RECV,
+                        MOVE_IMMEDIATE,
+                        pack_flags(0, RES_REMOTE, NO_HOST),
+                        0,
+                        count,
+                        comm_offset, arcfg_offset,
+                        0, 0, 0, 0, 0, 0,
+                        src_rank, TAG_ANY, src_rank, TAG_ANY
+                    );
+    /*
+       printf(">>Iteration_%d: Pong on rank %d receiving from %d...\n", i, world.local_rank, src_rank);
+       start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(0, 0, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            0, 0, mid_addr,
+            0, 0, 0,
+            src_rank, TAG_ANY, 0, 0
+        );
+
+        printf(">>Iteration_%d: Pong on rank %d  sending to %d...\n", i, world.local_rank, src_rank);
+        start_move(
+            MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
+            pack_flags(0, RES_REMOTE, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            mid_addr, 0, 0,
+            0, 0, 0,
+            0, 0, src_rank, TAG_ANY
+        );
+    */
+    }
+
+    // Finish 
+    for (int i = 0; i < n_reps; i++) {
+        //ret |= end_move();
+        ret |= end_move();
+        //printf(">>Iteration_%d: Pong on rank %d ended a total of %d move operations.\n", i, world.local_rank, 2*i);
+    }
+
+    return ret;
+}
+
 //performs a copy using DMA0. DMA0 rx reads while DMA1 tx overwrites
 //use MOVE_IMMEDIATE
 static inline int copy(	unsigned int count,
@@ -545,6 +673,39 @@ static inline int copy(	unsigned int count,
         count, 0, arcfg_offset, src_addr, 0, dst_addr, 0, 0, 0,
         0, 0, 0, 0
     );
+}
+
+// result = combine(received_val, val2)
+// received_val = recv(src_rank)
+// val2 = val(addr_to_combine)
+int recv_and_combine(unsigned int src_rank,
+                     unsigned int src_tag,
+                     uint64_t addr_to_combine,
+                     unsigned int count,
+                     uint64_t dst_addr,
+                     unsigned int comm_offset,
+                     unsigned int arcfg_offset,
+                     unsigned int compression,
+                     unsigned int function,
+                     unsigned int buftype) {
+    
+    unsigned int stream = buftype & 0xff;
+    unsigned int host = (buftype >> 8) & 0xff;
+
+    return move(MOVE_IMMEDIATE, MOVE_ON_RECV, MOVE_IMMEDIATE,  // INSTRUCTIONS for: values to combine, values received, result
+                pack_flags(compression, RES_LOCAL, host),      // copied from copy() -> correct?
+                function,                                      // combine function
+                count,                                         // #Elements to operate on
+                comm_offset,                                   // ?
+                arcfg_offset,                                  // ?
+                addr_to_combine,                               // addr of "val2"
+                0,                                             // op1 = 0, 2nd value comes from src
+                dst_addr,                                      // destination address of result
+                0, 0, 0,                                       // stride für große puffer
+                src_rank, src_tag,                             // receiving from source
+                0, 0                                           // transmitting to nothing
+                );
+    // Frage: Wenn op1_addr = 0 und statdessen rx_src_rank != 0, welcher opcode (op0,op1,res) wird für src genutzt?
 }
 
 //performs an accumulate using DMA1 and DMA0. DMA0 rx reads op1 DMA1 rx reads op2 while DMA1 tx back to dst buffer
@@ -1099,11 +1260,12 @@ int scatter(unsigned int count,
                     0, 0, i, TAG_ANY
                 );
             }
+            //TODO? expected ack count against pipe overloading?
             for(int i=0; i < world.size; i++){
                 err |= end_move();
             }
         } else{
-            //on non-root odes we only care about ETH_COMPRESSED and RES_COMPRESSED
+            //on non-root nodes we only care about ETH_COMPRESSED and RES_COMPRESSED
             //so replace OP0_COMPRESSED with the value of ETH_COMPRESSED
             compression = compression | ((compression & ETH_COMPRESSED) >> 2);
             err |= move(
@@ -1230,7 +1392,7 @@ int gather( unsigned int count,
             );
 
             //receive from all members of the communicator
-            curr_pos = world.local_rank;
+            curr_pos = world.local_rank; 
             for(i=0; i<world.size; i++){
                 start_move(
                     (i==0) ? MOVE_IMMEDIATE : MOVE_NONE,
@@ -2345,9 +2507,9 @@ void run() {
             num_retry_pending--;
         }
 
-        op0_addr = ((uint64_t) op0_addrh << 32) | op0_addrl;
-        op1_addr = ((uint64_t) op1_addrh << 32) | op1_addrl;
-        res_addr = ((uint64_t) res_addrh << 32) | res_addrl;
+        op0_addr = ((uint64_t) op0_addrh << 32) | op0_addrl;    // = options.addr_0
+        op1_addr = ((uint64_t) op1_addrh << 32) | op1_addrl;    // = options.addr_1
+        res_addr = ((uint64_t) res_addrh << 32) | res_addrl;    // = options.addr_2
 
         //initialize arithmetic/compression config and communicator
         //NOTE: these are global because they're used in a lot of places but don't change during a call
@@ -2364,6 +2526,18 @@ void run() {
 
         switch (scenario)
         {
+            case PING: // Part I of PingPong Benchmark.
+                retval = ping(root_src_dst, count, op0_addr, op0_addr, comm, datapath_cfg, msg_tag);
+                break;
+            case PONG: // Part II of PingPong Benchmark.
+                retval = pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                break;
+            case ACCL_RECV_COMBINE: // New function
+                //retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);//recv_and_combine(root_src_dst,);
+                //printf("Recv and combine\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\nres_addr=%i\ncomm=%i\n\n", 
+                //                                            root_src_dst, msg_tag,     op0_addr, count,      res_addr, comm);
+                retval = recv_and_combine(root_src_dst, msg_tag, op0_addr, count, res_addr, comm, datapath_cfg, compression_flags, function, buftype_flags);
+                break;
             case ACCL_COPY:
                 retval = copy(count, op0_addr, res_addr, datapath_cfg, compression_flags, buftype_flags);
                 break;

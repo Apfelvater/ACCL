@@ -1,0 +1,157 @@
+
+
+================================================================
+== Synthesis Summary Report of 'cyt_rdma'
+================================================================
++ General Information: 
+    * Date:           Sat Dec 30 12:25:01 2023
+    * Version:        2022.2 (Build 3670227 on Oct 13 2022)
+    * Project:        dummy_cyt_rdma_stack
+    * Solution:       sol1 (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcu280-fsvh2892-2L-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +-------------------------------------------+------+------+---------+--------+----------+---------+------+----------+------+----+-----------+-----------+-----+
+    |                  Modules                  | Issue|      | Latency | Latency| Iteration|         | Trip |          |      |    |           |           |     |
+    |                  & Loops                  | Type | Slack| (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined| BRAM | DSP|     FF    |    LUT    | URAM|
+    +-------------------------------------------+------+------+---------+--------+----------+---------+------+----------+------+----+-----------+-----------+-----+
+    |+ cyt_rdma*                                |     -|  0.57|        -|       -|         -|        -|     -|  dataflow|     -|   -|  486 (~0%)|  756 (~0%)|    -|
+    | + cyt_rdma_tx                             |     -|  0.57|        -|       -|         -|        -|     -|        no|     -|   -|  471 (~0%)|  517 (~0%)|    -|
+    |  o VITIS_LOOP_56_1                        |     -|  2.92|        -|       -|         -|        -|     -|        no|     -|   -|          -|          -|    -|
+    |   + cyt_rdma_tx_Pipeline_VITIS_LOOP_65_2  |     -|  0.81|        -|       -|         -|        -|     -|        no|     -|   -|   34 (~0%)|  126 (~0%)|    -|
+    |    o VITIS_LOOP_65_2                      |     -|  2.92|        -|       -|         1|        1|     -|       yes|     -|   -|          -|          -|    -|
+    | + cyt_rdma_rx                             |     -|  1.70|        -|       -|         -|        -|     -|        no|     -|   -|   13 (~0%)|  217 (~0%)|    -|
+    |  + cyt_rdma_rx_Pipeline_VITIS_LOOP_128_2  |     -|  2.92|        -|       -|         -|        -|     -|        no|     -|   -|    2 (~0%)|   29 (~0%)|    -|
+    |   o VITIS_LOOP_128_2                      |     -|  2.92|        -|       -|         1|        1|     -|       yes|     -|   -|          -|          -|    -|
+    |  + cyt_rdma_rx_Pipeline_VITIS_LOOP_119_1  |     -|  2.92|        -|       -|         -|        -|     -|        no|     -|   -|    2 (~0%)|   29 (~0%)|    -|
+    |   o VITIS_LOOP_119_1                      |     -|  2.92|        -|       -|         1|        1|     -|       yes|     -|   -|          -|          -|    -|
+    | + cyt_rdma_wr_sts                         |     -|  2.92|        0|   0.000|         -|        1|     -|  yes(flp)|     -|   -|    2 (~0%)|   22 (~0%)|    -|
+    +-------------------------------------------+------+------+---------+--------+----------+---------+------+----------+------+----+-----------+-----------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AXIS
++-----------+---------------+-------+-------+-------+-------+--------+-------+--------+
+| Interface | Register Mode | TDATA | TDEST | TKEEP | TLAST | TREADY | TSTRB | TVALID |
++-----------+---------------+-------+-------+-------+-------+--------+-------+--------+
+| notif     | both          | 64    |       |       |       | 1      |       | 1      |
+| rdma_sq   | both          | 128   |       |       |       | 1      |       | 1      |
+| recv_data | both          | 512   | 8     | 64    | 1     | 1      | 64    | 1      |
+| rx        | both          | 512   | 8     | 64    | 1     | 1      | 64    | 1      |
+| send_data | both          | 512   | 8     | 64    | 1     | 1      | 64    | 1      |
+| tx        | both          | 512   | 8     | 64    | 1     | 1      | 64    | 1      |
+| wr_cmd    | both          | 104   | 8     | 13    | 1     | 1      | 13    | 1      |
+| wr_data   | both          | 512   | 8     | 64    | 1     | 1      | 64    | 1      |
+| wr_sts    | both          | 32    |       |       |       | 1      |       | 1      |
++-----------+---------------+-------+-------+-------+-------+--------+-------+--------+
+
+* TOP LEVEL CONTROL
++-----------+--------------+----------+
+| Interface | Type         | Ports    |
++-----------+--------------+----------+
+| ap_clk    | clock        | ap_clk   |
+| ap_rst_n  | reset        | ap_rst_n |
+| ap_ctrl   | ap_ctrl_none |          |
++-----------+--------------+----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++-----------+-----------+----------------------------------------------+
+| Argument  | Direction | Datatype                                     |
++-----------+-----------+----------------------------------------------+
+| rdma_sq   | in        | stream<rdma_req_t, 0>&                       |
+| notif     | out       | stream<eth_notification, 0>&                 |
+| send_data | in        | stream<hls::axis<ap_uint<512>, 0, 0, 8>, 0>& |
+| recv_data | out       | stream<hls::axis<ap_uint<512>, 0, 0, 8>, 0>& |
+| wr_data   | out       | stream<hls::axis<ap_uint<512>, 0, 0, 8>, 0>& |
+| wr_cmd    | out       | stream<hls::axis<ap_uint<104>, 0, 0, 8>, 0>& |
+| wr_sts    | in        | stream<ap_uint<32>, 0>&                      |
+| rx        | in        | stream<hls::axis<ap_uint<512>, 0, 0, 8>, 0>& |
+| tx        | out       | stream<hls::axis<ap_uint<512>, 0, 0, 8>, 0>& |
++-----------+-----------+----------------------------------------------+
+
+* SW-to-HW Mapping
++-----------+--------------+-----------+
+| Argument  | HW Interface | HW Type   |
++-----------+--------------+-----------+
+| rdma_sq   | rdma_sq      | interface |
+| notif     | notif        | interface |
+| send_data | send_data    | interface |
+| recv_data | recv_data    | interface |
+| wr_data   | wr_data      | interface |
+| wr_cmd    | wr_cmd       | interface |
+| wr_sts    | wr_sts       | interface |
+| rx        | rx           | interface |
+| tx        | tx           | interface |
++-----------+--------------+-----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++------------------------------------------+-----+--------+-----------+-----+--------+---------+
+| Name                                     | DSP | Pragma | Variable  | Op  | Impl   | Latency |
++------------------------------------------+-----+--------+-----------+-----+--------+---------+
+| + cyt_rdma                               | 0   |        |           |     |        |         |
+|  + cyt_rdma_tx                           | 0   |        |           |     |        |         |
+|    sub_ln73_fu_378_p2                    | -   |        | sub_ln73  | sub | fabric | 0       |
+|    add_ln840_fu_395_p2                   | -   |        | add_ln840 | add | fabric | 0       |
+|   + cyt_rdma_tx_Pipeline_VITIS_LOOP_65_2 | 0   |        |           |     |        |         |
+|     i_3_fu_175_p2                        | -   |        | i_3       | add | fabric | 0       |
++------------------------------------------+-----+--------+-----------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------+-----------------------------------+-----------------------------------------------------+
+| Type      | Options                           | Location                                            |
++-----------+-----------------------------------+-----------------------------------------------------+
+| protocol  | fixed                             | ../../../driver/hls/./accl_hls.h:151 in start_call  |
+| pipeline  | II=1 style=flp                    | dummy_cyt_rdma_stack.cpp:35 in cyt_rdma_tx          |
+| inline    | off                               | dummy_cyt_rdma_stack.cpp:36 in cyt_rdma_tx          |
+| aggregate | variable=rdma_sq compact=bit      | dummy_cyt_rdma_stack.cpp:37 in cyt_rdma_tx, rdma_sq |
+| pipeline  | II=1                              | dummy_cyt_rdma_stack.cpp:66 in cyt_rdma_tx          |
+| pipeline  | II=1 style=flp                    | dummy_cyt_rdma_stack.cpp:94 in cyt_rdma_rx          |
+| inline    | off                               | dummy_cyt_rdma_stack.cpp:95 in cyt_rdma_rx          |
+| pipeline  | II=1                              | dummy_cyt_rdma_stack.cpp:120 in cyt_rdma_rx         |
+| pipeline  | II=1                              | dummy_cyt_rdma_stack.cpp:129 in cyt_rdma_rx         |
+| pipeline  | II=1 style=flp                    | dummy_cyt_rdma_stack.cpp:140 in cyt_rdma_wr_sts     |
+| inline    | off                               | dummy_cyt_rdma_stack.cpp:141 in cyt_rdma_wr_sts     |
+| interface | axis register both port=rdma_sq   | dummy_cyt_rdma_stack.cpp:158 in cyt_rdma, rdma_sq   |
+| interface | axis register both port=notif     | dummy_cyt_rdma_stack.cpp:159 in cyt_rdma, notif     |
+| interface | axis register both port=send_data | dummy_cyt_rdma_stack.cpp:160 in cyt_rdma, send_data |
+| interface | axis register both port=recv_data | dummy_cyt_rdma_stack.cpp:161 in cyt_rdma, recv_data |
+| interface | axis register both port=wr_data   | dummy_cyt_rdma_stack.cpp:162 in cyt_rdma, wr_data   |
+| interface | axis register both port=wr_cmd    | dummy_cyt_rdma_stack.cpp:163 in cyt_rdma, wr_cmd    |
+| interface | axis register both port=wr_sts    | dummy_cyt_rdma_stack.cpp:164 in cyt_rdma, wr_sts    |
+| interface | axis register both port=rx        | dummy_cyt_rdma_stack.cpp:165 in cyt_rdma, rx        |
+| interface | axis register both port=tx        | dummy_cyt_rdma_stack.cpp:166 in cyt_rdma, tx        |
+| interface | ap_ctrl_none port=return          | dummy_cyt_rdma_stack.cpp:167 in cyt_rdma, return    |
+| dataflow  | disable_start_propagation         | dummy_cyt_rdma_stack.cpp:169 in cyt_rdma            |
+| aggregate | variable=rdma_sq compact=bit      | dummy_cyt_rdma_stack.cpp:170 in cyt_rdma, rdma_sq   |
++-----------+-----------------------------------+-----------------------------------------------------+
+
+

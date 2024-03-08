@@ -1,0 +1,114 @@
+
+
+================================================================
+== Vitis HLS Report for 'cyt_rdma_wr_sts'
+================================================================
+* Date:           Sat Dec 30 12:25:00 2023
+
+* Version:        2022.2 (Build 3670227 on Oct 13 2022)
+* Project:        dummy_cyt_rdma_stack
+* Solution:       sol1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|      0 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+----------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline |
+    |   min   |   max   |    min   |    max   | min | max |   Type   |
+    +---------+---------+----------+----------+-----+-----+----------+
+    |        0|        0|      0 ns|      0 ns|    1|    1|  yes(flp)|
+    +---------+---------+----------+----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 1
+HasVarLatency: 0
+IsPipeline: 1
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
++ Individual pipeline summary: 
+  * Pipeline-0: initiation interval (II) = 1, depth = 1
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 1
+* Pipeline : 1
+  Pipeline-0 : II = 1, D = 1, States = { 1 }
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 2 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %wr_sts, void @empty_2, i32 1, i32 1, void @empty_8, i32 0, i32 0, void @empty_6, void @empty_6, void @empty_6, i32 0, i32 0, i32 0, i32 0, void @empty_6, void @empty_6, i32 4294967295, i32 0"   --->   Operation 2 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "%specpipeline_ln140 = specpipeline void @_ssdm_op_SpecPipeline, i32 1, i32 2, i32 0, i32 0, void @empty_6" [dummy_cyt_rdma_stack.cpp:140]   --->   Operation 3 'specpipeline' 'specpipeline_ln140' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%tmp = nbreadreq i1 @_ssdm_op_NbReadReq.axis.i32P128A, i32 %wr_sts, i32 1" [dummy_cyt_rdma_stack.cpp:142]   --->   Operation 4 'nbreadreq' 'tmp' <Predicate = true> <Delay = 0.00> <CoreInst = "axis">   --->   Core 123 'axis' <Latency = 0> <II = 1> <Delay = 1.00> <Adapter> <Opcode : >
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%br_ln142 = br i1 %tmp, void %if.end, void %if.then" [dummy_cyt_rdma_stack.cpp:142]   --->   Operation 5 'br' 'br_ln142' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%p_0 = read i32 @_ssdm_op_Read.axis.volatile.i32P128A, i32 %wr_sts" [dummy_cyt_rdma_stack.cpp:143]   --->   Operation 6 'read' 'p_0' <Predicate = (tmp)> <Delay = 0.00> <CoreInst = "axis">   --->   Core 123 'axis' <Latency = 0> <II = 1> <Delay = 1.00> <Adapter> <Opcode : >
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%br_ln144 = br void %if.end" [dummy_cyt_rdma_stack.cpp:144]   --->   Operation 7 'br' 'br_ln144' <Predicate = (tmp)> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%ret_ln145 = ret" [dummy_cyt_rdma_stack.cpp:145]   --->   Operation 8 'ret' 'ret_ln145' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 4ns, clock uncertainty: 1.08ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

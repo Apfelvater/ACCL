@@ -1,0 +1,29 @@
+<root versionMajor="1" versionMinor="5">
+    <kernel name="cyt_rdma" language="c" vlnv="xilinx.com:ACCL:cyt_rdma:1.0" attributes="" hash="" preferredWorkGroupSizeMultiple="0" workGroupSize="1" debug="false" compileOptions="-std=c++14 -I ../../../driver/hls/. -I ../../cclo/hls/eth_intf/. -I ../../../hlslib/include/hlslib/xilinx -DACCL_SYNTHESIS" profileType="none" hwControlProtocol="ap_ctrl_none" interrupt="true" swReset="false" mailbox="none" countedAutoRestart="0" deadlockDetection="local">
+        <ports>
+            <port name="RDMA_SQ" mode="read_only" dataWidth="128" portType="stream"/>
+            <port name="NOTIF" mode="write_only" dataWidth="64" portType="stream"/>
+            <port name="SEND_DATA" mode="read_only" dataWidth="512" portType="stream"/>
+            <port name="RECV_DATA" mode="write_only" dataWidth="512" portType="stream"/>
+            <port name="WR_DATA" mode="write_only" dataWidth="512" portType="stream"/>
+            <port name="WR_CMD" mode="write_only" dataWidth="104" portType="stream"/>
+            <port name="WR_STS" mode="read_only" dataWidth="32" portType="stream"/>
+            <port name="RX" mode="read_only" dataWidth="512" portType="stream"/>
+            <port name="TX" mode="write_only" dataWidth="512" portType="stream"/>
+        </ports>
+        <args>
+            <arg id="0" name="rdma_sq" addressQualifier="4" port="RDMA_SQ" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;rdma_req_t, 0&gt;&amp;" origName="rdma_sq" origUse="variable"/>
+            <arg id="1" name="notif" addressQualifier="4" port="NOTIF" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;eth_notification, 0&gt;&amp;" origName="notif" origUse="variable"/>
+            <arg id="2" name="send_data" addressQualifier="4" port="SEND_DATA" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" memSize="0x40" origName="send_data" origUse="variable"/>
+            <arg id="3" name="recv_data" addressQualifier="4" port="RECV_DATA" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" memSize="0x40" origName="recv_data" origUse="variable"/>
+            <arg id="4" name="wr_data" addressQualifier="4" port="WR_DATA" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" memSize="0x40" origName="wr_data" origUse="variable"/>
+            <arg id="5" name="wr_cmd" addressQualifier="4" port="WR_CMD" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;hls::axis&lt;ap_uint&lt;104&gt;, 0, 0, 8&gt;, 0&gt;&amp;" memSize="0x10" origName="wr_cmd" origUse="variable"/>
+            <arg id="6" name="wr_sts" addressQualifier="4" port="WR_STS" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;ap_uint&lt;32&gt;, 0&gt;&amp;" origName="wr_sts" origUse="variable"/>
+            <arg id="7" name="rx" addressQualifier="4" port="RX" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" memSize="0x40" origName="rx" origUse="variable"/>
+            <arg id="8" name="tx" addressQualifier="4" port="TX" hostOffset="0x0" hostSize="0x8" offset="0x0" size="0x0" type="stream&lt;hls::axis&lt;ap_uint&lt;512&gt;, 0, 0, 8&gt;, 0&gt;&amp;" memSize="0x40" origName="tx" origUse="variable"/>
+        </args>
+        <compileWorkGroupSize x="1" y="1" z="1"/>
+        <maxWorkGroupSize x="1" y="1" z="1"/>
+    </kernel>
+</root>
+
