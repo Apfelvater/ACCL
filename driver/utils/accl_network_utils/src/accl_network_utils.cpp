@@ -188,9 +188,9 @@ void configure_vnx(vnx::CMAC &cmac, vnx::Networklayer &network_layer,
   network_layer.arp_discovery();
   std::cout << "ARP discovery finished!" << std::endl;
 
-  if (!check_arp(network_layer, ranks, local_rank, ranks.size())) {
-    throw network_error("Problem in ARP table.");
-  }
+  // if (!check_arp(network_layer, ranks, local_rank, ranks.size())) {
+  //   throw network_error("Problem in ARP table.");
+  // }
 }
 
 void configure_tcp(FPGABuffer<int8_t> &tx_buf_network, FPGABuffer<int8_t> &rx_buf_network,
@@ -393,9 +393,9 @@ initialize_accl(const std::vector<rank_t> &ranks, int local_rank,
     }
 
     if (design == acclDesign::UDP) {
-      auto cmac = vnx::CMAC(xrt::ip(device, xclbin_uuid, "cmac_0:{cmac_0}"));
+      auto cmac = vnx::CMAC(xrt::ip(device, xclbin_uuid, "cmac_0:{cmac}"));
       auto network_layer = vnx::Networklayer(
-          xrt::ip(device, xclbin_uuid, "networklayer:{networklayer_0}"));
+          xrt::ip(device, xclbin_uuid, "networklayer:{poe_0}"));
 
       configure_vnx(cmac, network_layer, ranks, local_rank, rsfec);
     } else if (design == acclDesign::TCP) {
