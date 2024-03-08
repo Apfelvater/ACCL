@@ -101,18 +101,20 @@ TEST_F(ACCLTest, recv_and_combine_int) { // Combiner values is initially on fpga
 }*/
 
 // Ping-Pong Test/Benchmark
-TEST_F(ACCLTest, ping-pong_benchmark) {
-  unsigned int count = options.count;
-  std::time_t avg_time_pingpong, avg_time_pongpoig;
-  unsigned int n_reps = 4; // On hardware: do sth. like 10k
+TEST_F(ACCLTest, pingpong_benchmark) {
+  unsigned int count = 16; // 16*32b = 64Bytes
+  std::time_t avg_time_pingpong, avg_time_pongping;
+  unsigned int n_reps = options.count; // On hardware: do sth. like 10k
 
   auto src_buf = accl->create_buffer<float>(count, dataType::float32);
-  if (::rank % == 0) {
-    avg_time_pingpong = accl->ping(*src_buf, count, ::rank+1, n_reps);
-    std::cout << "Rank: " << ::rank << " / " << ::size << ":\nPinged to:" << ::rank + 1 << "\nReceived answer after: " << avg_time_pingpong << "\n";
-  } else if (::rank < ::size - 1) { // No partner to ping-pong with
-    avg_time_pongping = accl->pong(*src_buf, count, ::rank-1, n_reps);
-  } else {
+  if (::rank % 2 == 1) {
+    std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
+    avg_time_pongping = accl->pong(*src_buf, count, ::rank-1, n_reps, 0, true);
+  } else if (::rank < ::size - 1) {
+    std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
+    avg_time_pingpong = accl->ping(*src_buf, count, ::rank+1, n_reps, 0, true);
+    std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived answer after: " << avg_time_pingpong << " ns\n";
+  } else { // No partner to ping-pong with
     cout << "Rank " << ::rank << "/" << ::size << " does nothing x)\n";
   }
 }

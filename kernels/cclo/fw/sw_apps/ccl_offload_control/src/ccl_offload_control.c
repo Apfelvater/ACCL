@@ -545,10 +545,12 @@ int ping(
 
     for (int i = 0; i < n_reps; i++) {
 
+        //printf(">>Iteration_%d: Ping on rank %d sending to %d...\n", i, world.local_rank, dst_rank);
+
         // *start* sending PING
         start_move(
-            MOVE_IMMEDIATE, MOVE_NONE, MOVE_NONE,
-            pack_flags(0, 0, 0),
+            MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
+            pack_flags(0, RES_REMOTE, 0),
             0,
             count,
             comm_offset,
@@ -558,6 +560,8 @@ int ping(
             0, 0, dst_rank, TAG_ANY
         );
         
+        //printf(">>Iteration_%d: Ping on rank %d receiving from %d...\n", i, world.local_rank, dst_rank);
+
         // *start* receiving PONG
         start_move(
             MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
@@ -575,8 +579,11 @@ int ping(
     }
 
     // Finish 
-    ret |= end_move();
-    ret |= end_move();
+    for (int i = 0; i < n_reps; i++) {
+        ret |= end_move();
+        ret |= end_move();
+        //printf(">>Iteration_%d: Ping on rank %d ended a total of %d move operations.\n", i, world.local_rank, 2*i);
+    }
 
     return ret;
 }
@@ -586,6 +593,7 @@ int ping(
 int pong( 
     uint32_t src_rank,
     unsigned int count,
+    uint64_t mid_addr,
     unsigned int comm_offset,
     unsigned int arcfg_offset,
     unsigned int n_reps
@@ -595,6 +603,7 @@ int pong(
 
     for (int i = 0; i < n_reps; i++) {
 
+        //printf(">>%d: Relaying back to %d...\n", i, src_rank);
         // when receiving PING, instantly PONG back.
         start_move(
                         MOVE_NONE,
@@ -607,10 +616,41 @@ int pong(
                         0, 0, 0, 0, 0, 0,
                         src_rank, TAG_ANY, src_rank, TAG_ANY
                     );
-                    
+    /*
+       printf(">>Iteration_%d: Pong on rank %d receiving from %d...\n", i, world.local_rank, src_rank);
+       start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(0, 0, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            0, 0, mid_addr,
+            0, 0, 0,
+            src_rank, TAG_ANY, 0, 0
+        );
+
+        printf(">>Iteration_%d: Pong on rank %d  sending to %d...\n", i, world.local_rank, src_rank);
+        start_move(
+            MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
+            pack_flags(0, RES_REMOTE, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            mid_addr, 0, 0,
+            0, 0, 0,
+            0, 0, src_rank, TAG_ANY
+        );
+    */
     }
+
     // Finish 
-    ret |= end_move();
+    for (int i = 0; i < n_reps; i++) {
+        //ret |= end_move();
+        ret |= end_move();
+        //printf(">>Iteration_%d: Pong on rank %d ended a total of %d move operations.\n", i, world.local_rank, 2*i);
+    }
 
     return ret;
 }
@@ -2475,22 +2515,16 @@ void run() {
 
         switch (scenario)
         {
-            case PING:
-                printf("Starting PING-PONG.pIng() latency test...");
-                
-                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
-
+            case PING: // Part I of PingPong Benchmark.
+                retval = ping(root_src_dst, count, op0_addr, op0_addr, comm, datapath_cfg, msg_tag);
                 break;
-            case PONG:
-                printf("Starting PING-PONG.pOng() latency test...");
-                
-                retval = pong(root_src_dst, count, comm, datapath_cfg, msg_tag);
-
+            case PONG: // Part II of PingPong Benchmark.
+                retval = pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
                 break;
             case ACCL_RECV_COMBINE: // New function
                 //retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);//recv_and_combine(root_src_dst,);
-                printf("Recv and combine\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\nres_addr=%i\ncomm=%i\n\n", 
-                                                            root_src_dst, msg_tag,     op0_addr, count,      res_addr, comm);
+                //printf("Recv and combine\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\nres_addr=%i\ncomm=%i\n\n", 
+                //                                            root_src_dst, msg_tag,     op0_addr, count,      res_addr, comm);
                 retval = recv_and_combine(root_src_dst, msg_tag, op0_addr, count, res_addr, comm, datapath_cfg, compression_flags, function, buftype_flags);
                 break;
             case ACCL_COPY:
@@ -2500,13 +2534,9 @@ void run() {
                 retval = combine(count, function, op0_addr, op1_addr, res_addr, datapath_cfg, compression_flags, buftype_flags);
                 break;
             case ACCL_SEND:
-                printf("Send\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\ncomm=%i\n\n",
-                        root_src_dst, msg_tag, op0_addr, count, comm);
                 retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
                 break;
             case ACCL_RECV:
-                printf("Recv\nArgs:\nroot_src_dst=%i\nmsg_tag=%i\nop0_addr=%i\ncount=%i\ncomm=%i\n\n",
-                        root_src_dst, msg_tag, op0_addr, count, comm);
                 retval = recv(root_src_dst, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
                 break;
             case ACCL_BCAST:
