@@ -79,10 +79,11 @@
 #define ACCL_NOP            255
 
 //New collectives by NicholasL
-#define ACCL_RECV_COMBINE   14
-#define PING                15
-#define PONG                16
-#define PING_PONG           17
+#define PING                14
+#define PONG                15
+#define PING_NO_PIPE        16
+#define PONG_NO_PIPE        17
+
 
 //ACCL_CONFIG SUBFUNCTIONS
 #define HOUSEKEEP_SWRST                0

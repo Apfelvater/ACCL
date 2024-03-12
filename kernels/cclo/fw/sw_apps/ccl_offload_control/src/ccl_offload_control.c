@@ -542,10 +542,9 @@ int ping(
     ) {
 
     unsigned int ret = NO_ERROR;
+    unsigned int expected_ack_count = 0;
 
     for (int i = 0; i < n_reps; i++) {
-
-        //printf(">>Iteration_%d: Ping on rank %d sending to %d...\n", i, world.local_rank, dst_rank);
 
         // *start* sending PING
         start_move(
@@ -559,8 +558,6 @@ int ping(
             0, 0, 0,
             0, 0, dst_rank, TAG_ANY
         );
-        
-        //printf(">>Iteration_%d: Ping on rank %d receiving from %d...\n", i, world.local_rank, dst_rank);
 
         // *start* receiving PONG
         start_move(
@@ -575,20 +572,24 @@ int ping(
             dst_rank, TAG_ANY, 0, 0
         );
 
-        // TODO: Count expected acks, if greater than 8, do some acks (end_move)
+        expected_ack_count += 2;
+        //start flushing out ACKs so our pipes don't fill up
+        if(expected_ack_count > 7){
+            ret |= end_move();
+            ret |= end_move();
+            expected_ack_count -= 2;
+        }
     }
 
     // Finish 
-    for (int i = 0; i < n_reps; i++) {
+    for (int i = 0; i < expected_ack_count; i++) {
         ret |= end_move();
-        ret |= end_move();
-        //printf(">>Iteration_%d: Ping on rank %d ended a total of %d move operations.\n", i, world.local_rank, 2*i);
     }
 
     return ret;
 }
 
-// same as ping() but
+// same as ping() but without pipelining start_move()s
 int pingV2( 
     uint32_t dst_rank,
     unsigned int count,
@@ -603,7 +604,7 @@ int pingV2(
 
     for (int i = 0; i < n_reps; i++) {
 
-        // *start* sending PING
+        // sending PING
         start_move(
             MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
             pack_flags(0, RES_REMOTE, 0),
@@ -615,9 +616,8 @@ int pingV2(
             0, 0, 0,
             0, 0, dst_rank, TAG_ANY
         );
-        ret |= end_move();
 
-        // *start* receiving PONG
+        // receiving PONG
         start_move(
             MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
             pack_flags(0, 0, 0),
@@ -629,6 +629,7 @@ int pingV2(
             0, 0, 0,
             dst_rank, TAG_ANY, 0, 0
         );
+        ret |= end_move();
         ret |= end_move();
     }
     return ret;
@@ -649,7 +650,6 @@ int pong(
 
     for (int i = 0; i < n_reps; i++) {
 
-        //printf(">>%d: Relaying back to %d...\n", i, src_rank);
         // when receiving PING, instantly PONG back.
         start_move(
                         MOVE_NONE,
@@ -666,14 +666,13 @@ int pong(
 
     // Finish 
     for (int i = 0; i < n_reps; i++) {
-        //ret |= end_move();
         ret |= end_move();
-        //printf(">>Iteration_%d: Pong on rank %d ended a total of %d move operations.\n", i, world.local_rank, 2*i);
     }
 
     return ret;
 }
 
+// Pong without pipelining stat_move()s
 int pongV2( 
     uint32_t src_rank,
     unsigned int count,
@@ -2576,11 +2575,17 @@ void run() {
 
         switch (scenario)
         {
+            case PING_NO_PIPE:
+                retval = pingV2(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                break;
+            case PONG_NO_PIPE:
+                retval = pongV2(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                break;
             case PING: // Part I of PingPong Benchmark.
-                retval = pingV2(root_src_dst, count, op0_addr, op0_addr, comm, datapath_cfg, msg_tag);
+                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
                 break;
             case PONG: // Part II of PingPong Benchmark.
-                retval = pongV2(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                retval = pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
                 break;
             case ACCL_RECV_COMBINE:
                 retval = recv_and_combine(root_src_dst, msg_tag, op0_addr, count, res_addr, comm, datapath_cfg, compression_flags, function, buftype_flags);

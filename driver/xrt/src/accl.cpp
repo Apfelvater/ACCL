@@ -292,25 +292,30 @@ std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, uns
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
 
-
-std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, unsigned int count, unsigned int dst, 
-                                               unsigned int n_reps, communicatorId comm_id, bool run_async) {
+std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& dstbuf, unsigned int count, unsigned int dst, 
+                                               unsigned int n_reps, unsigned int version, 
+                                               communicatorId comm_id, bool run_async) {
 
   srcbuf.sync_to_device();
 
-  CCLO::Options ping_options{};
+  CCLO::Options options{};
 
-  ping_options.scenario = operation::ping;
-  ping_options.comm = communicators[comm_id].communicators_addr();
-  ping_options.addr_0 = &srcbuf;
-  ping_options.count = count;
-  ping_options.root_src_dst = dst;
-  ping_options.tag = n_reps;
+  if (version == 2) {
+    options.scenario = operation::ping2;
+  } else {
+    options.scenario = operation::ping;
+  }
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &srcbuf;
+  options.count = count;
+  options.root_src_dst = dst;
+  options.tag = n_reps;
+  options.addr_2 = &dstbuf;
 
   auto start = std::chrono::high_resolution_clock::now();
 
   // ping gets looped >n_reps< times.
-  ACCLRequest* ping_handle = call_async(ping_options);
+  ACCLRequest* ping_handle = call_async(options);
 
   if (!run_async) {
     wait(ping_handle);
@@ -319,27 +324,32 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, unsigned int 
   auto finish = std::chrono::high_resolution_clock::now();
 
   // Just in case we wanna check the transmitted values some day...
-  srcbuf.sync_from_device(); 
+  dstbuf.sync_from_device(); 
 
-  auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>((finish-start)/n_reps).count();
+  auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
   return ret;
 }
 
 std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
-                                               unsigned int n_reps, communicatorId comm_id, bool run_async) {
-  CCLO::Options pong_options{};
+                                               unsigned int n_reps, unsigned int version, 
+                                               communicatorId comm_id, bool run_async) {
+  CCLO::Options options{};
 
-  pong_options.scenario = operation::pong;
-  pong_options.comm = communicators[comm_id].communicators_addr();
-  pong_options.addr_0 = &dstbuf;
-  pong_options.count = count;
-  pong_options.root_src_dst = src;
-  pong_options.tag = n_reps;
+  if (version == 2) {
+    options.scenario = operation::pong2;
+  } else {
+    options.scenario = operation::pong;
+  }
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &dstbuf;
+  options.count = count;
+  options.root_src_dst = src;
+  options.tag = n_reps;
 
   auto start = std::chrono::high_resolution_clock::now();
 
-  ACCLRequest* pong_handle = call_async(pong_options);
+  ACCLRequest* pong_handle = call_async(options);
 
   auto finish = std::chrono::high_resolution_clock::now();
 
@@ -580,40 +590,6 @@ ACCLRequest *ACCL::combine(unsigned int count, reduceFunction function,
       result.sync_from_device();
     }
     check_return_value("combine", handle);
-  }
-
-  return nullptr;
-}
-
-ACCLRequest *ACCL::recv_and_combine(unsigned int count, reduceFunction function, BaseBuffer &result,
-                                    BaseBuffer &val, unsigned int src, unsigned int tag, communicatorId comm_id, 
-                                    bool val_from_fpga, bool to_fpga, bool run_async) {
-
-  if (val_from_fpga == false) {
-    val.sync_to_device();
-  }
-
-  CCLO::Options options{};
-
-  options.scenario = operation::recv_and_combine;
-  options.comm = communicators[comm_id].communicators_addr();
-  options.addr_0 = &val;
-  options.addr_2 = &result;
-  options.reduce_function = function;
-  options.count = count;
-  options.root_src_dst = src;
-  options.tag = tag;
-  
-  ACCLRequest* handle = call_async(options);
-
-  if (run_async) {
-    return handle;
-  } else {
-    wait(handle);
-    if (to_fpga == false) {
-      result.sync_from_device();
-    }
-    check_return_value("recv_and_combine", handle);
   }
 
   return nullptr;
