@@ -277,8 +277,8 @@ std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, uns
   options.compress_dtype = compress_dtype;
   options.waitfor = waitfor;
 
-
   auto start = std::chrono::high_resolution_clock::now();
+
   ACCLRequest *handle = call_async(options);
   if (!run_async)  {
     wait(handle);

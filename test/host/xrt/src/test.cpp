@@ -36,6 +36,9 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
   auto src_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(src_buf->buffer(), count);
   auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
+  //for (unsigned int i = 0; i < count; ++i) {
+  //    dst_buf->buffer()[i] = -1;
+  //}
 
   if (::rank % 2 == 1) {
   
@@ -47,15 +50,15 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
     std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
     pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, 2, 0, true);
     std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all pongs after: " << pingpong_time_allreps << " ns\n";
+    // Making sure, the data from src_buf came back correctly:
+    for (unsigned int i = 0; i < count; ++i) {
+        EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
+    }
 
   } else { // No partner to ping-pong with
     cout << "Rank " << ::rank << "/" << ::size << " does nothing x)\n";
   }
 
-  // Making sure, the data from src_buf came back correctly:
-  for (unsigned int i = 0; i < count; ++i) {
-      EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
-  }
 }
 
 // Ping-Pong Test/Benchmark

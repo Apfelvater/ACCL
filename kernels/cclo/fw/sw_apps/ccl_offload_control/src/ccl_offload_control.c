@@ -2587,9 +2587,6 @@ void run() {
             case PONG: // Part II of PingPong Benchmark.
                 retval = pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
                 break;
-            case ACCL_RECV_COMBINE:
-                retval = recv_and_combine(root_src_dst, msg_tag, op0_addr, count, res_addr, comm, datapath_cfg, compression_flags, function, buftype_flags);
-                break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
             case ACCL_COPY:
