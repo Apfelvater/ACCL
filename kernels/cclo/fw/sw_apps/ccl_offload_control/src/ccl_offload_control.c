@@ -529,7 +529,6 @@ int move(
 
 // ping of the "PingPong" latency benchmark
 // Sends a small package to one other rank and wait for the pong response.
-// To simplify things, and since we only need one buffer on each FPGA, all buffer addresses are the same. (src_addr = dst_addr)
 // TODO: Test which is better: start_move, end_move, start_move, end_move VS. start, start, end, end
 int ping( 
     uint32_t dst_rank,
@@ -544,7 +543,7 @@ int ping(
     unsigned int ret = NO_ERROR;
     unsigned int expected_ack_count = 0;
 
-    for (int i = 0; i < n_reps; i++) {
+    for (unsigned int i = 0; i < n_reps; i++) {
 
         // *start* sending PING
         start_move(
@@ -602,7 +601,7 @@ int pingV2(
 
     unsigned int ret = NO_ERROR;
 
-    for (int i = 0; i < n_reps; i++) {
+    for (unsigned int i = 0; i < n_reps; i++) {
 
         // sending PING
         start_move(
@@ -635,6 +634,61 @@ int pingV2(
     return ret;
 }
 
+// this function talks alot ...
+int pingVerbose( 
+    uint32_t dst_rank,
+    unsigned int count,
+    uint64_t src_addr,
+    uint64_t dst_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps
+    ) {
+
+    unsigned int ret = NO_ERROR;
+
+    printf("Starting pingVerbose wiht %d repetitions pinging to %d\n", n_reps, dst_rank);
+
+    for (unsigned int i = 0; i < n_reps; i++) {
+        
+        printf("Loop iteration no. %d...\n", i);
+
+        // sending PING
+        start_move(
+            MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
+            pack_flags(0, RES_REMOTE, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            src_addr, 0, 0,
+            0, 0, 0,
+            0, 0, dst_rank, TAG_ANY
+        );
+        ret |= end_move();
+
+        printf(">%d: ping sent.\n", i);
+
+        // receiving PONG
+        start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(0, 0, 0),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            0, 0, dst_addr,
+            0, 0, 0,
+            dst_rank, TAG_ANY, 0, 0
+        );
+        ret |= end_move();
+        
+        printf(">%d: pong recvd.\n", i);
+
+    }
+    return ret;
+}
+
 // pong of the "PingPong" latency benchmark
 // As soon as the ping package arrives, send another small package back.
 int pong( 
@@ -648,7 +702,7 @@ int pong(
     
     unsigned int ret = NO_ERROR;
 
-    for (int i = 0; i < n_reps; i++) {
+    for (unsigned int i = 0; i < n_reps; i++) {
 
         // when receiving PING, instantly PONG back.
         start_move(
@@ -684,7 +738,7 @@ int pongV2(
     
     unsigned int ret = NO_ERROR;
 
-    for (int i = 0; i < n_reps; i++) {
+    for (unsigned int i = 0; i < n_reps; i++) {
 
         // when receiving PING, instantly PONG back.
         start_move(
@@ -699,6 +753,112 @@ int pongV2(
                         src_rank, TAG_ANY, src_rank, TAG_ANY
                     );
         ret |= end_move();
+    }
+
+    return ret;
+}
+
+// Pong without pipelining; NO relay, explicit recv from src into mid and send mid to src
+int pongExplicit( 
+    uint32_t src_rank,
+    unsigned int count,
+    uint64_t mid_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps
+    ) {
+    
+    unsigned int ret = NO_ERROR;
+
+    for (unsigned int i = 0; i < n_reps; i++) {
+
+        // Receiving ping
+        start_move(
+                        MOVE_NONE,
+                        MOVE_ON_RECV,
+                        MOVE_IMMEDIATE,
+                        pack_flags(0, RES_LOCAL, NO_HOST),
+                        0,
+                        count,
+                        comm_offset, arcfg_offset,
+                        0, 0, mid_addr,
+                        0, 0, 0,
+                        src_rank, TAG_ANY, 0, 0
+                    );
+        ret |= end_move();
+
+        // Returning pong
+        start_move(
+                        MOVE_IMMEDIATE,
+                        MOVE_NONE,
+                        MOVE_IMMEDIATE,
+                        pack_flags(0, RES_REMOTE, NO_HOST),
+                        0,
+                        count,
+                        comm_offset, arcfg_offset,
+                        mid_addr, 0, 0,
+                        0, 0, 0,
+                        0, 0, src_rank, TAG_ANY
+                    );
+        ret |= end_move();
+    }
+
+    return ret;
+}
+
+// Pong without pipelining; NO relay, explicit recv from src into mid and send mid to src
+// This function talks alot...
+int pongVerbose( 
+    uint32_t src_rank,
+    unsigned int count,
+    uint64_t mid_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps
+    ) {
+    
+    unsigned int ret = NO_ERROR;
+
+    printf("Starting pingVerbose wiht %d repetitions getting pongd by %d\n", n_reps, src_rank);
+
+    for (unsigned int i = 0; i < n_reps; i++) {
+
+        printf("Loop iteration no. %d...\n", i);
+
+        // Receiving ping
+        start_move(
+                        MOVE_NONE,
+                        MOVE_ON_RECV,
+                        MOVE_IMMEDIATE,
+                        pack_flags(0, RES_LOCAL, NO_HOST),
+                        0,
+                        count,
+                        comm_offset, arcfg_offset,
+                        0, 0, mid_addr,
+                        0, 0, 0,
+                        src_rank, TAG_ANY, 0, 0
+                    );
+        ret |= end_move();
+
+        printf(">%d: ping recvd.\n", i);
+
+        // Returning pong
+        start_move(
+                        MOVE_IMMEDIATE,
+                        MOVE_NONE,
+                        MOVE_IMMEDIATE,
+                        pack_flags(0, RES_REMOTE, NO_HOST),
+                        0,
+                        count,
+                        comm_offset, arcfg_offset,
+                        mid_addr, 0, 0,
+                        0, 0, 0,
+                        0, 0, src_rank, TAG_ANY
+                    );
+        ret |= end_move();
+        
+        printf(">%d: pong sent.\n", i);
+        
     }
 
     return ret;
@@ -2575,11 +2735,21 @@ void run() {
 
         switch (scenario)
         {
-            case PING_NO_PIPE:
-                retval = pingV2(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+            case PING_NO_PIPE:  // ping2
+                if (function == 0) { 
+                    retval = pingV2(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                } else if (function == 1) {
+                    retval = pingVerbose(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                }
                 break;
-            case PONG_NO_PIPE:
-                retval = pongV2(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+            case PONG_NO_PIPE:  // pong2
+                if (function == 0) { 
+                    retval = pongV2(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                } else if (function == 1) {
+                    retval = pongVerbose(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                } else if (function == 2) {
+                    retval = pongExplicit(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                }
                 break;
             case PING: // Part I of PingPong Benchmark.
                 retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
