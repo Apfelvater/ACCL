@@ -29,6 +29,9 @@
 
 // PingPong without pipelining benchmark -> pingV2(), pongV2()
 TEST_F(ACCLTest, pingpong_nopipe_dst) {
+
+  std::cout << "Running pingpong test without pipelining start_move()s. With result checking." << std::endl;
+
   unsigned int count = 8; // 8*32b = 32Bytes
   std::time_t pingpong_time_allreps;
   unsigned int n_reps = options.count; // On hardware: do sth. like 10k
@@ -44,19 +47,22 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
   
     std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
     accl->pong(*src_buf, count, ::rank-1, n_reps, 2, 0, true);
+    GTEST_SUCCEED() << "Noresult";
   
   } else if (::rank < ::size - 1) {
 
     std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
     pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, 2, 0, true);
-    std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all pongs after: " << pingpong_time_allreps << " ns\n";
+    std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all " << n_reps << " pongs after: " << pingpong_time_allreps << " ns\n";
+
     // Making sure, the data from src_buf came back correctly:
     for (unsigned int i = 0; i < count; ++i) {
         EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
     }
+    std::cout << "Rank " << ::rank << " done." << std::endl;
 
   } else { // No partner to ping-pong with
-    cout << "Rank " << ::rank << "/" << ::size << " does nothing x)\n";
+    GTEST_SKIP() << ::rank << " has nothing to do.";
   }
 
 }

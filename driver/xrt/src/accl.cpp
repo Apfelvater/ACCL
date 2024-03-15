@@ -321,6 +321,7 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
     wait(ping_handle);
     check_return_value("ping", ping_handle);
   }
+  
   auto finish = std::chrono::high_resolution_clock::now();
 
   // Just in case we wanna check the transmitted values some day...
@@ -349,11 +350,16 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
 
   auto start = std::chrono::high_resolution_clock::now();
 
-  ACCLRequest* pong_handle = call_async(options);
+  ACCLRequest* handle = call_async(options);
+
+  if (!run_async) {
+    wait(handle);
+    check_return_value("pong", handle);
+  }
 
   auto finish = std::chrono::high_resolution_clock::now();
 
-  return std::chrono::duration_cast<std::chrono::nanoseconds>((finish-start)/n_reps).count();
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
 
 ACCLRequest *ACCL::stream_put(BaseBuffer &srcbuf, unsigned int count,
