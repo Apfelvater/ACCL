@@ -635,6 +635,7 @@ int pingV2(
 }
 
 // this function talks alot ...
+/*
 int pingVerbose( 
     uint32_t dst_rank,
     unsigned int count,
@@ -687,7 +688,7 @@ int pingVerbose(
 
     }
     return ret;
-}
+}*/
 
 // pong of the "PingPong" latency benchmark
 // As soon as the ping package arrives, send another small package back.
@@ -808,6 +809,7 @@ int pongExplicit(
 
 // Pong without pipelining; NO relay, explicit recv from src into mid and send mid to src
 // This function talks alot...
+/*
 int pongVerbose( 
     uint32_t src_rank,
     unsigned int count,
@@ -862,7 +864,7 @@ int pongVerbose(
     }
 
     return ret;
-}
+}*/
 
 //performs a copy using DMA0. DMA0 rx reads while DMA1 tx overwrites
 //use MOVE_IMMEDIATE
@@ -2736,18 +2738,18 @@ void run() {
         switch (scenario)
         {
             case PING_NO_PIPE:  // ping2
-                if (function == 0) { 
+                //if (function == 0) { 
                     retval = pingV2(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
-                } else if (function == 1) {
-                    retval = pingVerbose(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
-                }
+                //} else if (function == 1) {
+                //    retval = pingVerbose(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                //}
                 break;
             case PONG_NO_PIPE:  // pong2
                 if (function == 0) { 
                     retval = pongV2(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
-                } else if (function == 1) {
-                    retval = pongVerbose(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
-                } else if (function == 2) {
+                //} else if (function == 1) {
+                //    retval = pongVerbose(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                } else {
                     retval = pongExplicit(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
                 }
                 break;
