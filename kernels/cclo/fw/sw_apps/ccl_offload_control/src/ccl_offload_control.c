@@ -2535,10 +2535,10 @@ void run() {
                 }
                 break;
             case PING: // Part I of PingPong Benchmark.
-                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                retval = COLLECTIVE_NOT_IMPLEMENTED;//ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
                 break;
             case PONG: // Part II of PingPong Benchmark.
-                retval = pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                retval = COLLECTIVE_NOT_IMPLEMENTED;//pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
                 break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
