@@ -305,7 +305,7 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
   } else {
     options.scenario = operation::ping;
   }
-  options.reduce_function = (reduceFunction) 1; // if version == 2: function == 0: pingV2; f == 1: pingVerbose
+  options.reduce_function = (reduceFunction) 1;
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &srcbuf;
   options.count = count;
@@ -325,7 +325,6 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
   
   auto finish = std::chrono::high_resolution_clock::now();
 
-  // Just in case we wanna check the transmitted values some day...
   dstbuf.sync_from_device(); 
 
   auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
@@ -343,7 +342,7 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
   } else {
     options.scenario = operation::pong;
   }
-  options.reduce_function = (reduceFunction) 1; // if version == 2: function == 0: pongV2; f == 1: pongVerbose (is pongExplicit), f == 2: pongExplicit
+  options.reduce_function = (reduceFunction) 1; // if version == 2 ( if function == 0: pongV2; else pongExplicit; )
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &dstbuf;
   options.count = count;

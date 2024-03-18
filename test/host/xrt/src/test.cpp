@@ -39,15 +39,12 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
   auto src_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(src_buf->buffer(), count);
   auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
-  //for (unsigned int i = 0; i < count; ++i) {
-  //    dst_buf->buffer()[i] = -1;
-  //}
 
   if (::rank % 2 == 1) {
   
     std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
     accl->pong(*src_buf, count, ::rank-1, n_reps, 2, 0, true);
-    GTEST_SUCCEED() << "Noresult";
+    GTEST_SKIP() << "Noresult";
   
   } else if (::rank < ::size - 1) {
 
@@ -59,11 +56,12 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
     for (unsigned int i = 0; i < count; ++i) {
         EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
     }
-    std::cout << "Rank " << ::rank << " done." << std::endl;
 
   } else { // No partner to ping-pong with
     GTEST_SKIP() << ::rank << " has nothing to do.";
   }
+  
+  std::cout << "Rank " << ::rank << " done." << std::endl;
 
 }
 
