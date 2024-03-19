@@ -43,13 +43,13 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
   if (::rank % 2 == 1) {
   
     std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
-    accl->pong(*src_buf, count, ::rank-1, n_reps, 2, 0, true);
+    accl->pong(*src_buf, count, ::rank-1, n_reps, 2, 0, false);
     GTEST_SKIP() << "Noresult";
   
   } else if (::rank < ::size - 1) {
 
     std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
-    pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, 2, 0, true);
+    pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, 2, 0, false);
     std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all " << n_reps << " pongs after: " << pingpong_time_allreps << " ns\n";
 
     // Making sure, the data from src_buf came back correctly:
