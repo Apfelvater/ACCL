@@ -538,7 +538,7 @@ int pingV2(
     unsigned int n_reps
     ) {
 
-    unsigned int ret = NO_ERROR;
+    unsigned int ret = 42; //NO_ERROR;
 
     for (unsigned int i = 0; i < n_reps; i++) {
 
@@ -567,8 +567,11 @@ int pingV2(
             0, 0, 0,
             dst_rank, TAG_ANY, 0, 0
         );
-        ret |= end_move();
-        ret |= end_move();
+        //ret |= end_move();
+        //ret |= end_move();
+        end_move();
+        end_move();
+        ret = i;
     }
     return ret;
 }
@@ -583,7 +586,7 @@ int pongV2(
     unsigned int n_reps
     ) {
     
-    unsigned int ret = NO_ERROR;
+    unsigned int ret = 42; //NO_ERROR;
 
     for (unsigned int i = 0; i < n_reps; i++) {
 
@@ -599,7 +602,10 @@ int pongV2(
                         0, 0, 0, 0, 0, 0,
                         src_rank, TAG_ANY, src_rank, TAG_ANY
                     );
-        ret |= end_move();
+        //ret |= end_move();
+        end_move();
+        end_move();
+        ret = i;
     }
 
     return ret;
@@ -2529,9 +2535,9 @@ void run() {
                 break;
             case PONG_NO_PIPE:  // pong2
                 if (function == 0) { 
-                    retval = pongV2(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                    retval = pongV2(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
                 } else {
-                    retval = pongExplicit(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                    retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
                 }
                 break;
             case PING: // Part I of PingPong Benchmark.

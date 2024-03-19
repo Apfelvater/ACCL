@@ -328,8 +328,10 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
   dstbuf.sync_from_device(); 
 
   auto request_return = cclo->get_retcode(handle);
+  auto duration = cclo->get_duration(handle);
 
-  std::cout << "Ping ReturnCode was: " << request_return << endl;
+  std::cout << "Ping ReturnCode was: " << request_return << std::endl;
+  std::cout << "Ping get_duration was: " << duration << std::endl;
 
   auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
