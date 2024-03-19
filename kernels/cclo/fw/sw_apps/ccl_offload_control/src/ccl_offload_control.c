@@ -2531,9 +2531,11 @@ void run() {
         switch (scenario)
         {
             case PING_NO_PIPE:  // ping2
+                retval = 41;
                 retval = pingV2(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
                 break;
             case PONG_NO_PIPE:  // pong2
+                retval = 41;
                 if (function == 0) { 
                     retval = pongV2(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
                 } else {
