@@ -19,6 +19,9 @@
 #include <utility.hpp>
 #include <fixture.hpp>
 #include <tclap/CmdLine.h>
+#include <chrono>
+#include <thread>
+
 
 #define FLOAT32RTOL 0.001
 #define FLOAT32ATOL 0.005
@@ -26,6 +29,52 @@
 // not replicate the float32 -> float16 conversion for our reference results
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
+
+TEST_F(ACCLTest, sync_from_only) {
+  unsigned int count = options.count;
+  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
+
+  std::cout << "before:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  } std::cout << std::endl;
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+  some_buf->sync_from_device();
+  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+
+ std::cout << "after:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  } std::cout << std::endl;
+}
+
+TEST_F(ACCLTest, sync_only_test) {
+  unsigned int count = options.count;
+  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
+  random_array(some_buf->buffer(), count);
+  for (unsigned int i = 0; i < count; i += 2) {
+    some_buf->buffer()[i] = 0;
+  }
+
+  std::cout << "before:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  }
+  std::cout << std::endl;
+
+  some_buf->sync_to_device();
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
+  some_buf->sync_from_device();
+
+  std::cout << "after:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  }
+  std::cout << std::endl;
+}
 
 // PingPong without pipelining benchmark -> pingV2(), pongV2()
 TEST_F(ACCLTest, pingpong_nopipe_dst) {

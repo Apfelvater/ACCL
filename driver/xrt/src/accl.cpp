@@ -296,6 +296,8 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
                                                unsigned int n_reps, unsigned int version, 
                                                communicatorId comm_id, bool run_async) {
 
+  std::cout << "ping starting...\n";
+
   srcbuf.sync_to_device();
 
   CCLO::Options options{};
@@ -320,12 +322,14 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
 
   if (!run_async) {
     wait(handle);
-    //check_return_value("ping", handle);
   }
   
   auto finish = std::chrono::high_resolution_clock::now();
 
-  dstbuf.sync_from_device(); 
+  if (!run_async) {
+    dstbuf.sync_from_device();
+    check_return_value("ping", handle);
+  }
 
   auto request_return = cclo->get_retcode(handle);
   auto duration = cclo->get_duration(handle);
@@ -341,6 +345,8 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
 std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
                                                unsigned int n_reps, unsigned int version, 
                                                communicatorId comm_id, bool run_async) {
+  std::cout << "pong starting...\n";
+
   CCLO::Options options{};
 
   if (version == 2) {
@@ -348,7 +354,7 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
   } else {
     options.scenario = operation::pong;
   }
-  options.reduce_function = (reduceFunction) 0; // if version == 2 ( if function == 0: pongV2; else pongExplicit; )
+  options.reduce_function = (reduceFunction) 1; // if version == 2 ( if function == 0: pongV2; else pongExplicit; )
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &dstbuf;
   options.count = count;
