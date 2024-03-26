@@ -375,8 +375,10 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
   dstbuf.sync_from_device();
 
   auto request_return = cclo->get_retcode(handle);
+  auto request_duration = cclo->get_duration(handle);
 
   std::cout << "Pong ReturnCode was: " << request_return << endl;
+  std::cout << "Pong Duration was: " << request_duration << endl;
 
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
