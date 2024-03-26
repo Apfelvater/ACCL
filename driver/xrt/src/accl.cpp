@@ -302,12 +302,9 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
 
   CCLO::Options options{};
 
-  if (version == 2) {
-    options.scenario = operation::ping2;
-  } else {
-    options.scenario = operation::ping;
-  }
-  options.reduce_function = (reduceFunction) 1;
+  options.scenario = operation::ping;
+
+  //options.reduce_function = (reduceFunction) 1;
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &srcbuf;
   options.count = count;
@@ -334,7 +331,7 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
   auto request_return = cclo->get_retcode(handle);
   auto duration = cclo->get_duration(handle);
 
-  std::cout << "Ping ReturnCode was: " << request_return << std::endl;
+  std::cout << "Ping get_retcode was: " << request_return << std::endl;
   std::cout << "Ping get_duration was: " << duration << std::endl;
 
   auto ret = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
@@ -349,12 +346,9 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
 
   CCLO::Options options{};
 
-  if (version == 2) {
-    options.scenario = operation::pong2;
-  } else {
-    options.scenario = operation::pong;
-  }
-  options.reduce_function = (reduceFunction) 1; // if version == 2 ( if function == 0: pongV2; else pongExplicit; )
+  options.scenario = operation::pong;
+
+  //options.reduce_function = (reduceFunction) 1; // if version == 2 ( if function == 0: pongV2; else pongExplicit; )
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &dstbuf;
   options.count = count;
@@ -367,7 +361,7 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
 
   if (!run_async) {
     wait(handle);
-    //check_return_value("pong", handle);
+    check_return_value("pong", handle);
   }
 
   auto finish = std::chrono::high_resolution_clock::now();
@@ -377,8 +371,8 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
   auto request_return = cclo->get_retcode(handle);
   auto request_duration = cclo->get_duration(handle);
 
-  std::cout << "Pong ReturnCode was: " << request_return << endl;
-  std::cout << "Pong Duration was: " << request_duration << endl;
+  std::cout << "Pong get_retcode was: " << request_return << endl;
+  std::cout << "Pong get_duration was: " << request_duration << endl;
 
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }

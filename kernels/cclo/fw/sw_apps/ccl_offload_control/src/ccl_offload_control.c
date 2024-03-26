@@ -527,8 +527,8 @@ int move(
     return end_move();
 }
 
-// same as ping() but without pipelining start_move()s
-int pingV2( 
+// ping part of PingPong test
+int ping( 
     uint32_t dst_rank,
     unsigned int count,
     uint64_t src_addr,
@@ -538,7 +538,7 @@ int pingV2(
     unsigned int n_reps
     ) {
 
-    unsigned int ret = 42; //NO_ERROR;
+    unsigned int ret = NO_ERROR; // = 42;
 
     for (unsigned int i = 0; i < n_reps; i++) {
 
@@ -567,17 +567,17 @@ int pingV2(
             0, 0, 0,
             dst_rank, TAG_ANY, 0, 0
         );
-        //ret |= end_move();
-        //ret |= end_move();
-        end_move();
-        end_move();
-        ret = i;
+        ret |= end_move();
+        ret |= end_move();
+        //end_move();
+        //end_move();
+        //ret = i;
     }
     return ret;
 }
 
-// Pong without pipelining stat_move()s
-int pongV2( 
+// pong part of PingPong test
+int pong( 
     uint32_t src_rank,
     unsigned int count,
     uint64_t mid_addr,
@@ -586,7 +586,7 @@ int pongV2(
     unsigned int n_reps
     ) {
     
-    unsigned int ret = 42; //NO_ERROR;
+    unsigned int ret = NO_ERROR; // = 42;
 
     for (unsigned int i = 0; i < n_reps; i++) {
 
@@ -602,16 +602,15 @@ int pongV2(
                         0, 0, 0, 0, 0, 0,
                         src_rank, TAG_ANY, src_rank, TAG_ANY
                     );
-        //ret |= end_move();
-        end_move();
-        end_move();
-        ret = i;
+        ret |= end_move();
+        //end_move();
+        //ret = i;
     }
 
     return ret;
 }
 
-// Pong without pipelining; NO relay, explicit recv from src into mid and send mid to src
+// Pong, but NO relay: explicit recv from src into mid and send mid to src
 int pongExplicit( 
     uint32_t src_rank,
     unsigned int count,
@@ -2530,23 +2529,11 @@ void run() {
 
         switch (scenario)
         {
-            case PING_NO_PIPE:  // ping2
-                retval = 41;
-                retval = pingV2(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
-                break;
-            case PONG_NO_PIPE:  // pong2
-                retval = 41;
-                if (function == 0) { 
-                    retval = pongV2(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
-                } else {
-                    retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
-                }
-                break;
             case PING: // Part I of PingPong Benchmark.
-                retval = COLLECTIVE_NOT_IMPLEMENTED;//ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
                 break;
             case PONG: // Part II of PingPong Benchmark.
-                retval = COLLECTIVE_NOT_IMPLEMENTED;//pong(root_src_dst, count, op0_addr ,comm , datapath_cfg, msg_tag);
+                retval = pong(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
                 break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
