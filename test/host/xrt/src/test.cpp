@@ -19,6 +19,9 @@
 #include <utility.hpp>
 #include <fixture.hpp>
 #include <tclap/CmdLine.h>
+#include <chrono>
+#include <thread>
+
 
 #define FLOAT32RTOL 0.001
 #define FLOAT32ATOL 0.005
@@ -26,6 +29,52 @@
 // not replicate the float32 -> float16 conversion for our reference results
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
+
+TEST_F(ACCLTest, sync_from_only) {
+  unsigned int count = options.count;
+  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
+
+  std::cout << "before:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  } std::cout << std::endl;
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+  some_buf->sync_from_device();
+  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+
+ std::cout << "after:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  } std::cout << std::endl;
+}
+
+TEST_F(ACCLTest, sync_only_test) {
+  unsigned int count = options.count;
+  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
+  random_array(some_buf->buffer(), count);
+  for (unsigned int i = 0; i < count; i += 2) {
+    some_buf->buffer()[i] = 0;
+  }
+
+  std::cout << "before:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  }
+  std::cout << std::endl;
+
+  some_buf->sync_to_device();
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
+  some_buf->sync_from_device();
+
+  std::cout << "after:\n";
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << some_buf->buffer()[i] << ", ";
+  }
+  std::cout << std::endl;
+}
 
 // PingPong without pipelining benchmark -> pingV2(), pongV2()
 TEST_F(ACCLTest, pingpong_nopipe_dst) {
@@ -39,31 +88,29 @@ TEST_F(ACCLTest, pingpong_nopipe_dst) {
   auto src_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(src_buf->buffer(), count);
   auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
-  //for (unsigned int i = 0; i < count; ++i) {
-  //    dst_buf->buffer()[i] = -1;
-  //}
 
   if (::rank % 2 == 1) {
   
     std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
-    accl->pong(*src_buf, count, ::rank-1, n_reps, 2, 0, true);
-    GTEST_SUCCEED() << "Noresult";
+    accl->pong(*src_buf, count, ::rank-1, n_reps, 2, 0, false);
+    GTEST_SKIP() << "Noresult";
   
   } else if (::rank < ::size - 1) {
 
     std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
-    pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, 2, 0, true);
+    pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, 2, 0, false);
     std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all " << n_reps << " pongs after: " << pingpong_time_allreps << " ns\n";
 
     // Making sure, the data from src_buf came back correctly:
     for (unsigned int i = 0; i < count; ++i) {
         EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
     }
-    std::cout << "Rank " << ::rank << " done." << std::endl;
 
   } else { // No partner to ping-pong with
     GTEST_SKIP() << ::rank << " has nothing to do.";
   }
+  
+  std::cout << "Rank " << ::rank << " done." << std::endl;
 
 }
 
