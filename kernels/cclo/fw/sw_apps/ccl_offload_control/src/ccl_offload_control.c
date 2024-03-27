@@ -527,137 +527,6 @@ int move(
     return end_move();
 }
 
-// ping part of PingPong test
-int ping( 
-    uint32_t dst_rank,
-    unsigned int count,
-    uint64_t src_addr,
-    uint64_t dst_addr,
-    unsigned int comm_offset,
-    unsigned int arcfg_offset,
-    unsigned int n_reps
-    ) {
-
-    unsigned int ret = NO_ERROR; // = 42;
-
-    for (unsigned int i = 0; i < n_reps; i++) {
-
-        // sending PING
-        start_move(
-            MOVE_IMMEDIATE, MOVE_NONE, MOVE_IMMEDIATE,
-            pack_flags(0, RES_REMOTE, 0),
-            0,
-            count,
-            comm_offset,
-            arcfg_offset,
-            src_addr, 0, 0,
-            0, 0, 0,
-            0, 0, dst_rank, TAG_ANY
-        );
-
-        // receiving PONG
-        start_move(
-            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
-            pack_flags(0, 0, 0),
-            0,
-            count,
-            comm_offset,
-            arcfg_offset,
-            0, 0, dst_addr,
-            0, 0, 0,
-            dst_rank, TAG_ANY, 0, 0
-        );
-        ret |= end_move();
-        ret |= end_move();
-        //end_move();
-        //end_move();
-        //ret = i;
-    }
-    return ret;
-}
-
-// pong part of PingPong test
-int pong( 
-    uint32_t src_rank,
-    unsigned int count,
-    uint64_t mid_addr,
-    unsigned int comm_offset,
-    unsigned int arcfg_offset,
-    unsigned int n_reps
-    ) {
-    
-    unsigned int ret = NO_ERROR; // = 42;
-
-    for (unsigned int i = 0; i < n_reps; i++) {
-
-        // when receiving PING, instantly PONG back.
-        start_move(
-                        MOVE_NONE,
-                        MOVE_ON_RECV,
-                        MOVE_IMMEDIATE,
-                        pack_flags(0, RES_REMOTE, NO_HOST),
-                        0,
-                        count,
-                        comm_offset, arcfg_offset,
-                        0, 0, 0, 0, 0, 0,
-                        src_rank, TAG_ANY, src_rank, TAG_ANY
-                    );
-        ret |= end_move();
-        //end_move();
-        //ret = i;
-    }
-
-    return ret;
-}
-
-// Pong, but NO relay: explicit recv from src into mid and send mid to src
-int pongExplicit( 
-    uint32_t src_rank,
-    unsigned int count,
-    uint64_t mid_addr,
-    unsigned int comm_offset,
-    unsigned int arcfg_offset,
-    unsigned int n_reps
-    ) {
-    
-    unsigned int ret = NO_ERROR;
-
-    for (unsigned int i = 0; i < n_reps; i++) {
-
-        // Receiving ping
-        start_move(
-                        MOVE_NONE,
-                        MOVE_ON_RECV,
-                        MOVE_IMMEDIATE,
-                        pack_flags(0, RES_LOCAL, NO_HOST),
-                        0,
-                        count,
-                        comm_offset, arcfg_offset,
-                        0, 0, mid_addr,
-                        0, 0, 0,
-                        src_rank, TAG_ANY, 0, 0
-                    );
-        ret |= end_move();
-
-        // Returning pong
-        start_move(
-                        MOVE_IMMEDIATE,
-                        MOVE_NONE,
-                        MOVE_IMMEDIATE,
-                        pack_flags(0, RES_REMOTE, NO_HOST),
-                        0,
-                        count,
-                        comm_offset, arcfg_offset,
-                        mid_addr, 0, 0,
-                        0, 0, 0,
-                        0, 0, src_rank, TAG_ANY
-                    );
-        ret |= end_move();
-    }
-
-    return ret;
-}
-
 //performs a copy using DMA0. DMA0 rx reads while DMA1 tx overwrites
 //use MOVE_IMMEDIATE
 static inline int copy(	unsigned int count,
@@ -676,39 +545,6 @@ static inline int copy(	unsigned int count,
         count, 0, arcfg_offset, src_addr, 0, dst_addr, 0, 0, 0,
         0, 0, 0, 0
     );
-}
-
-// result = combine(received_val, val2)
-// received_val = recv(src_rank)
-// val2 = val(addr_to_combine)
-int recv_and_combine(unsigned int src_rank,
-                     unsigned int src_tag,
-                     uint64_t addr_to_combine,
-                     unsigned int count,
-                     uint64_t dst_addr,
-                     unsigned int comm_offset,
-                     unsigned int arcfg_offset,
-                     unsigned int compression,
-                     unsigned int function,
-                     unsigned int buftype) {
-    
-    unsigned int stream = buftype & 0xff;
-    unsigned int host = (buftype >> 8) & 0xff;
-
-    return move(MOVE_IMMEDIATE, MOVE_ON_RECV, MOVE_IMMEDIATE,  // INSTRUCTIONS for: values to combine, values received, result
-                pack_flags(compression, RES_LOCAL, host),      // copied from copy() -> correct?
-                function,                                      // combine function
-                count,                                         // #Elements to operate on
-                comm_offset,                                   // ?
-                arcfg_offset,                                  // ?
-                addr_to_combine,                               // addr of "val2"
-                0,                                             // op1 = 0, 2nd value comes from src
-                dst_addr,                                      // destination address of result
-                0, 0, 0,                                       // stride für große puffer
-                src_rank, src_tag,                             // receiving from source
-                0, 0                                           // transmitting to nothing
-                );
-    // Frage: Wenn op1_addr = 0 und statdessen rx_src_rank != 0, welcher opcode (op0,op1,res) wird für src genutzt?
 }
 
 //performs an accumulate using DMA1 and DMA0. DMA0 rx reads op1 DMA1 rx reads op2 while DMA1 tx back to dst buffer
@@ -747,6 +583,7 @@ int send(
 ) {
     unsigned int host = (buftype >> 8) & 0xff;
     unsigned int stream = buftype & 0xff;
+
     //get count in bytes
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
@@ -827,6 +664,7 @@ int recv(
 ) {
     unsigned int stream = buftype & 0xff;
     unsigned int host = (buftype >> 8) & 0xff;
+
     //get count in bytes
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
@@ -872,6 +710,170 @@ int recv(
         }
         return ret;
     }
+}
+
+// ping part of PingPong test
+int ping( 
+    uint32_t dst_rank,
+    unsigned int count,
+    uint64_t src_addr,
+    uint64_t dst_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps,
+    unsigned int buftype
+    ) {
+    //copied from send()
+    unsigned int host = (buftype >> 8) & 0xff;
+    unsigned int stream = buftype & 0xff;
+
+    unsigned int ret = NO_ERROR; // = 42;
+    unsigned int msg_tag = 0;
+    // This sets PongCompression to RES_COMPRESSED, if compression & ETH_COMPRESSED
+    //unsigned int PongCompression |= (compression & ETH_COMPRESSED) >> 1;
+    // This sets PingCompression to OP1_COMPRESSED, if compression & ETH_COMPRESSED
+    //unsigned int PongCompression |= (compression & ETH_COMPRESSED) >> 2;
+    // since compression is "0" in tests (basic send, etc.) we can use 0 for all compressions:
+    unsigned int compression = 0;
+
+    for (unsigned int i = 0; i < n_reps; i++) {
+
+        ret |= send(dst_rank, count, src_addr, comm_offset, arcfg_offset, msg_tag, compression, buftype);
+        /*
+        // sending PING 
+        start_move(
+            MOVE_IMMEDIATE, 
+            MOVE_NONE, 
+            MOVE_IMMEDIATE,
+            pack_flags(compression, RES_REMOTE, host),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            src_addr, 0, 0,
+            0, 0, 0,
+            0, 0, dst_rank, msg_tag
+        );*/
+
+        ret |= recv(dst_rank, count, dst_addr, comm_offset, arcfg_offset, msg_tag, compression, buftype);
+        /*
+        // receiving PONG
+        start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(compression, RES_LOCAL, host),
+            0,
+            count,
+            comm_offset,
+            arcfg_offset,
+            0, 0, dst_addr,
+            0, 0, 0,
+            dst_rank, msg_tag, 0, 0
+        );
+        ret |= end_move();
+        ret |= end_move();
+        //end_move();
+        //end_move();
+        //ret = i;
+        */
+    }
+    return ret;
+}
+
+// pong part of PingPong test: Using RELAY. doesn't store the received data.
+int pong( 
+    uint32_t src_rank,
+    unsigned int count,
+    uint64_t mid_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps,
+    unsigned int buftype
+    ) {
+    //copied from send()
+    unsigned int host = (buftype >> 8) & 0xff;
+    unsigned int stream = buftype & 0xff;
+    
+    unsigned int ret = NO_ERROR;
+
+    for (unsigned int i = 0; i < n_reps; i++) {
+
+        // when receiving PING, instantly PONG back.
+        start_move(
+            MOVE_NONE,
+            MOVE_ON_RECV,
+            MOVE_IMMEDIATE,
+            pack_flags(0, RES_REMOTE, NO_HOST),
+            0,
+            count,
+            comm_offset, arcfg_offset,
+            0, 0, 0, 0, 0, 0,
+            src_rank, TAG_ANY, src_rank, TAG_ANY
+        );
+        ret |= end_move();
+    }
+
+    return ret;
+}
+
+// Pong, but NO relay: explicit recv from src into mid and send mid to src
+int pongExplicit(
+    uint32_t src_rank,
+    unsigned int count,
+    uint64_t mid_addr,
+    unsigned int comm_offset,
+    unsigned int arcfg_offset,
+    unsigned int n_reps,
+    unsigned int buftype
+    ) {
+    //copied from send()
+    unsigned int host = (buftype >> 8) & 0xff;
+    unsigned int stream = buftype & 0xff;
+    
+    unsigned int ret = NO_ERROR;
+
+    unsigned int msg_tag = 0;
+    unsigned int compression = 0;
+
+    for (unsigned int i = 0; i < n_reps; i++) {
+
+        // Receiving ping
+        ret |= recv(src_rank, count, mid_addr, comm_offset, arcfg_offset, msg_tag, compression, buftype);
+        /*
+        start_move(
+            MOVE_NONE,
+            MOVE_ON_RECV,
+            MOVE_IMMEDIATE,
+            pack_flags(compression, RES_LOCAL, host),
+            0,
+            count,
+            comm_offset, arcfg_offset,
+            0, 0, mid_addr,
+            0, 0, 0,
+            src_rank, TAG_ANY, 0, 0
+        );
+        ret |= end_move();
+        */
+
+        // Returning pong
+        ret |= send(src_rank, count, mid_addr, comm_offset, arcfg_offset, msg_tag, compression, buftype);
+        /*
+        start_move(
+            MOVE_IMMEDIATE,
+            MOVE_NONE,
+            MOVE_IMMEDIATE,
+            pack_flags(compression, RES_REMOTE, host),
+            0,
+            count,
+            comm_offset, arcfg_offset,
+            mid_addr, 0, 0,
+            0, 0, 0,
+            0, 0, src_rank, TAG_ANY
+        );
+        ret |= end_move();
+        */
+    }
+
+    return ret;
 }
 
 //1) receives from a rank
@@ -2530,10 +2532,10 @@ void run() {
         switch (scenario)
         {
             case PING: // Part I of PingPong Benchmark.
-                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag);
+                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
                 break;
             case PONG: // Part II of PingPong Benchmark.
-                retval = pong(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag);
+                retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
                 break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
