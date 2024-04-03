@@ -89,12 +89,18 @@ TEST_F(ACCLTest, pingpong_dst) {
   auto src_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(src_buf->buffer(), count);
   auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
+  for (unsigned int i = 0; i < count; ++i) {
+    dst_buf->buffer()[i] = 0;
+  }
 
   if (::rank % 2 == 1) {
   
     std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
-    accl->pong(*src_buf, count, ::rank-1, n_reps, pingpong_version, 0, false);
-    GTEST_SKIP() << "Noresult";
+    accl->pong(*dst_buf, count, ::rank-1, n_reps, pingpong_version, 0, false);
+    // Making sure, the data from src_buf was pinged to the ponger correctly:
+    for (unsigned int i = 0; i < count; ++i) {
+        EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
+    }
   
   } else if (::rank < ::size - 1) {
 

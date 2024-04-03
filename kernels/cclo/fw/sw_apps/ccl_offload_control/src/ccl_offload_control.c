@@ -2532,10 +2532,14 @@ void run() {
         switch (scenario)
         {
             case PING: // Part I of PingPong Benchmark.
-                retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+                //retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+                retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                retval |= recv(root_src_dst, count, res_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
                 break;
             case PONG: // Part II of PingPong Benchmark.
-                retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+                //retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+                retval = recv(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                retval |= send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
                 break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
