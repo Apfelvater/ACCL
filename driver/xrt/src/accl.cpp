@@ -304,7 +304,7 @@ std::chrono::_V2::system_clock::rep ACCL::ping(BaseBuffer& srcbuf, BaseBuffer& d
 
   options.scenario = operation::ping;
 
-  //options.reduce_function = (reduceFunction) 1;
+  options.reduce_function = (reduceFunction) 0; // if function == 0: { send(); recv(); } else { ping(); }
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &srcbuf;
   options.count = count;
@@ -348,7 +348,7 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
 
   options.scenario = operation::pong;
 
-  //options.reduce_function = (reduceFunction) 1; // if version == 2 ( if function == 0: pongV2; else pongExplicit; )
+  options.reduce_function = (reduceFunction) 0; // if function == 0: { recv(); send(); } else { pongExplicit(); }
   options.comm = communicators[comm_id].communicators_addr();
   options.addr_0 = &dstbuf;
   options.count = count;
