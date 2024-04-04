@@ -2531,15 +2531,27 @@ void run() {
 
         switch (scenario)
         {
+            /*
+            *   For PingPong:
+            *   Using function parameter: 
+            *       0 -> Use send() and recv()
+            *       1 -> Use ping() or pong()
+            */
             case PING: // Part I of PingPong Benchmark.
-                //retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
-                retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                retval |= recv(root_src_dst, count, res_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                if (function == 0) {
+                    retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                    retval |= recv(root_src_dst, count, res_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                } else {
+                    retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+                }
                 break;
             case PONG: // Part II of PingPong Benchmark.
-                //retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
-                retval = recv(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                retval |= send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                if (function == 0) {
+                    retval = recv(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                    retval |= send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                } else if (function == 1) {
+                    retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+                } 
                 break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
