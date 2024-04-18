@@ -243,7 +243,7 @@ public:
                                                     std::vector<ACCLRequest *> waitfor = {});
 
   /**
-   * Returns the AVERAGE (over n_reps repititions) time for one ping.
+   * Returns the OVERALL (over n_reps repititions) time for ping.
   */
   std::chrono::_V2::system_clock::rep ping(BaseBuffer& srcbuf, BaseBuffer& dstbuf, 
                                            unsigned int count, unsigned int dst, 

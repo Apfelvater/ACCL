@@ -81,8 +81,6 @@
 //New collectives by NicholasL
 #define PING                14
 #define PONG                15
-#define PING_NO_PIPE        16
-#define PONG_NO_PIPE        17
 
 
 //ACCL_CONFIG SUBFUNCTIONS
