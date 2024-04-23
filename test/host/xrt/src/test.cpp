@@ -30,55 +30,13 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-TEST_F(ACCLTest, sync_from_only) {
+TEST_F(ACCLTest, broadcast_bench) {
   unsigned int count = options.count;
-  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
-
-  std::cout << "before:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  } std::cout << std::endl;
-
-  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-  some_buf->sync_from_device();
-  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-
- std::cout << "after:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  } std::cout << std::endl;
+  
+  
 }
 
-TEST_F(ACCLTest, sync_only_test) {
-  unsigned int count = options.count;
-  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
-  random_array(some_buf->buffer(), count);
-  for (unsigned int i = 0; i < count; i += 2) {
-    some_buf->buffer()[i] = 0;
-  }
-
-  std::cout << "before:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  }
-  std::cout << std::endl;
-
-  some_buf->sync_to_device();
-
-  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-
-  some_buf->sync_from_device();
-
-  std::cout << "after:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  }
-  std::cout << std::endl;
-}
-
-// PingPong With explicit buffer for result checking
-TEST_F(ACCLTest, pingpong_dst) {
-
+TEST_F(ACCLTest, pingpong_dst) { // PingPong With explicit buffer for result checking
   std::cout << "Running pingpong test without pipelining start_move()s. With result checking." << std::endl;
 
   unsigned int pingpong_version = 0; // Im moment wirds ignoiert.
@@ -118,7 +76,6 @@ TEST_F(ACCLTest, pingpong_dst) {
   }
   
   std::cout << "Rank " << ::rank << " done." << std::endl;
-
 }
 
 // Ping-Pong Test/Benchmark

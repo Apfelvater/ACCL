@@ -652,6 +652,7 @@ ACCLRequest *ACCL::bcast(BaseBuffer &buf, unsigned int count,
   ACCLRequest *handle = call_async(options);
 
   if (run_async) {
+    std::cout << "Benchmark running async. Gotta get_duration() later.\n";
     return handle;
   } else {
     wait(handle);
@@ -659,6 +660,8 @@ ACCLRequest *ACCL::bcast(BaseBuffer &buf, unsigned int count,
       buf.sync_from_device();
     }
     check_return_value("bcast", handle);
+    auto duration = get_duration(handle);
+    std::cout << "Benchmark.get_duration()= " << duration << " ns\n";
   }
 
   return nullptr;
