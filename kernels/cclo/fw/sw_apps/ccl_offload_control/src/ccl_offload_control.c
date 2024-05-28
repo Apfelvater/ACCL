@@ -2384,9 +2384,54 @@ int all_to_all(
 }
 
 
+// TESTING and UNIT-BENCHMARKING
+
+// 1) single MOVE-OPERATIONS
+
+// address priming for STRIDE_COPY (local)
+// not necessary, i think
+
+// address priming for STRIDE_RECV: receiving 0 bytes MOVE_IMMEDIATE
+int stride_recv_init(uint64_t src_rank, uint64_t dst_buf_addr, unsigned int comm_offset, unsigned int arcfg_offset) {
+
+    start_move(
+                MOVE_NONE,
+                MOVE_ON_RECV,
+                MOVE_IMMEDIATE,
+                pack_flags(NO_COMPRESSION, RES_LOCAL, NO_HOST),
+                0,
+                0,
+                comm_offset, arcfg_offset,
+                dst_buf_addr, 0, 0, 0, 0, 0,
+                src_rank, TAG_ANY, 0, 0
+            );
+
+    return end_move();
+}
+
+// address priming for STRIDE_SEND: sending 0 bytes MOVE_IMMEDIATE
+int stride_send_init(uint64_t dst_rank, uint64_t dst_buf_addr, unsigned int comm_offset, unsigned int arcfg_offset) {
+
+    start_move(
+                MOVE_NONE,
+                MOVE_NONE,
+                MOVE_IMMEDIATE,
+                pack_flags(NO_COMPRESSION, RES_LOCAL, NO_HOST),
+                0,
+                0,
+                comm_offset, arcfg_offset,
+                0, 0, dst_buf_addr, 0, 0, 0,
+                0, 0, dst_rank, TAG_ANY
+            );
+
+    return end_move();
+}
+
+
+
 //startup and main
 
-void check_hwid(void){
+void check_hwid(void){ 
     // read HWID from hardware and copy it to host-accessible memory
     // TODO: check the HWID against expected
     unsigned int hwid = Xil_In32(GPIO2_DATA_REG);
@@ -2531,6 +2576,9 @@ void run() {
 
         switch (scenario)
         {
+            // Function parameter for SINGLE_MOVE:
+            #define FN_STRIDE_INIT_RECV = 0
+            #define FN_STRIDE_INIT_SEND = 1
             /*
             *   For PingPong:
             *   Using function parameter: 
@@ -2553,6 +2601,19 @@ void run() {
                     retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
                 } 
                 break;
+
+            case SINGLE_MOVE:
+                switch (function) {
+                    case FN_STRIDE_INIT_RECV: 
+                        retval = stride_recv_init(root_src_dst, res_addr, comm, datapath_cfg);
+                        break;
+                    case FN_STRIDE_INIT_SEND:
+                        retval = stride_send_init(root_src_dst, res_addr, comm, datapath_cfg);
+                        break;
+                    default:
+                        retval = COLLECTIVE_NOT_IMPLEMENTED;
+                }
+
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
             case ACCL_COPY:

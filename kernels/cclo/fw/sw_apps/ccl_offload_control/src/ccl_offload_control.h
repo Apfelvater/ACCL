@@ -81,6 +81,7 @@
 //New collectives by NicholasL
 #define PING                14
 #define PONG                15
+#define SINGLE_MOVE         16
 
 
 //ACCL_CONFIG SUBFUNCTIONS
