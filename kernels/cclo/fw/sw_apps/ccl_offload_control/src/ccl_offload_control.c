@@ -2577,8 +2577,8 @@ void run() {
         switch (scenario)
         {
             // Function parameter for SINGLE_MOVE:
-            #define FN_STRIDE_INIT_RECV = 0
-            #define FN_STRIDE_INIT_SEND = 1
+            #define FN_STRIDE_INIT_RECV 0
+            #define FN_STRIDE_INIT_SEND 1
             /*
             *   For PingPong:
             *   Using function parameter: 
