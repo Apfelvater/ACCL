@@ -172,6 +172,8 @@ ACCLRequest *ACCL::send(BaseBuffer &srcbuf, unsigned int count,
                         unsigned int dst, unsigned int tag, communicatorId comm_id,
                         bool from_fpga, dataType compress_dtype, bool run_async,
                         std::vector<ACCLRequest *> waitfor) {
+  std::cout << "Sending buffer..." << std::endl;
+
   CCLO::Options options{};
 
   if (from_fpga == false) {
@@ -189,10 +191,12 @@ ACCLRequest *ACCL::send(BaseBuffer &srcbuf, unsigned int count,
   ACCLRequest *handle = call_async(options);
 
   if (run_async) {
+    std::cout << "SEND:" << std::endl << "Retcode=" << cclo->get_retcode(handle) << std::endl << "Duration=" << cclo->get_duration(handle) << std::endl;
     return handle;
   } else {
     wait(handle);
     check_return_value("send", handle);
+    std::cout << "SEND:" << std::endl << "Retcode=" << cclo->get_retcode(handle) << std::endl << "Duration=" << cclo->get_duration(handle) << std::endl;
   }
 
   return nullptr;
@@ -377,6 +381,42 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
 
+ACCLRequest *ACCL::recv_pipeline_restriction_test(BaseBuffer& dstbuf, unsigned int count, unsigned int first_src_rank, 
+                                                  unsigned int last_src_rank, communicatorId comm_id, bool to_fpga, bool run_async) {
+
+  std::cout << "Starting recv-pipeline from different ranks...\n";
+
+  if (first_src_rank >= last_src_rank) {
+    std::cout << "Invalid args: first_src_rank, last_src_rank\n";
+    return nullptr;
+  }
+
+  CCLO::Options options{};
+
+  options.scenario = operation::special_test;
+
+  options.comm = communicators[comm_id].communicators_addr();
+  options.addr_0 = &dstbuf;
+  options.count = count;
+  options.root_src_dst = first_src_rank;
+  options.tag = last_src_rank;
+
+  ACCLRequest* handle = call_async(options);
+
+  if (!run_async) {
+    wait(handle);
+    if (!to_fpga) dstbuf.sync_from_device();
+    check_return_value("recv_pipe_test", handle);
+  }
+
+  auto request_return = cclo->get_retcode(handle);
+  auto request_duration = cclo->get_duration(handle);
+  std::cout << "get_retcode was: " << request_return << endl;
+  std::cout << "get_duration was: " << request_duration << endl;
+
+}
+
+
 ACCLRequest *ACCL::stream_put(BaseBuffer &srcbuf, unsigned int count,
                         unsigned int dst, unsigned int stream_id, communicatorId comm_id,
                         bool from_fpga, dataType compress_dtype, bool run_async,
@@ -465,6 +505,7 @@ ACCLRequest *ACCL::recv(BaseBuffer &dstbuf, unsigned int count,
   ACCLRequest *handle = call_async(options);
 
   if (run_async) {
+    std::cout << "RECV:" << std::endl << "Retcode=" << cclo->get_retcode(handle) << std::endl << "Duration=" << cclo->get_duration(handle) << std::endl;
     return handle;
   } else {
     wait(handle);
@@ -472,6 +513,7 @@ ACCLRequest *ACCL::recv(BaseBuffer &dstbuf, unsigned int count,
       dstbuf.sync_from_device();
     }
     check_return_value("recv", handle);
+    std::cout << "RECV:" << std::endl << "Retcode=" << cclo->get_retcode(handle) << std::endl << "Duration=" << cclo->get_duration(handle) << std::endl;
   }
 
   return nullptr;

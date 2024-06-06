@@ -30,6 +30,84 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+TEST_F(ACCLTest, recv_pipeline_restriction_auto) {
+  // Tests the restriction, that one rank can NOT receive multiple messages (from different ranks?) at once.
+  // Hence the inefficient ring-gather
+  // MAYBE HAS TO BE TESTED ON HARDWARE.
+
+  unsigned int root_rank = 0;
+  unsigned int count = options.count;
+  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(src_buf->buffer(), count);
+
+  if (::rank > 0) {
+    // All ranks send once to root.
+    accl->send(*src_buf, count, root_rank, TAG_ANY, GLOBAL_COMM, false, ACCL::dataType::none, true);
+    GTEST_SKIP();
+  } else {
+    // Root challenge: try to receive from multiple ranks at once.
+    unsigned int last_src_rank = ::size -1;
+    unsigned int first_src_rank = 1;
+
+    accl->recv_pipeline_restriction_test(*dst_buf, count, first_src_rank, last_src_rank, GLOBAL_COMM, true, true);
+
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
+    }
+  }
+}
+
+TEST_F(ACCLTest, recv_pipeline_restriction_manual) {
+  // Tests the restriction, that one rank can NOT receive multiple messages (from different ranks?) at once.
+  // Hence the inefficient ring-gather
+  // MAYBE HAS TO BE TESTED ON HARDWARE.
+
+  unsigned int root_rank = 0;
+  unsigned int count = options.count;
+  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(src_buf->buffer(), count);
+
+  if (::rank > 0) {
+    // All ranks send once to root.
+    accl->send(*src_buf, count, root_rank, TAG_ANY, GLOBAL_COMM, false, ACCL::dataType::none, true);
+    GTEST_SKIP();
+  } else {
+    // Root challenge: try to receive from multiple ranks at once.
+    for (unsigned int src_rank = 1; src_rank < ::size; src_rank++) {
+      accl->recv(*dst_buf, count, src_rank, TAG_ANY, GLOBAL_COMM, false, ACCL::dataType::none, true);
+    }
+    dst_buf->sync_from_device();
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
+    }
+  }
+}
+
+TEST_F(ACCLTest, returnvalue_test) {
+  // 0 sends, 1 does NOT rec
+  // deadlock? Return value?
+
+  unsigned int count = options.count;
+  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(src_buf->buffer(), count);
+
+  if (::rank % 2 == 0) {
+    ACCLRequest* send_req = accl->send(*src_buf, count, 1, 0, GLOBAL_COMM, false, dataType::none, true);
+
+    //int status = (int) send_req->get_status();
+    //std::cout << "Status of send: " << status << std::endl;
+
+    //int returncode = accl->get_retcode(send_req);
+    //int duration = accl.cclo_ptr->get_duration(send_req);
+    //std::cout << "Ret-code=" << returncode << std::endl << "Duration=" << duration << std::endl;
+  } else {
+    std::cout << "Rank 1 output. Did nothing\n";
+  }
+
+}
+
 TEST_F(ACCLTest, broadcast_bench) {
   unsigned int count = options.count;
   

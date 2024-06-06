@@ -225,6 +225,13 @@ public:
                     unsigned int tag = TAG_ANY, communicatorId comm_id = GLOBAL_COMM,
                     dataType compress_dtype = dataType::none, bool run_async = false,
                     std::vector<ACCLRequest *> waitfor = {});
+
+  // RECV Pipeline Restriction test
+  ACCLRequest *recv_pipeline_restriction_test(BaseBuffer& dstbuf, unsigned int count, 
+                                              unsigned int first_src_rank, unsigned int last_src_rank, 
+                                              communicatorId comm_id = GLOBAL_COMM, 
+                                              bool to_fgpa = false, bool run_async = false);
+
   /**
    * Nur halt hier zu testzwecken.
   */
