@@ -2385,13 +2385,7 @@ int all_to_all(
 
 
 // TESTING and UNIT-BENCHMARKING
-
-// 1) single MOVE-OPERATIONS
-
-// address priming for STRIDE_COPY (local)
-// not necessary, i think
-
-// address priming for STRIDE_RECV: receiving 0 bytes MOVE_IMMEDIATE
+// 
 int stride_recv_init(uint64_t src_rank, uint64_t dst_buf_addr, unsigned int comm_offset, unsigned int arcfg_offset) {
 
     start_move(
@@ -2409,25 +2403,39 @@ int stride_recv_init(uint64_t src_rank, uint64_t dst_buf_addr, unsigned int comm
     return end_move();
 }
 
-// address priming for STRIDE_SEND: sending 0 bytes MOVE_IMMEDIATE
-int stride_send_init(uint64_t dst_rank, uint64_t dst_buf_addr, unsigned int comm_offset, unsigned int arcfg_offset) {
+// starts to receive from all ranks from src_rank to last_src_rank
+int recv_pipeline_overload(
+    unsigned int count, 
+    uint64_t src_rank, 
+    uint64_t last_src_rank, 
+    uint64_t dst_buf_addr, 
+    unsigned int comm_offset, 
+    unsigned int arcfg_offset
+){
+    int err = NO_ERROR;
+    unsigned int expected_ack_count = 0;
 
-    start_move(
-                MOVE_NONE,
-                MOVE_NONE,
-                MOVE_IMMEDIATE,
-                pack_flags(NO_COMPRESSION, RES_LOCAL, NO_HOST),
-                0,
-                0,
-                comm_offset, arcfg_offset,
-                0, 0, dst_buf_addr, 0, 0, 0,
-                0, 0, dst_rank, TAG_ANY
-            );
-
-    return end_move();
+    for (src_rank; src_rank <= last_src_rank; src_rank++) {
+        start_move(
+            MOVE_NONE, MOVE_ON_RECV, MOVE_IMMEDIATE,
+            pack_flags(NO_COMPRESSION, RES_LOCAL, NO_HOST),
+            0,
+            count,
+            comm_offset, arcfg_offset,
+            0, 0, dst_buf_addr,
+            0, 0, 0,
+            src_rank, TAG_ANY, 0, 0
+        );
+        expected_ack_count++;
+        if(expected_ack_count > 2){
+            err |= end_move();
+            expected_ack_count--;
+        }
+    }
+    for(int i=0; i<expected_ack_count; i++){
+        err |= end_move();
+    }
 }
-
-
 
 //startup and main
 
@@ -2576,9 +2584,6 @@ void run() {
 
         switch (scenario)
         {
-            // Function parameter for SINGLE_MOVE:
-            #define FN_STRIDE_INIT_RECV 0
-            #define FN_STRIDE_INIT_SEND 1
             /*
             *   For PingPong:
             *   Using function parameter: 
@@ -2602,17 +2607,11 @@ void run() {
                 } 
                 break;
 
-            case SINGLE_MOVE:
-                switch (function) {
-                    case FN_STRIDE_INIT_RECV: 
-                        retval = stride_recv_init(root_src_dst, res_addr, comm, datapath_cfg);
-                        break;
-                    case FN_STRIDE_INIT_SEND:
-                        retval = stride_send_init(root_src_dst, res_addr, comm, datapath_cfg);
-                        break;
-                    default:
-                        retval = COLLECTIVE_NOT_IMPLEMENTED;
-                }
+            case SPECIAL_TEST:
+                // root_src_dst == first_src_rank
+                // msg_tag == last_src_rank
+                retval = recv_pipeline_overload(count, root_src_dst, msg_tag, res_addr, comm, datapath_cfg);
+                break;
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
