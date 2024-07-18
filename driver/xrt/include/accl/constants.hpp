@@ -210,8 +210,6 @@ enum class operation : int {
 
   ping = 14,
   pong = 15,
-  ping2 = 16,
-  pong2 = 17
 };
 
 /**

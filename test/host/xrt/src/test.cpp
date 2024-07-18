@@ -30,50 +30,38 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-TEST_F(ACCLTest, sync_from_only) {
+TEST_F(ACCLTest, eval_broadcast) {
+
   unsigned int count = options.count;
-  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
 
-  std::cout << "before:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  } std::cout << std::endl;
+  std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks." << std::endl;
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-  some_buf->sync_from_device();
-  std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
 
- std::cout << "after:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  } std::cout << std::endl;
-}
+  int root = GetParam();
+  if (::rank == root) {
+    test_debug("Broadcasting data from " + std::to_string(::rank) + "...", options);
+    uint64_t duration = accl->eval_collective(accl->bcast(*op_buf, count, root));
 
-TEST_F(ACCLTest, sync_only_test) {
-  unsigned int count = options.count;
-  auto some_buf = accl->create_buffer<float>(count, dataType::float16);
-  random_array(some_buf->buffer(), count);
-  for (unsigned int i = 0; i < count; i += 2) {
-    some_buf->buffer()[i] = 0;
+    std::cout << "Root took " << duration << " to finish." << std::endl; 
+
+  } else {
+    test_debug("Getting broadcast data from " + std::to_string(root) + "...", options);
+    uint64_t duration = accl->eval_collective(accl->bcast(*res_buf, count, root));
+    
+    std::cout << "Rank no. " << ::rank << " took " << duration << " to finish." << std::endl; 
   }
 
-  std::cout << "before:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
+  if (::rank != root) {
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
+    }
+  } else {
+    EXPECT_TRUE(true);
   }
-  std::cout << std::endl;
 
-  some_buf->sync_to_device();
-
-  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-
-  some_buf->sync_from_device();
-
-  std::cout << "after:\n";
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << some_buf->buffer()[i] << ", ";
-  }
-  std::cout << std::endl;
 }
 
 // PingPong With explicit buffer for result checking
