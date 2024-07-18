@@ -40,7 +40,7 @@ TEST_F(ACCLTest, eval_broadcast) {
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
 
-  int root = GetParam();
+  int root = 0;//GetParam();
   if (::rank == root) {
     test_debug("Broadcasting data from " + std::to_string(::rank) + "...", options);
     uint64_t duration = accl->eval_collective(accl->bcast(*op_buf, count, root));

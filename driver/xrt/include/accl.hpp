@@ -262,7 +262,7 @@ public:
   /**
   * Wrapper for acclrequests, that prints their status code and returns the duration.
   */
-  uint64_t ACCL::eval_collective(ACCLRequest* handle);
+  uint64_t eval_collective(ACCLRequest* handle);
 
   /**
    * Performs a one-sided put to a stream on a remote FPGA.
