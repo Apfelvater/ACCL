@@ -386,7 +386,7 @@ ACCLRequest *ACCL::recv_pipeline_restriction_test(BaseBuffer& dstbuf, unsigned i
 
   std::cout << "Starting recv-pipeline from different ranks...\n";
 
-  if (first_src_rank >= last_src_rank) {
+  if (first_src_rank > last_src_rank) {
     std::cout << "Invalid args: first_src_rank, last_src_rank\n";
     return nullptr;
   }
