@@ -30,6 +30,45 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+TEST_F(ACCLTest, eval_loop_broadcast) {
+  unsigned int loop_count = 10;
+  unsigned int count = options.count;
+  
+  std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
+
+  for (int i = 0; i < loop_count; i++) {
+
+    auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+    auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+    random_array(op_buf->buffer(), count);
+
+    int root = 0;//GetParam();
+    if (::rank == root) {
+      test_debug("Broadcasting data from " + std::to_string(::rank) + "...", options);
+      auto handle = accl->bcast(*op_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
+      uint64_t duration = accl->eval_collective(handle, *op_buf, false);
+
+      std::cout << "Root took " << duration << " to finish." << std::endl; 
+
+    } else {
+      test_debug("Getting broadcast data from " + std::to_string(root) + "...", options);
+      auto handle = accl->bcast(*res_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
+      uint64_t duration = accl->eval_collective(handle, *res_buf, true);
+      
+      std::cout << "Rank no. " << ::rank << " took " << duration << " to finish." << std::endl; 
+    }
+
+    if (::rank != root) {
+      for (unsigned int i = 0; i < count; ++i) {
+        EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
+      }
+    } else {
+      EXPECT_TRUE(true);
+    }
+
+  }
+}
+
 TEST_F(ACCLTest, eval_broadcast) {
 
   unsigned int count = options.count;
@@ -43,13 +82,15 @@ TEST_F(ACCLTest, eval_broadcast) {
   int root = 0;//GetParam();
   if (::rank == root) {
     test_debug("Broadcasting data from " + std::to_string(::rank) + "...", options);
-    uint64_t duration = accl->eval_collective(accl->bcast(*op_buf, count, root));
+    auto handle = accl->bcast(*op_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
+    uint64_t duration = accl->eval_collective(handle, *op_buf, false);
 
     std::cout << "Root took " << duration << " to finish." << std::endl; 
 
   } else {
     test_debug("Getting broadcast data from " + std::to_string(root) + "...", options);
-    uint64_t duration = accl->eval_collective(accl->bcast(*res_buf, count, root));
+    auto handle = accl->bcast(*res_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
+    uint64_t duration = accl->eval_collective(handle, *res_buf, true);
     
     std::cout << "Rank no. " << ::rank << " took " << duration << " to finish." << std::endl; 
   }
