@@ -75,7 +75,8 @@ class TestEnvironment : public ::testing::Environment {
       int rank;
       MPI_Comm_rank(MPI_COMM_WORLD, &rank);
       if (options.hardware || options.test_xrt_simulator) {
-        dev = xrt::device(rank % 3);
+        dev = xrt::device();
+        //dev = xrt::device(rank % 3);
       }
 
       // Set up for benchmarking

@@ -36,18 +36,19 @@
 std::mutex Lock;
 
 TEST_F(ACCLTest, eval_loop_broadcast) {
-  unsigned int loop_count = 10;
+  int loop_count = 25;
   unsigned int count = options.count;
+  int root = 0;
+    
   
   std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
 
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+
   for (int i = 0; i < loop_count; i++) {
 
-    auto op_buf = accl->create_buffer<float>(count, dataType::float32);
-    auto res_buf = accl->create_buffer<float>(count, dataType::float32);
-    random_array(op_buf->buffer(), count);
-
-    int root = 0;
     if (::rank == root) {
       test_debug("Broadcasting data from " + std::to_string(::rank) + "...", options);
       
@@ -74,17 +75,17 @@ TEST_F(ACCLTest, eval_loop_broadcast) {
       Lock.lock();
       Lock.unlock();
     }
-
-    if (::rank != root) {
-      for (unsigned int i = 0; i < count; ++i) {
-        EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
-      }
-    } else {
-      EXPECT_TRUE(true);
-    }
-
-    
   }
+
+  // Asserting just once, assuming if last send-recv was correct, all were.
+  if (::rank != root) {
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
+    }
+  } else {
+    EXPECT_TRUE(true);
+  }
+
 }
 
 TEST_F(ACCLTest, eval_broadcast) {
