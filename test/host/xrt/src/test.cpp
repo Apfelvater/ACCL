@@ -22,6 +22,9 @@
 #include <chrono>
 #include <thread>
 
+//Try manual barrier:
+#include <mutex>
+
 
 #define FLOAT32RTOL 0.001
 #define FLOAT32ATOL 0.005
@@ -29,6 +32,8 @@
 // not replicate the float32 -> float16 conversion for our reference results
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
+
+std::mutex Lock;
 
 TEST_F(ACCLTest, eval_loop_broadcast) {
   unsigned int loop_count = 10;
@@ -42,20 +47,32 @@ TEST_F(ACCLTest, eval_loop_broadcast) {
     auto res_buf = accl->create_buffer<float>(count, dataType::float32);
     random_array(op_buf->buffer(), count);
 
-    int root = 0;//GetParam();
+    int root = 0;
     if (::rank == root) {
       test_debug("Broadcasting data from " + std::to_string(::rank) + "...", options);
+      
+      Lock.lock();
+
+      // Sleep b4 collective
+      //std::this_thread::sleep_for(30000ms);
+
       auto handle = accl->bcast(*op_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
       uint64_t duration = accl->eval_collective(handle, *op_buf, false);
 
-      std::cout << "Root took " << duration << " to finish." << std::endl; 
+      std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl; 
+
+      Lock.unlock();
 
     } else {
       test_debug("Getting broadcast data from " + std::to_string(root) + "...", options);
+
       auto handle = accl->bcast(*res_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
       uint64_t duration = accl->eval_collective(handle, *res_buf, true);
       
       std::cout << "Rank no. " << ::rank << " took " << duration << " to finish." << std::endl; 
+
+      Lock.lock();
+      Lock.unlock();
     }
 
     if (::rank != root) {
@@ -66,6 +83,7 @@ TEST_F(ACCLTest, eval_loop_broadcast) {
       EXPECT_TRUE(true);
     }
 
+    
   }
 }
 
