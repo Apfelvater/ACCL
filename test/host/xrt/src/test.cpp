@@ -31,6 +31,40 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+TEST_F(ACCLTest, eval_loop_reduce) {
+  // Using reduceFunction::SUM
+
+  int loop_count = 1;
+  unsigned int count = options.count;
+  int root = 0;
+
+  auto function = reduceFunction::SUM;
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+
+  std::cout << "Evaluating REDUCE with data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    test_debug("Reduce data to " + std::to_string(root) + "...", options);
+
+    auto handle = accl->reduce(*op_buf, *res_buf, count, root, function, GLOBAL_COMM, false, false, dataType::none, true);
+    // Only sync on root (receiver)
+    uint64_t duration = accl->eval_collective(handle, *res_buf, ::rank == root);
+
+    std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl;
+  }
+  if (::rank == root) {
+    for (unsigned int i = 0; i < count; ++i) {
+      std::cout << (*op_buf)[i] * ::size << " vs " << (*res_buf)[i] << std::endl;
+      EXPECT_TRUE(is_close((*op_buf)[i] * ::size, (*res_buf)[i], FLOAT32RTOL, FLOAT32ATOL));
+    }
+  } else {
+    GTEST_SUCCEED();
+  }
+}
+
 TEST_F(ACCLTest, eval_loop_gather) {
   int loop_count = 1;
   unsigned int count = options.count;
