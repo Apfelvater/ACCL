@@ -31,19 +31,104 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-TEST_F(ACCLTest, eval_loop_reduce) {
+TEST_F(ACCLTest, eval_loop_reducescatter) {
   // Using reduceFunction::SUM
+  auto function = reduceFunction::SUM;
 
   int loop_count = 1;
   unsigned int count = options.count;
   int root = 0;
 
+  auto op_buf = accl->create_buffer<float>(count * ::size, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count * ::size);
+
+  std::cout << "Evaluating REDUCE-SCATTER with (initial) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
+  
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    test_debug("Reducing data...", options);
+
+    auto handle = accl->reduce_scatter(*op_buf, *res_buf, count, function, GLOBAL_COMM, false, false, dataType::none, true);
+    uint64_t duration = accl->eval_collective(handle, *res_buf, true);
+
+    std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl;
+  }
+
+  for (unsigned int i = 0; i < count; ++i) {
+    EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i + ::rank * count] * ::size);
+  }
+
+}
+
+TEST_F(ACCLTest, eval_loop_allreduce) {
+  // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
+
+  int loop_count = 1;
+  unsigned int count = options.count;
+  int root = 0;
+
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
 
-  std::cout << "Evaluating REDUCE with data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+  std::cout << "Evaluating ALLREDUCE with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
+
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    test_debug("Reducing data...", options);
+
+    auto handle = accl->allreduce(*op_buf, *res_buf, count, function, GLOBAL_COMM, false, false, dataType::none, true);
+    uint64_t duration = accl->eval_collective(handle, *res_buf, true);
+
+    std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl;
+  }
+
+  for (unsigned int i = 0; i < count; ++i) {
+    EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i] *::size);
+  }
+}
+
+TEST_F(ACCLTest, eval_loop_allgather) {
+  int loop_count = 1;
+  unsigned int count = options.count;
+  int root = 0;
+
+  std::unique_ptr<float> host_op_buf = random_array<float>(count *::size);
+  auto op_buf = accl->create_buffer(host_op_buf.get() + count *::rank, count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count *::size, dataType::float32);
+
+  std::cout << "Evaluating ALLGATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl; 
+
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    test_debug("Gathering data...", options);
+    
+    auto handle = accl->allgather(*op_buf, *res_buf, count, GLOBAL_COMM, false, false, dataType::none, true);
+    uint64_t duration = accl->eval_collective(handle, *res_buf, true);
+
+    std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl;
+  }
+
+  for (unsigned int i = 0; i < count *::size; ++i) {
+    EXPECT_FLOAT_EQ((*res_buf)[i], host_op_buf.get()[i]);
+  }
+}
+
+TEST_F(ACCLTest, eval_loop_reduce) {
+  // Using reduceFunction::SUM
+  auto function = reduceFunction::SUM;
+
+  int loop_count = 1;
+  unsigned int count = options.count;
+  int root = 0;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+
+  std::cout << "Evaluating REDUCE with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
 
   for (int i = 0; i < loop_count; i++) {
     MPI_Barrier(MPI_COMM_WORLD);
@@ -70,7 +155,7 @@ TEST_F(ACCLTest, eval_loop_gather) {
   unsigned int count = options.count;
   int root = 0;
 
-  std::cout << "Evaluating GATHER with (initial) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+  std::cout << "Evaluating GATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
 
   std::unique_ptr<float> host_op_buf = random_array<float>(count * ::size);
   auto op_buf = accl->create_buffer(host_op_buf.get() + count *::rank, count, dataType::float32);
