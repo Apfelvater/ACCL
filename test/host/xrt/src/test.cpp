@@ -31,13 +31,49 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-
-TEST_F(ACCLTest, eval_loop_scatter) {
+TEST_F(ACCLTest, eval_loop_gather) {
   int loop_count = 1;
   unsigned int count = options.count;
   int root = 0;
 
-  std::cout << "Evaluating SCATTER with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+  std::cout << "Evaluating GATHER with (initial) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+
+  std::unique_ptr<float> host_op_buf = random_array<float>(count * ::size);
+  auto op_buf = accl->create_buffer(host_op_buf.get() + count *::rank, count, dataType::float32);
+  std::unique_ptr<ACCL::Buffer<float>> res_buf;
+  if (::rank == root) {
+    res_buf = accl->create_buffer<float>(count *::size, dataType::float32);
+  } else {
+    res_buf = std::unique_ptr<ACCL::Buffer<float>>(nullptr);
+  }
+
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    test_debug("Gather data from " + std::to_string(::rank) + "...", options);
+
+    auto handle = accl->gather(*op_buf, *res_buf, count, root, GLOBAL_COMM, false, false, dataType::none, true);
+    // Only sync on root (receiver)
+    uint64_t duration = accl->eval_collective(handle, *res_buf, ::rank == root);
+
+    std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl;
+  }
+
+  if (::rank == root) {
+    for (unsigned int i = 0; i < count *::size; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], host_op_buf.get()[i]);
+    }
+  } else {
+    EXPECT_TRUE(true);
+  }
+
+}
+
+TEST_F(ACCLTest, eval_loop_scatter) {
+  int loop_count = 25;
+  unsigned int count = options.count;
+  int root = 0;
+
+  std::cout << "Evaluating SCATTER with (initial) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
 
   auto op_buf = accl->create_buffer<float>(count * ::size, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
@@ -50,7 +86,7 @@ TEST_F(ACCLTest, eval_loop_scatter) {
     
     MPI_Barrier(MPI_COMM_WORLD);
 
-    auto handle = accl->scatter(*op_buf, *res_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, false);
+    auto handle = accl->scatter(*op_buf, *res_buf, count, root, GLOBAL_COMM, false, false, ACCL::dataType::none, true);
     uint64_t duration = accl->eval_collective(handle, *res_buf, true);
 
     std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl; 

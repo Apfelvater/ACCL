@@ -379,10 +379,10 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
 
 uint64_t ACCL::eval_collective(ACCLRequest* handle, BaseBuffer& sync_this_buf, bool sync_it) {
   wait(handle);
-  check_return_value("bcast", handle);
+  check_return_value("any", handle);
 
   auto request_return = cclo->get_retcode(handle);
-  auto request_duration = cclo->get_duration(handle);  
+  auto request_duration = cclo->get_duration(handle);
 
   if (sync_it) {
     sync_this_buf.sync_from_device();
