@@ -381,14 +381,12 @@ uint64_t ACCL::eval_collective(ACCLRequest* handle, BaseBuffer& sync_this_buf, b
   wait(handle);
   check_return_value("bcast", handle);
 
-  if (sync_it) {
-    sync_this_buf.sync_from_device();
-  }
-
   auto request_return = cclo->get_retcode(handle);
   auto request_duration = cclo->get_duration(handle);  
 
-  if (request_return != 0) std::cout << "returncode was " << request_return << endl;
+  if (sync_it) {
+    sync_this_buf.sync_from_device();
+  }
 
   return request_duration;
 }
