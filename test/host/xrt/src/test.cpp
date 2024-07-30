@@ -271,7 +271,7 @@ TEST_F(ACCLTest, eval_loop_broadcast_sync_inside) {
 
 }
 
-TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
+TEST_F(ACCLTest, test_loop_broadcast_sync_outside) {
   int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
