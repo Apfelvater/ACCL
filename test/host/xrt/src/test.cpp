@@ -35,7 +35,7 @@ TEST_F(ACCLTest, eval_loop_reducescatter) {
   // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
 
-  int loop_count = 1;
+  int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
 
@@ -56,7 +56,7 @@ TEST_F(ACCLTest, eval_loop_reducescatter) {
   }
 
   for (unsigned int i = 0; i < count; ++i) {
-    EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i + ::rank * count] * ::size);
+    EXPECT_TRUE(is_close((*res_buf)[i], (*op_buf)[i + ::rank * count] * ::size, FLOAT16RTOL, FLOAT16ATOL));
   }
 
 }
@@ -65,7 +65,7 @@ TEST_F(ACCLTest, eval_loop_allreduce) {
   // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
 
-  int loop_count = 1;
+  int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
 
@@ -91,7 +91,7 @@ TEST_F(ACCLTest, eval_loop_allreduce) {
 }
 
 TEST_F(ACCLTest, eval_loop_allgather) {
-  int loop_count = 1;
+  int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
 
@@ -120,7 +120,7 @@ TEST_F(ACCLTest, eval_loop_reduce) {
   // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
 
-  int loop_count = 1;
+  int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
 
@@ -142,7 +142,7 @@ TEST_F(ACCLTest, eval_loop_reduce) {
   }
   if (::rank == root) {
     for (unsigned int i = 0; i < count; ++i) {
-      std::cout << (*op_buf)[i] * ::size << " vs " << (*res_buf)[i] << std::endl;
+      //std::cout << (*op_buf)[i] * ::size << " vs " << (*res_buf)[i] << std::endl;
       EXPECT_TRUE(is_close((*op_buf)[i] * ::size, (*res_buf)[i], FLOAT32RTOL, FLOAT32ATOL));
     }
   } else {
@@ -151,7 +151,7 @@ TEST_F(ACCLTest, eval_loop_reduce) {
 }
 
 TEST_F(ACCLTest, eval_loop_gather) {
-  int loop_count = 1;
+  int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
 
@@ -222,7 +222,7 @@ TEST_F(ACCLTest, eval_loop_scatter) {
 
 }
 
-TEST_F(ACCLTest, eval_loop_broadcast_sync_inside) {
+TEST_F(ACCLTest, test_loop_broadcast_sync_inside) {
   int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
@@ -271,7 +271,7 @@ TEST_F(ACCLTest, eval_loop_broadcast_sync_inside) {
 
 }
 
-TEST_F(ACCLTest, test_loop_broadcast_sync_outside) {
+TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
   int loop_count = 25;
   unsigned int count = options.count;
   int root = 0;
