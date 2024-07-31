@@ -108,9 +108,26 @@ TEST_F(ACCLTest, returnvalue_test) {
 
 }
 
-TEST_F(ACCLTest, broadcast_bench) {
+TEST_F(ACCLTest, copy_get_duration) {
   unsigned int count = options.count;
+  int loop_count = 10;
   
+  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(src_buf->buffer(), count);
+
+  for (int i = 0; i < loop_count; i++) {
+    auto handle = accl->copy(*op_buf, *res_buf, count, false, false, true);
+
+    accl->wait(handle);
+    int duration = accl->get_duration(handle);
+
+    std::cout << duration << std::endl;
+  }
+
+  for (unsigned int i = 0; i < count; ++i) {
+    EXPECT_FLOAT_EQ((*op_buf)[i], (*res_buf)[i]);
+  }
   
 }
 
