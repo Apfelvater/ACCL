@@ -110,19 +110,20 @@ TEST_F(ACCLTest, returnvalue_test) {
 
 TEST_F(ACCLTest, copy_get_duration) {
   unsigned int count = options.count;
-  int loop_count = 10;
+  int loop_count = 50;
   
-  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
-  auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
-  random_array(src_buf->buffer(), count);
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
 
   for (int i = 0; i < loop_count; i++) {
     auto handle = accl->copy(*op_buf, *res_buf, count, false, false, true);
 
     accl->wait(handle);
+    res_buf->sync_from_device();
     int duration = accl->get_duration(handle);
 
-    std::cout << duration << std::endl;
+    std::cout << "Loop i=" << i << ", Rank no=" << ::rank << ", duration=" << duration << std::endl;
   }
 
   for (unsigned int i = 0; i < count; ++i) {
