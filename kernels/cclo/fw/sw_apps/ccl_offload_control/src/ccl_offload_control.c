@@ -955,6 +955,11 @@ int fused_recv_reduce_send(
     return err;
 }
 
+
+//HELPERS FOR COLLECTIVES
+
+
+
 //COLLECTIVES
 
 //root reads multiple times the same segment and send it to each rank before
@@ -1088,6 +1093,15 @@ int broadcast(  unsigned int count,
     } else {
         unsigned int max_seg_count;
         int elems_remaining = count;
+
+        // For binary tree implementation...
+        // l: sending rank for this round and area; also left area bound
+        int l;
+        // r: right area bound
+        int r;
+        // destination rank for this rounds data transmission of the area
+        int dst_rank;
+
         //convert max segment size to max segment count
         //if pulling from a stream, segment size is irrelevant and we use the
         //count directly because streams can't be read losslessly
@@ -1102,6 +1116,30 @@ int broadcast(  unsigned int count,
 
         int expected_ack_count = 0;
         while(elems_remaining > 0){
+            // Logarithmic Binary Tree implementation !! ONLY WORKS IF root == 0 !!
+            l = 0;
+            r = world.size - 1;
+
+            while (r > l) {
+                // destination rank is rank at the middle of the area
+                dst_rank = (int) (l + r + 1) / 2;
+
+                // is this rank the sender or receiver in this round and area?
+                if (dst_rank == world.local_rank) {
+                    // TODO: Use star_move!!
+                    err |= recv(l, count, buf_addr, comm_offset, arcfg_offset, TAG_ANY, compression, buftype);
+                } else if (l == world.local_rank) {
+                    err |= send(dst_rank, count, buf_addr, comm_offset, arcfg_offset, TAG_ANY, compression, buftype);
+                }
+
+                // set next area bounds for this rank
+                if (world.local_rank >= dst_rank) {
+                    l = dst_rank;
+                } else {
+                    r = dst_rank - 1;
+                }
+            }
+            /******************* OLD NAIVE VERSION:
             //determine if we're sending or receiving
             if(root_rank == world.local_rank){
                 //on the root we only care about ETH_COMPRESSED and OP0_COMPRESSED
@@ -1144,6 +1182,9 @@ int broadcast(  unsigned int count,
                     root_rank, TAG_ANY, 0, 0
                 );
             }
+             *
+             *******************/
+            
             elems_remaining -= max_seg_count;
         }
         //flush remaining ACKs 
