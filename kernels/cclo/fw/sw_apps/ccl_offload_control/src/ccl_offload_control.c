@@ -1142,6 +1142,7 @@ int broadcast(  unsigned int count,
                         l, TAG_ANY, 0, 0
                     );
                     expected_ack_count++;
+                    
                 } else if (l == world.local_rank) {
                     // S E N D
                     start_move(
@@ -1171,6 +1172,7 @@ int broadcast(  unsigned int count,
                 if(expected_ack_count > 8){
                     err |= end_move();
                     expected_ack_count--;
+                }
             }
             
             elems_remaining -= max_seg_count;
