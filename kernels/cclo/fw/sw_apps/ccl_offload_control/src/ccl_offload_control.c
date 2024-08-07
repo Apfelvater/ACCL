@@ -1130,7 +1130,7 @@ int broadcast(  unsigned int count,
                 // is this rank the sender or receiver in this round and area?
                 if (dst_rank == world.local_rank) {
                     // R E C V
-                    start_move(
+                    err |= move(
                         MOVE_NONE,
                         MOVE_ON_RECV,
                         (elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT,
@@ -1141,7 +1141,6 @@ int broadcast(  unsigned int count,
                         0, 0, buf_addr, 0, 0, 0,
                         l, TAG_ANY, 0, 0
                     );
-                    expected_ack_count++;
                     
                 } else if (l == world.local_rank) {
                     // S E N D
