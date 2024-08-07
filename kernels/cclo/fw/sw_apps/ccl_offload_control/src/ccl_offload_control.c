@@ -1103,6 +1103,8 @@ int broadcast(  unsigned int count,
         int dst_rank;
         // enables the use of MOVE_REPEAT for ranks that send to multiple ranks
         bool first_send;
+        // if root != 0, we calculate the virtual rank. virtual rank root = 0
+        int virtual_rank = (world.local_rank - root_rank) % world.size;
 
         //convert max segment size to max segment count
         //if pulling from a stream, segment size is irrelevant and we use the
@@ -1128,7 +1130,7 @@ int broadcast(  unsigned int count,
                 dst_rank = (int) (l + r + 1) / 2;
 
                 // is this rank the sender or receiver in this round and area?
-                if (dst_rank == world.local_rank) {
+                if (dst_rank == virtual_rank) {
                     // R E C V
                     err |= move(
                         MOVE_NONE,
@@ -1139,10 +1141,10 @@ int broadcast(  unsigned int count,
                         min(max_seg_count, elems_remaining),
                         comm_offset, arcfg_offset,
                         0, 0, buf_addr, 0, 0, 0,
-                        l, TAG_ANY, 0, 0
+                        // if root != 0 then rank l is virtual -> reconverting l to real rank no.:
+                        (l + root_rank) % world.size, TAG_ANY, 0, 0
                     );
-                    
-                } else if (l == world.local_rank) {
+                } else if (l == virtual_rank) {
                     // S E N D
                     start_move(
                         first_send ? ((elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT) : MOVE_REPEAT,
@@ -1154,14 +1156,15 @@ int broadcast(  unsigned int count,
                         min(max_seg_count, elems_remaining),
                         comm_offset, arcfg_offset,
                         buf_addr, 0, 0, 0, 0, 0,
-                        0, 0, dst_rank, TAG_ANY
+                        // if root != 0 then dst_rank is virtual -> reconverting dst_rank to real rank no.:
+                        0, 0, (dst_rank + root_rank) % world.size, TAG_ANY
                     );
                     expected_ack_count++;
                     first_send = false;
                 }
 
                 // set next area bounds for this rank
-                if (world.local_rank >= dst_rank) {
+                if (virtual_rank >= dst_rank) {
                     l = dst_rank;
                 } else {
                     r = dst_rank - 1;
