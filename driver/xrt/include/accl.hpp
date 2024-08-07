@@ -260,6 +260,11 @@ public:
                                            communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
 
   /**
+  * Wrapper for acclrequests, that prints their status code and returns the duration.
+  */
+  uint64_t eval_collective(ACCLRequest* handle, BaseBuffer& sync_this_buf, bool sync_it);
+
+  /**
    * Performs a one-sided put to a stream on a remote FPGA.
    *
    * @param srcbuf         Buffer that contains the data to be send. Create a

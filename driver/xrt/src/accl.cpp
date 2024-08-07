@@ -377,6 +377,20 @@ std::chrono::_V2::system_clock::rep ACCL::pong(BaseBuffer& dstbuf, unsigned int 
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
 
+uint64_t ACCL::eval_collective(ACCLRequest* handle, BaseBuffer& sync_this_buf, bool sync_it) {
+  wait(handle);
+  check_return_value("any", handle);
+
+  auto request_return = cclo->get_retcode(handle);
+  auto request_duration = cclo->get_duration(handle);
+
+  if (sync_it) {
+    sync_this_buf.sync_from_device();
+  }
+
+  return request_duration;
+}
+
 ACCLRequest *ACCL::stream_put(BaseBuffer &srcbuf, unsigned int count,
                         unsigned int dst, unsigned int stream_id, communicatorId comm_id,
                         bool from_fpga, dataType compress_dtype, bool run_async,
