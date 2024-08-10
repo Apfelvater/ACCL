@@ -64,9 +64,7 @@ void FPGARequest::start() {
       run.set_arg(ACCL::XRT_ARG_ID::ADDR_1_ID, static_cast<uint64_t>(options.addr_1->address()));
       run.set_arg(ACCL::XRT_ARG_ID::ADDR_2_ID, static_cast<uint64_t>(options.addr_2->address()));
       break;
-    case ACCL::operation::ping:
-      run.set_arg(ACCL::XRT_ARG_ID::ADDR_2_ID, static_cast<uint64_t>(options.addr_2->address()));
-    case ACCL::operation::pong:
+    // case impl_test needed?
     case ACCL::operation::send:
       run.set_arg(ACCL::XRT_ARG_ID::SCENARIO_ID, static_cast<uint32_t>(options.scenario));
       run.set_arg(ACCL::XRT_ARG_ID::COUNT_ID, static_cast<uint32_t>(options.count));

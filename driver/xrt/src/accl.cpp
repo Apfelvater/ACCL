@@ -297,8 +297,6 @@ ACCLRequest* ACCL::impl_test(BaseBuffer& buf1, unsigned int count,
 
   std::cout << "IMPL TEST starting...\n";
 
-  srcbuf.sync_to_device();
-
   CCLO::Options options{};
 
   options.scenario = operation::impl_test;
@@ -318,7 +316,7 @@ ACCLRequest* ACCL::impl_test(BaseBuffer& buf1, unsigned int count,
     return handle;
   } else {
     wait(handle);
-    dstbuf.sync_from_device();
+    buf1.sync_from_device();
     check_return_value("impl_test", handle);
   }
 

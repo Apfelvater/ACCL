@@ -243,21 +243,10 @@ public:
                                                     std::vector<ACCLRequest *> waitfor = {});
 
   /**
-   * Returns the OVERALL (over n_reps repititions) time for ping.
+   * Test any impl here (currently fused_recv_reduce_send)
   */
-  std::chrono::_V2::system_clock::rep ping(BaseBuffer& srcbuf, BaseBuffer& dstbuf, 
-                                           unsigned int count, unsigned int dst, 
-                                           unsigned int n_reps = 1, unsigned int version = 1, 
-                                           communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
-
-  /**
-   * Returns time for one pong.
-   * Not really useful time-measurement, i think...
-   * MAKE SURE n_reps IS THE SAME AS IN THE ping-CALL!!
-  */
-  std::chrono::_V2::system_clock::rep pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
-                                           unsigned int n_reps = 1, unsigned int version = 1, 
-                                           communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
+  ACCLRequest* impl_test(BaseBuffer& buf1, unsigned int count, 
+                         communicatorId comm_id, bool run_async);
 
   /**
   * Wrapper for acclrequests, that prints their status code and returns the duration.
