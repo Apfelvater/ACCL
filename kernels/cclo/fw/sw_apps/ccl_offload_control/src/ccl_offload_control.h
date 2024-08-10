@@ -79,8 +79,7 @@
 #define ACCL_NOP            255
 
 //New collectives by NicholasL
-#define PING                14
-#define PONG                15
+#define IMPL_TEST           14
 
 
 //ACCL_CONFIG SUBFUNCTIONS

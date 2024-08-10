@@ -31,6 +31,29 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+TEST_F(ACCLTest, does_fused_store_mid) {
+  unsigned int count = options.count;
+  int root = 0;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+
+  if (::rank == root) {
+    accl->impl_test(*op_buf, count, GLOBAL_COMM, false);
+  } else {
+    accl->impl_test(*res_buf, count, GLOBAL_COMM, false);
+  }
+  
+  if (::rank != root) {
+    for (unsigned int i = 0; i < count; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i]);
+    }
+  } else {
+    EXPECT_TRUE(true);
+  }
+}
+
 TEST_F(ACCLTest, eval_loop_broadcast) {
   // Sync is outside of the loop.
   int loop_count = 25;

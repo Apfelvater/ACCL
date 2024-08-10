@@ -2565,27 +2565,26 @@ void run() {
         switch (scenario)
         {
             /*
-            *   For PingPong:
-            *   Using function parameter: 
-            *       0 -> Use send() and recv()
-            *       1 -> Use ping() or pong()
+            *   
             */
-            case PING: // Part I of PingPong Benchmark.
-                if (function == 0) {
-                    retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                    retval |= recv(root_src_dst, count, res_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                } else {
-                    retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
+            case IMPL_TEST: // Implementation tests
+                // Root sends
+                // Rank 1 fused_recv_send
+                // Rank 2 recv
+                // --> Does Rank 1 store data?
+                //function = 0; // This should be No function, or?
+                switch (world.local_rank) {
+
+                    case 0:
+                        send(1, count, op0_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
+                        break;
+                    case 1:
+                        fused_recv_reduce_send(0, 2, count, function, op0_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
+                        break;
+                    case 2:
+                        recv(1, count, op0_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
+                        break;
                 }
-                break;
-            case PONG: // Part II of PingPong Benchmark.
-                if (function == 0) {
-                    retval = recv(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                    retval |= send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                } else if (function == 1) {
-                    retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
-                } 
-                break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 
             case ACCL_COPY:
