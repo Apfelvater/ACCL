@@ -38,11 +38,18 @@ TEST_F(ACCLTest, does_fused_store_mid) {
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
+  //random_array(res_buf->buffer(), count);
 
-  if (::rank == root) {
-    accl->impl_test(*op_buf, count, GLOBAL_COMM, false);
-  } else {
-    accl->impl_test(*res_buf, count, GLOBAL_COMM, false);
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << ::rank << ":Res=" <<(*res_buf)[i] << std::endl;
+    std::cout << ::rank << ": Op=" <<(*op_buf)[i] << std::endl;
+  }
+
+  accl->impl_test(*op_buf, *res_buf, count, GLOBAL_COMM, false);
+  
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << ::rank << ":Res=" <<(*res_buf)[i] << std::endl;
+    std::cout << ::rank << ": Op=" <<(*op_buf)[i] << std::endl;
   }
   
   if (::rank != root) {

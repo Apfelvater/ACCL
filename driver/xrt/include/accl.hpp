@@ -245,7 +245,7 @@ public:
   /**
    * Test any impl here (currently fused_recv_reduce_send)
   */
-  ACCLRequest* impl_test(BaseBuffer& buf1, unsigned int count, 
+  ACCLRequest* impl_test(BaseBuffer& buf1, BaseBuffer& buf2, unsigned int count, 
                          communicatorId comm_id, bool run_async);
 
   /**
