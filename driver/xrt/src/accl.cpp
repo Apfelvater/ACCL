@@ -292,12 +292,12 @@ std::chrono::_V2::system_clock::rep ACCL::recv_benchmark(BaseBuffer &dstbuf, uns
   return std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 }
 
-ACCLRequest* ACCL::impl_test(BaseBuffer& buf1, BaseBuffer& buf2, unsigned int count, 
+ACCLRequest* ACCL::impl_test(BaseBuffer& op_buf, BaseBuffer& res_buf, unsigned int count, 
                              communicatorId comm_id, bool run_async) {
 
   std::cout << "IMPL TEST starting...\n";
 
-  buf1.sync_to_device();
+  op_buf.sync_to_device();
 
   CCLO::Options options{};
 
@@ -305,8 +305,8 @@ ACCLRequest* ACCL::impl_test(BaseBuffer& buf1, BaseBuffer& buf2, unsigned int co
 
   options.reduce_function = reduceFunction::SUM;
   options.comm = communicators[comm_id].communicators_addr();
-  options.addr_0 = &buf1; //op_buf
-  options.addr_2 = &buf2; //res_buf
+  options.addr_0 = &op_buf;
+  options.addr_2 = &res_buf;
   options.count = count;
 
 
@@ -317,7 +317,7 @@ ACCLRequest* ACCL::impl_test(BaseBuffer& buf1, BaseBuffer& buf2, unsigned int co
   } else {
     wait(handle);
     check_return_value("impl_test", handle);
-    buf2.sync_from_device();
+    res_buf.sync_from_device();
   }
 
   return nullptr;

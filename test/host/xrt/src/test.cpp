@@ -37,20 +37,24 @@ TEST_F(ACCLTest, does_fused_store_mid) {
 
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
-  random_array(op_buf->buffer(), count);
-  //random_array(res_buf->buffer(), count);
-  res_buf->sync_from_device();
 
   for (unsigned int i = 0; i < count; ++i) {
-    std::cout << ::rank << ":Res(host)=" <<(*res_buf)[i] << std::endl;
-    std::cout << ::rank << ": Op(host)=" <<(*op_buf)[i] << std::endl;
+    std::cout << ::rank << ": Op (pre init) =" <<(*op_buf)[i] << std::endl;
+    std::cout << ::rank << ":Res (pre init) =" <<(*res_buf)[i] << std::endl;
+  }
+
+  random_array(op_buf->buffer(), count);
+
+  for (unsigned int i = 0; i < count; ++i) {
+    std::cout << ::rank << ": Op (post init) =" <<(*op_buf)[i] << std::endl;
+    std::cout << ::rank << ":Res (post init) =" <<(*res_buf)[i] << std::endl;
   }
 
   accl->impl_test(*op_buf, *res_buf, count, GLOBAL_COMM, false);
   
   for (unsigned int i = 0; i < count; ++i) {
-    std::cout << ::rank << ":Res(host)=" <<(*res_buf)[i] << std::endl;
     std::cout << ::rank << ": Op(host)=" <<(*op_buf)[i] << std::endl;
+    std::cout << ::rank << ":Res(host)=" <<(*res_buf)[i] << std::endl;
   }
   
   if (::rank != root) {
