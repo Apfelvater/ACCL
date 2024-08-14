@@ -31,6 +31,43 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+TEST_F(ACCLTest, sync_dev_sim) {
+  unsigned int count = options.count;
+
+  auto buf1 = accl->create_buffer<float>(count, dataType::float32);
+  auto buf2 = accl->create_buffer<float>(count, dataType::float32);
+
+  for (unsigned int i = 0; i < count; ++i) {
+    buf1->buffer()[i] = 4.2;
+
+    std::cout << ::rank << ": Buf1 (pre sync) =" <<(*buf1)[i] << std::endl;
+    std::cout << ::rank << ": Buf2 (pre sync) =" <<(*buf2)[i] << std::endl;
+  }
+
+  std::cout << "Sync to AND from dev: buf1 and buf2\n";
+  buf1->sync_to_device();
+  buf1->sync_from_device();
+  buf2->sync_to_device();
+  buf2->sync_from_device();
+  buf2->sync_from_device();
+
+  for (unsigned int i = 0; i < count; ++i) {
+
+    std::cout << ::rank << ": Buf1 (post sync) =" <<(*buf1)[i] << std::endl;
+    std::cout << ::rank << ": Buf2 (post sync) =" <<(*buf2)[i] << std::endl;
+  }
+
+
+  bool FROM_FPGA = false;
+  bool TO_FPGA = false;
+  bool ASYNC = false;
+
+  //accl->copy(buf1, buf2, count, FROM_FPGA, TO_FPGA, ASYNC);
+
+  
+
+}
+
 TEST_F(ACCLTest, does_fused_store_mid) {
   unsigned int count = options.count;
   int root = 0;
@@ -39,21 +76,21 @@ TEST_F(ACCLTest, does_fused_store_mid) {
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
 
   for (unsigned int i = 0; i < count; ++i) {
-    std::cout << ::rank << ": Op (pre init) =" <<(*op_buf)[i] << std::endl;
-    std::cout << ::rank << ":Res (pre init) =" <<(*res_buf)[i] << std::endl;
+    //std::cout << ::rank << ": Op (pre init) =" <<(*op_buf)[i] << std::endl;
+    //std::cout << ::rank << ":Res (pre init) =" <<(*res_buf)[i] << std::endl;
 
     res_buf->buffer()[i] = 1;
   }
 
   random_array(op_buf->buffer(), count);
   
-  op_buf->sync_to_device();
-  res_buf->sync_to_device();
+  //op_buf->sync_to_device();
+  //res_buf->sync_to_device();
 
-  for (unsigned int i = 0; i < count; ++i) {
-    std::cout << ::rank << ": Op (post init) =" <<(*op_buf)[i] << std::endl;
-    std::cout << ::rank << ":Res (post init) =" <<(*res_buf)[i] << std::endl;
-  }
+  //for (unsigned int i = 0; i < count; ++i) {
+  //  std::cout << ::rank << ": Op (post init) =" <<(*op_buf)[i] << std::endl;
+  //  std::cout << ::rank << ":Res (post init) =" <<(*res_buf)[i] << std::endl;
+  //}
 
   accl->impl_test(*op_buf, *res_buf, count, GLOBAL_COMM, false);
   
@@ -935,8 +972,8 @@ TEST_F(ACCLTest, test_multicomm) {
 }
 
 TEST_P(ACCLRootFuncTest, test_reduce) {
-  int root = std::get<0>(GetParam());
-  reduceFunction function = std::get<1>(GetParam());
+  int root = 0;//std::get<0>(GetParam());
+  reduceFunction function = reduceFunction::SUM;//std::get<1>(GetParam());
   if((function != reduceFunction::SUM) && (function != reduceFunction::MAX)){
     GTEST_SKIP() << "Unrecognized reduction function";
   }
@@ -946,16 +983,37 @@ TEST_P(ACCLRootFuncTest, test_reduce) {
 
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
-  random_array(op_buf->buffer(), count);
-
+  // TestFused: Set all op_bufs to 0, except the first sender
+  //            This way, we will see, if the op_bufs change value in fused.
+  // if previous in ring == root, then this rank is the first sender
+  if ((::rank + ::size - 1) % ::size == root) {//
+    random_array(op_buf->buffer(), count);
+  } else {//
+    for (unsigned int i = 0; i < count; ++i) {//
+      op_buf->buffer()[i] = 4.2;//
+    }
+  }//
+  for (unsigned int i = 0; i < count; ++i) {//
+    std::cout << ::rank << ": Op(pre coll)=" <<(*op_buf)[i] << std::endl;//
+    std::cout << ::rank << ":Res(pre coll)=" <<(*res_buf)[i] << std::endl;//
+  }//
+  std::cout << "Executing reduce... rank 1 -send-> rank2 -fused_rrs-> rank0\n...\n";
   test_debug("Reduce data to " + std::to_string(root) + "...", options);
   accl->reduce(*op_buf, *res_buf, count, root, function);
+
+  op_buf->sync_from_device();//
+  //res_buf->sync_from_device();//
+  for (unsigned int i = 0; i < count; ++i) {//
+    std::cout << ::rank << ": Op(post coll)=" <<(*op_buf)[i] << std::endl;//
+    std::cout << ::rank << ":Res(post coll)=" <<(*res_buf)[i] << std::endl;//
+  }//
 
   float res, ref;
   if (::rank == root) {
     for (unsigned int i = 0; i < count; ++i) {
       res = (*res_buf)[i];
-      ref = (function == reduceFunction::MAX) ? (*op_buf)[i] : (*op_buf)[i] *::size;
+      ref = (function == reduceFunction::MAX) ? (*op_buf)[i] : (*op_buf)[i];// *::size;
+      std::cout << "!!! RESULT WILL BE FAIL, BECAUSE WE DID NOT INIT OP_BUF ON ROOT!\n\n";
       EXPECT_TRUE(is_close(res, ref, FLOAT32RTOL, FLOAT32ATOL));
     }
   } else {

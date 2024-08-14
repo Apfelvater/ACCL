@@ -2397,6 +2397,8 @@ void run() {
             //get number of bytes of selected datatype
             datatype_nbytes = Xil_In32(datapath_cfg);
         }
+        unsigned int host = (buftype_flags >> 8) & 0xff;
+        unsigned int stream = buftype_flags & 0xff;
 
         switch (scenario)
         {
@@ -2408,17 +2410,16 @@ void run() {
                 // Rank 1 fused_recv_send
                 // Rank 2 recv
                 // --> Does Rank 1 store data?
-
                 switch (world.local_rank) {
 
                     case 0:
                         retval = send(1, count, op0_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
                         break;
                     case 1:
-                        retval = fused_recv_reduce_send(0, 2, count, function, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
+                        retval = fused_recv_reduce_send(0, 2, count, function, res_addr, comm, datapath_cfg, msg_tag, compression_flags, ((host & OP0_HOST) << 8) | (stream & OP0_STREAM));
                         break;
                     case 2:
-                        retval = fused_recv_reduce_send(1, 3, count, function, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
+                        retval = fused_recv_reduce_send(1, 3, count, function, res_addr, comm, datapath_cfg, msg_tag, compression_flags, ((host & OP0_HOST) << 8) | (stream & OP0_STREAM));
                         break;
                     case 3:
                         retval = recv(2, count, res_addr, comm, datapath_cfg, msg_tag, compression_flags, buftype_flags);
