@@ -41,9 +41,14 @@ TEST_F(ACCLTest, does_fused_store_mid) {
   for (unsigned int i = 0; i < count; ++i) {
     std::cout << ::rank << ": Op (pre init) =" <<(*op_buf)[i] << std::endl;
     std::cout << ::rank << ":Res (pre init) =" <<(*res_buf)[i] << std::endl;
+
+    res_buf->buffer()[i] = 1;
   }
 
   random_array(op_buf->buffer(), count);
+  
+  op_buf->sync_to_device();
+  res_buf->sync_to_device();
 
   for (unsigned int i = 0; i < count; ++i) {
     std::cout << ::rank << ": Op (post init) =" <<(*op_buf)[i] << std::endl;
