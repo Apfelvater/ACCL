@@ -108,6 +108,20 @@ TEST_F(ACCLTest, returnvalue_test) {
 
 }
 
+TEST_F(ACCLTest, nop_get_duration) {
+  int loop_count = 50;
+
+  std::cout << "Starting " << loop_count << " iterations of NOP calls." << std::endl;
+  for (int i = 0; i < loop_count; i++) {
+    auto handle = accl->nop(true);
+
+    accl->wait(handle);
+    int duration = accl->get_duration(handle);
+
+    std::cout << "Loop i=" << i << ", Rank no=" << ::rank << ", duration=" << duration << std::endl;
+  }
+}
+
 TEST_F(ACCLTest, copy_get_duration) {
   unsigned int count = options.count;
   int loop_count = 50;
@@ -116,6 +130,7 @@ TEST_F(ACCLTest, copy_get_duration) {
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
 
+  std::cout << "Starting " << loop_count << " iterations of copying " << (int) (count / 4) << " Bytes." << std::endl;
   for (int i = 0; i < loop_count; i++) {
     auto handle = accl->copy(*op_buf, *res_buf, count, false, false, true);
 
