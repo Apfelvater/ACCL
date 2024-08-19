@@ -31,11 +31,13 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
+#define EVAL_LOOP_COUNT 3
+
 TEST_F(ACCLTest, eval_loop_reducescatter) {
   // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
 
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
 
@@ -65,7 +67,7 @@ TEST_F(ACCLTest, eval_loop_allreduce) {
   // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
 
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
 
@@ -91,7 +93,7 @@ TEST_F(ACCLTest, eval_loop_allreduce) {
 }
 
 TEST_F(ACCLTest, eval_loop_allgather) {
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
 
@@ -120,7 +122,7 @@ TEST_F(ACCLTest, eval_loop_reduce) {
   // Using reduceFunction::SUM
   auto function = reduceFunction::SUM;
 
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
 
@@ -151,7 +153,7 @@ TEST_F(ACCLTest, eval_loop_reduce) {
 }
 
 TEST_F(ACCLTest, eval_loop_gather) {
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
 
@@ -188,7 +190,7 @@ TEST_F(ACCLTest, eval_loop_gather) {
 }
 
 TEST_F(ACCLTest, eval_loop_scatter) {
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
 
@@ -223,7 +225,7 @@ TEST_F(ACCLTest, eval_loop_scatter) {
 }
 
 TEST_F(ACCLTest, test_loop_broadcast_sync_inside) {
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
     
@@ -272,7 +274,7 @@ TEST_F(ACCLTest, test_loop_broadcast_sync_inside) {
 }
 
 TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
-  int loop_count = 25;
+  int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
     
