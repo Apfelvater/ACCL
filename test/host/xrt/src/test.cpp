@@ -31,7 +31,7 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-#define EVAL_LOOP_COUNT 25
+#define EVAL_LOOP_COUNT 34 // 2 invalid results + 32 valid ones.
 
 TEST_F(ACCLTest, eval_loop_reducescatter) {
   // Using reduceFunction::SUM
