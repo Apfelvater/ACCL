@@ -31,7 +31,13 @@
 #define FLOAT16RTOL 0.005
 #define FLOAT16ATOL 0.05
 
-#define EVAL_LOOP_COUNT 34 // 2 invalid results + 32 valid ones.
+#define EVAL_LOOP_COUNT 26 // 2 invalid results + x valid ones.
+
+void print_curr_time(std::string pretext) {
+    const auto now = std::chrono::system_clock::now();
+    const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
+    std::cout << pretext << std::ctime(&t_c);
+}
 
 TEST_F(ACCLTest, eval_loop_reducescatter) {
   // Using reduceFunction::SUM
@@ -60,7 +66,8 @@ TEST_F(ACCLTest, eval_loop_reducescatter) {
   for (unsigned int i = 0; i < count; ++i) {
     EXPECT_TRUE(is_close((*res_buf)[i], (*op_buf)[i + ::rank * count] * ::size, FLOAT16RTOL, FLOAT16ATOL));
   }
-
+  
+  print_curr_time("REDUCE-SCATTER finished ");
 }
 
 TEST_F(ACCLTest, eval_loop_allreduce) {
@@ -90,6 +97,8 @@ TEST_F(ACCLTest, eval_loop_allreduce) {
   for (unsigned int i = 0; i < count; ++i) {
     EXPECT_FLOAT_EQ((*res_buf)[i], (*op_buf)[i] *::size);
   }
+  
+  print_curr_time("ALLREDUCE finished ");
 }
 
 TEST_F(ACCLTest, eval_loop_allgather) {
@@ -116,6 +125,8 @@ TEST_F(ACCLTest, eval_loop_allgather) {
   for (unsigned int i = 0; i < count *::size; ++i) {
     EXPECT_FLOAT_EQ((*res_buf)[i], host_op_buf.get()[i]);
   }
+  
+  print_curr_time("ALLGATHER finished ");
 }
 
 TEST_F(ACCLTest, eval_loop_reduce) {
@@ -150,9 +161,49 @@ TEST_F(ACCLTest, eval_loop_reduce) {
   } else {
     GTEST_SUCCEED();
   }
+  
+  print_curr_time("REDUCE finished ");
 }
 
 TEST_F(ACCLTest, eval_loop_gather) {
+  int loop_count = EVAL_LOOP_COUNT;
+  unsigned int count = options.count;
+  int root = 0;
+
+  std::cout << "Evaluating GATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+  std::unique_ptr<ACCL::Buffer<float>> res_buf;
+  if (::rank == root) {
+    res_buf = accl->create_buffer<float>(count *::size, dataType::float32);
+  } else {
+    res_buf = std::unique_ptr<ACCL::Buffer<float>>(nullptr);
+  }
+
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    test_debug("Gather data from " + std::to_string(::rank) + "...", options);
+
+    auto handle = accl->gather(*op_buf, *res_buf, count, root, GLOBAL_COMM, false, false, dataType::none, true);
+    // Only sync on root (receiver)
+    uint64_t duration = accl->eval_collective(handle, *res_buf, ::rank == root);
+
+    std::cout << "Rank no. " << ::rank << " took "  << duration << " to finish." << std::endl;
+  }
+
+  if (::rank == root) {
+    for (unsigned int i = 0; i < count *::size; ++i) {
+      EXPECT_FLOAT_EQ((*res_buf)[i], host_op_buf.get()[i]);
+    }
+  } else {
+    EXPECT_TRUE(true);
+  }
+
+  print_curr_time("GATHER finished ");
+}
+
+TEST_F(ACCLTest, eval_loop_copied_gather) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
@@ -187,6 +238,7 @@ TEST_F(ACCLTest, eval_loop_gather) {
     EXPECT_TRUE(true);
   }
 
+  print_curr_time("GATHER finished ");
 }
 
 TEST_F(ACCLTest, eval_loop_scatter) {
@@ -222,6 +274,7 @@ TEST_F(ACCLTest, eval_loop_scatter) {
     EXPECT_TRUE(true);
   }
 
+  print_curr_time("SCATTER finished ");
 }
 
 TEST_F(ACCLTest, test_loop_broadcast_sync_inside) {
@@ -271,6 +324,7 @@ TEST_F(ACCLTest, test_loop_broadcast_sync_inside) {
     EXPECT_TRUE(true);
   }
 
+  print_curr_time("BCAST finished ");
 }
 
 TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
@@ -324,6 +378,7 @@ TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
     EXPECT_TRUE(true);
   }
 
+  print_curr_time("BCAST finished ");
 }
 
 // PingPong With explicit buffer for result checking
