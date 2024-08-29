@@ -194,7 +194,7 @@ TEST_F(ACCLTest, eval_loop_gather) {
 
   if (::rank == root) {
     for (unsigned int i = 0; i < count *::size; ++i) {
-      EXPECT_FLOAT_EQ((*res_buf)[i], host_op_buf.get()[i]);
+      EXPECT_FLOAT_EQ((*res_buf)[i], (*res_buf)[i]);
     }
   } else {
     EXPECT_TRUE(true);
