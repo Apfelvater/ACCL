@@ -33,6 +33,17 @@
 
 #define EVAL_LOOP_COUNT 26 // 2 invalid results + x valid ones.
 
+TEST_F(ACCLTest, delete_me) {
+  unsigned int count = options.count;
+
+  std::cout << "Trying to create a buffer of size " << count * 1000 * 4 << "B" << std::endl;
+
+  auto op_buf = accl->create_buffer<float>(count * 1000, dataType::float32);
+
+  std::cout << "We did it!" << std::endl;
+
+}
+
 void print_curr_time(std::string pretext) {
     const auto now = std::chrono::system_clock::now();
     const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
