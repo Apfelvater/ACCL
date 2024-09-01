@@ -49,7 +49,7 @@ void CoyoteRequest::start() {
 
   auto coyote_proc = reinterpret_cast<ACCL::CoyoteDevice *>(cclo())->get_device();
 
-  if (coyote_proc->getCSR((OFFSET_HOSTCTRL + HOSTCTRL_ADDR::AP_CTRL)>>2) && (0x02 == 0)) { // read AP_CTRL and check bit 2 (the done bit)
+  if ((coyote_proc->getCSR((OFFSET_HOSTCTRL + HOSTCTRL_ADDR::AP_CTRL)>>2) & 0x4) == 0) { // read AP_CTRL and check bit 3 (the idle bit)
     throw std::runtime_error(
         "Error, collective is already running, wait for previous to complete!");
   }
@@ -299,7 +299,12 @@ CoyoteDevice::CoyoteDevice(unsigned int num_qp): num_qp(num_qp) {
 
   if(coyote_proc == NULL || coyote_proc->getCpid() != 0){
     std::cerr << "cProc initialization error!"<<std::endl;
-
+    for(unsigned int i = 0; i < coyote_qProc_vec.size(); i++) {
+      if(coyote_qProc_vec[i] != nullptr) {
+        delete coyote_qProc_vec[i];
+      }
+    }
+    delete this->coyote_proc;
   }
 
   for (unsigned int i=0; i<coyote_qProc_vec.size(); i++){
@@ -307,6 +312,16 @@ CoyoteDevice::CoyoteDevice(unsigned int num_qp): num_qp(num_qp) {
   }
 
 }
+
+CoyoteDevice::~CoyoteDevice() {
+  for(unsigned int i = 0; i < coyote_qProc_vec.size(); i++) {
+    if(coyote_qProc_vec[i] != nullptr) {
+      delete coyote_qProc_vec[i];
+    }
+  }
+  delete this->coyote_proc;
+}
+
 
 ACCLRequest *CoyoteDevice::start(const Options &options) {
   ACCLRequest *request = new ACCLRequest;
