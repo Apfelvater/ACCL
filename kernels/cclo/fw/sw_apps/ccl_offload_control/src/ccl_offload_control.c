@@ -24,7 +24,8 @@
 #endif
 
 static unsigned int timeout = 1 << 28;
-static unsigned int max_eager_size = (1<<15);
+// Raised to MAX_SIM_MEM_SIZE so that all collectives use eager
+static unsigned int max_eager_size = (1<<28);
 static unsigned int max_rendezvous_size = (1<<15);
 static unsigned int eager_rx_buf_size = DMA_MAX_BTT;
 static unsigned int num_rndzv_pending = 0;
