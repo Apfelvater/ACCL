@@ -33,6 +33,43 @@
 
 #define EVAL_LOOP_COUNT 26 // 2 invalid results + x valid ones.
 
+TEST_F(ACCLTest, eval_loop_recv_only) {
+  int loop_count = EVAL_LOOP_COUNT;
+  unsigned int count = options.count;
+
+  if (::size != 2) {
+    std::cout << "Please use 2 ranks only." << std::endl;
+    return;
+  }
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+
+  std::cout << "Starting send/recv benchmark with " << count * 4 << " B data sent/received..." << std::endl;
+
+  uint duration = 0;
+  for (int i = 0; i < loop_count; i++) {
+    MPI_Barrier(MPI_COMM_WORLD);
+    if (::rank == 0) {
+      auto handle = accl->send(*op_buf, count, 1, 0, GLOBAL_COMM, true, dataType::none, true);
+      duration = accl->get_duration(handle);
+      accl->wait(handle);
+      std::cout << "Loop" << i << ": Send (R0) took " << duration << " ns" << std::endl;
+    } else {
+      // Waiting for 2 seconds (until the message hopefully arrived.)
+      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+      auto handle = accl->recv(*op_buf, count, 0, 0, GLOBAL_COMM, true, dataType::none, true);
+      duration = accl->get_duration(handle);
+      accl->wait(handle);
+      std::cout << "Loop" << i << ": Recv (R1) took " << duration << " ns AFTER WAITING 2 SECONDS." << std::endl;
+    }
+  }
+
+  std::cout << "Send/Recv bench done." << std::endl;
+
+  GTEST_SUCCEED();
+}
+
 TEST_F(ACCLTest, eval_loop_send_recv) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
