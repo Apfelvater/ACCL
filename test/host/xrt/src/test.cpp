@@ -130,6 +130,8 @@ TEST_F(ACCLTest, eval_loop_reducescatter) {
   unsigned int count = options.count;
   int root = 0;
 
+  std::cout << "Creating buffers for bench..." << std::endl;
+
   auto op_buf = accl->create_buffer<float>(count * ::size, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count * ::size);
@@ -161,6 +163,8 @@ TEST_F(ACCLTest, eval_loop_allreduce) {
   unsigned int count = options.count;
   int root = 0;
 
+  std::cout << "Creating buffers for bench..." << std::endl;
+
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
@@ -188,6 +192,8 @@ TEST_F(ACCLTest, eval_loop_allgather) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
+
+  std::cout << "Creating buffers for bench..." << std::endl;
 
   std::unique_ptr<float> host_op_buf = random_array<float>(count *::size);
   auto op_buf = accl->create_buffer(host_op_buf.get() + count *::rank, count, dataType::float32);
@@ -219,6 +225,8 @@ TEST_F(ACCLTest, eval_loop_reduce) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
+
+  std::cout << "Creating buffers for bench..." << std::endl;
 
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
@@ -253,7 +261,7 @@ TEST_F(ACCLTest, eval_loop_gather) {
   unsigned int count = options.count;
   int root = 0;
 
-  std::cout << "Evaluating GATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+  std::cout << "Creating buffers for bench..." << std::endl;
 
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
@@ -263,6 +271,8 @@ TEST_F(ACCLTest, eval_loop_gather) {
   } else {
     res_buf = std::unique_ptr<ACCL::Buffer<float>>(nullptr);
   }
+
+  std::cout << "Evaluating GATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
 
   for (int i = 0; i < loop_count; i++) {
     MPI_Barrier(MPI_COMM_WORLD);
@@ -291,7 +301,7 @@ TEST_F(ACCLTest, eval_loop_copied_gather) {
   unsigned int count = options.count;
   int root = 0;
 
-  std::cout << "Evaluating GATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+  std::cout << "Creating buffers for bench..." << std::endl;
 
   std::unique_ptr<float> host_op_buf = random_array<float>(count * ::size);
   auto op_buf = accl->create_buffer(host_op_buf.get() + count *::rank, count, dataType::float32);
@@ -301,6 +311,8 @@ TEST_F(ACCLTest, eval_loop_copied_gather) {
   } else {
     res_buf = std::unique_ptr<ACCL::Buffer<float>>(nullptr);
   }
+
+  std::cout << "Evaluating GATHER with (target) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
 
   for (int i = 0; i < loop_count; i++) {
     MPI_Barrier(MPI_COMM_WORLD);
@@ -329,11 +341,13 @@ TEST_F(ACCLTest, eval_loop_scatter) {
   unsigned int count = options.count;
   int root = 0;
 
-  std::cout << "Evaluating SCATTER with (initial) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
+  std::cout << "Creating buffers for bench..." << std::endl;
 
   auto op_buf = accl->create_buffer<float>(count * ::size, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count * ::size);
+
+  std::cout << "Evaluating SCATTER with (initial) data of size " << count * ::size * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;  
 
   for (int i = 0; i < loop_count; i++) {
     //random_array(op_buf->buffer(), count);
@@ -364,13 +378,14 @@ TEST_F(ACCLTest, test_loop_broadcast_sync_inside) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
-    
 
-  std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
-
+  std::cout << "Creating buffers for bench..." << std::endl;
+  
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
+
+  std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
 
   for (int i = 0; i < loop_count; i++) {
     //random_array(op_buf->buffer(), count);
@@ -414,15 +429,16 @@ TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
   int root = 0;
-    
 
-  std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
-
+  std::cout << "Creating buffers for bench..." << std::endl;
+   
   auto op_buf = accl->create_buffer<float>(count, dataType::float32);
   auto res_buf = accl->create_buffer<float>(count, dataType::float32);
   random_array(op_buf->buffer(), count);
 
-  bool sync_it = false;
+  bool sync_it = false; 
+
+  std::cout << "Evaluating BROADCAST with data of size " << count * 32 / 8 << "B on " << ::size << " ranks. Repeating " << loop_count << " times." << std::endl;
 
   for (int i = 0; i < loop_count; i++) {
     sync_it = false;
@@ -461,7 +477,7 @@ TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
     EXPECT_TRUE(true);
   }
 
-  print_curr_time("BCAST finished ");
+  print_curr_time("BCAST finished");
 }
 
 // PingPong With explicit buffer for result checking
