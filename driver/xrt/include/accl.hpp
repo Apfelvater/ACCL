@@ -211,7 +211,7 @@ public:
   /**
    * Returns the OVERALL (over n_reps repititions) time for ping.
   */
-  std::chrono::_V2::system_clock::rep ping(BaseBuffer& srcbuf, BaseBuffer& dstbuf, 
+  ACCLRequest *ping(BaseBuffer& srcbuf, BaseBuffer& dstbuf, 
                                            unsigned int count, unsigned int dst, 
                                            unsigned int n_reps = 1, unsigned int version = 1, 
                                            communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
@@ -221,7 +221,7 @@ public:
    * Not really useful time-measurement, i think...
    * MAKE SURE n_reps IS THE SAME AS IN THE ping-CALL!!
   */
-  std::chrono::_V2::system_clock::rep pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
+  ACCLRequest *pong(BaseBuffer& dstbuf, unsigned int count, unsigned int src, 
                                            unsigned int n_reps = 1, unsigned int version = 1, 
                                            communicatorId comm_id = GLOBAL_COMM, bool run_async = false);
 
