@@ -458,9 +458,9 @@ initialize_accl(std::vector<rank_t> &ranks, int local_rank,
 
   if (egrsize == 0) {
     egrsize = bufsize;
-  } else if(egrsize > bufsize){
-    bufsize = egrsize;
-  }
+  } //else if(egrsize > bufsize){
+  //  bufsize = egrsize;
+  //}
 
   if (simulator) {
     accl = std::make_unique<ACCL::ACCL>(ranks[0].port, local_rank);
@@ -519,7 +519,7 @@ initialize_accl(std::vector<rank_t> &ranks, int local_rank,
 
     accl = std::make_unique<ACCL::ACCL>(device, cclo_ip, hostctrl_ip, devicemem, rxbufmem);
   }
-  accl.get()->initialize(ranks, local_rank,	nbufs, bufsize, egrsize, std::min(nbufs*bufsize, (unsigned int)4*1024*1024));
+  accl.get()->initialize(ranks, local_rank,	nbufs, bufsize, egrsize, std::min(nbufs*bufsize, (unsigned int)32*1024));//(unsigned int)4*1024*1024));
   return accl;
 }
 } // namespace accl_network_utils
