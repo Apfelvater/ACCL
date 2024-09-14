@@ -24,8 +24,7 @@
 #endif
 
 static unsigned int timeout = 1 << 28;
-// Raised to MAX_SIM_MEM_SIZE so that all collectives use eager
-static unsigned int max_eager_size = (1<<28);
+static unsigned int max_eager_size = (1<<18);   // == 256KB
 static unsigned int max_rendezvous_size = (1<<15);
 static unsigned int eager_rx_buf_size = DMA_MAX_BTT;
 static unsigned int num_rndzv_pending = 0;
@@ -587,6 +586,7 @@ int send(
     //get count in bytes
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         //Rendezvous without segmentation
         //get remote address
         uint64_t dst_addr;
@@ -668,6 +668,7 @@ int recv(
     //get count in bytes
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         //rendezvous without segmentation
         bool is_host = ((host & RES_HOST) != 0);
         //send address only if we haven't sent it before
@@ -973,6 +974,7 @@ int broadcast(  unsigned int count,
 
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         uint64_t dst_addr;
         uint32_t dst_rank;
         bool dst_host = ((host & RES_HOST) != 0);
@@ -1174,6 +1176,7 @@ int scatter(unsigned int count,
 
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         if(src_rank == world.local_rank){
             //get remote address
             uint64_t dst_addr;
@@ -1308,6 +1311,7 @@ int gather( unsigned int count,
 
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         bool dst_host;
         int status;
         uint64_t buf_addr;
@@ -1480,6 +1484,7 @@ int allgather(
 
     unsigned int bytes_count = datatype_nbytes*count;
     if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         //rendezvous ring allgather with P segments
         //TODO: each rank pulls from next_in_ring into a segment, pushes a segment to prev_in_ring
         //we do this for P-1 steps (such that each rank gathers the P-1 segments it's missing)
@@ -1689,6 +1694,7 @@ int reduce( unsigned int count,
         //corner-case copy for when running a single-node reduction
         return copy(count, src_addr, dst_addr, arcfg_offset, compression, buftype);
     }else if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         //get scratchpad buffers from exchmem
         uint64_t tmp1_addr = ((uint64_t)Xil_In32(TMP1_OFFSET+4) << 32) | (uint64_t)Xil_In32(TMP1_OFFSET);
         uint64_t tmp2_addr = ((uint64_t)Xil_In32(TMP2_OFFSET+4) << 32) | (uint64_t)Xil_In32(TMP2_OFFSET);
@@ -1934,6 +1940,7 @@ int reduce_scatter(
         //corner-case copy for when running a single-node reduction
         return copy(count, src_buf_addr, dst_buf_addr, arcfg_offset, compression, buftype);
     } else if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         //reduce-scatter via reduction+scatter
         //copy the OP0_HOST flag over RES_HOST 
         //because we're broadcasting from the allreduce result buffer
@@ -2044,6 +2051,7 @@ int allreduce(
         //corner-case copy for when running a single-node reduction
         return copy(count, src_buf_addr, dst_buf_addr, arcfg_offset, compression, buftype);
     } else if((bytes_count > max_eager_size) && (compression == NO_COMPRESSION) && (stream == NO_STREAM)){
+        return COLLECTIVE_NOT_IMPLEMENTED;
         //allreduce via reduction+broadcast
         //reduce step
         while(reduce(count, func, 0, src_buf_addr, dst_buf_addr, comm_offset, arcfg_offset, compression, buftype) == NOT_READY_ERROR);
@@ -2539,30 +2547,62 @@ void run() {
             //get number of bytes of selected datatype
             datatype_nbytes = Xil_In32(datapath_cfg);
         }
-
+        unsigned int host;
         switch (scenario)
         {
             /*
             *   For PingPong:
             *   Using function parameter: 
-            *       0 -> Use send() and recv()
+            *       0 -> send-loop / recv-loop
             *       1 -> Use ping() or pong()
             */
-            case PING: // Part I of PingPong Benchmark.
-                if (function == 0) {
-                    retval = send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                    retval |= recv(root_src_dst, count, res_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+            case PING: 
+                host = (buftype_flags >> 8) & 0xff;
+                if (function == 0) {// send-loop
+                    for (int i = 0; i < msg_tag; i++) {
+                        //retval = send...
+                        start_move(
+                            MOVE_IMMEDIATE,
+                            MOVE_NONE,
+                            MOVE_IMMEDIATE,
+                            pack_flags(NO_COMPRESSION, RES_REMOTE, host),
+                            0, count, 
+                            comm, datapath_cfg, 
+                            op0_addr, 0, 0, 
+                            0, 0, 0,
+                            0, 0, root_src_dst, TAG_ANY
+                        );
+                    }
+                    for (int i = 0; i < msg_tag; i++) {
+                        retval |= end_move();
+                    }
                 } else {
                     retval = ping(root_src_dst, count, op0_addr, res_addr, comm, datapath_cfg, msg_tag, buftype_flags);
                 }
                 break;
-            case PONG: // Part II of PingPong Benchmark.
-                if (function == 0) {
-                    retval = recv(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
-                    retval |= send(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+            case PONG:
+                host = (buftype_flags >> 8) & 0xff;
+                if (function == 0) {// recv-loop
+                    for (int i = 0; i < msg_tag; i++) {
+                        //retval = recv(root_src_dst, count, op0_addr, comm, datapath_cfg, TAG_ANY, compression_flags, buftype_flags);
+                        start_move(
+                            MOVE_NONE,
+                            MOVE_ON_RECV,
+                            MOVE_IMMEDIATE,
+                            pack_flags(NO_COMPRESSION, RES_LOCAL, host), 
+                            0, count, 
+                            comm, datapath_cfg, 
+                            0, 0, op0_addr, 
+                            0, 0, 0,
+                            root_src_dst, TAG_ANY, 0, 0
+                        );
+                    }
+                    for (int i = 0; i < msg_tag; i++) {
+                        retval |= end_move();
+                    }
                 } else if (function == 1) {
                     retval = pongExplicit(root_src_dst, count, op0_addr, comm, datapath_cfg, msg_tag, buftype_flags);
-                } 
+                }
                 break;
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------- \\ 
 

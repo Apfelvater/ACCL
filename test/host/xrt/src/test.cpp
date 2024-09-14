@@ -33,6 +33,42 @@
 
 #define EVAL_LOOP_COUNT 26 // 2 invalid results + x valid ones.
 
+TEST_F(ACCLTest, eval_move_overlap) {
+  int loop_count;
+  if (options.benchmark)
+    loop_count = 8; // FW comment flushes when pending_moves reaches 8 => assuming FIFO can hold 8 commands.
+  else
+    loop_count = 1;
+  unsigned int count = options.count;
+  uint duration = 0;
+
+  auto op_buf = accl->create_buffer<float>(count, dataType::float32);
+  auto res_buf = accl->create_buffer<float>(count, dataType::float32);
+  random_array(op_buf->buffer(), count);
+
+  std::cout << "Starting " << EVAL_LOOP_COUNT << " move-loops...";
+  for (int i = 0; i < EVAL_LOOP_COUNT; i++) {
+    std::cout << "Starting send/recv loops with each " << loop_count << " repetitions..." << std::endl;
+    MPI_Barrier(MPI_COMM_WORLD);
+    if (::rank == 0) {
+      auto handle =  accl->ping(*op_buf, *res_buf, count, 1, loop_count, 0, GLOBAL_COMM, true);
+      duration = accl->get_duration(handle);
+      accl->wait(handle);
+    } else if (::rank == 1) {
+      auto handle = accl->pong(*res_buf, count, 0, loop_count, 0, GLOBAL_COMM, true);
+      duration = accl->get_duration(handle);
+      accl->wait(handle);
+    }
+    std::cout << "Rank no. " << ::rank << " took " << duration << " to finish." << std::endl;
+  }
+
+  if (::rank == 1) {
+    for (int i = 0; i < count; i++) {
+      EXPECT_FLOAT_EQ((*op_buf)[i], (*res_buf)[i]);
+    }
+  }
+}
+
 TEST_F(ACCLTest, eval_loop_recv_only) {
   int loop_count = EVAL_LOOP_COUNT;
   unsigned int count = options.count;
@@ -478,89 +514,6 @@ TEST_F(ACCLTest, eval_loop_broadcast_sync_outside) {
   }
 
   print_curr_time("BCAST finished");
-}
-
-// PingPong With explicit buffer for result checking
-TEST_F(ACCLTest, pingpong_dst) {
-
-  std::cout << "Running pingpong test without pipelining start_move()s. With result checking." << std::endl;
-
-  unsigned int pingpong_version = 0; // Im moment wirds ignoiert.
-  unsigned int count = 8; // 8*32b = 32Bytes
-  std::time_t pingpong_time_allreps;
-  unsigned int n_reps = options.count; // On hardware: do sth. like 10k
-
-  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
-  random_array(src_buf->buffer(), count);
-  auto dst_buf = accl->create_buffer<float>(count, dataType::float32);
-  for (unsigned int i = 0; i < count; ++i) {
-    dst_buf->buffer()[i] = 0;
-  }
-
-  if (::rank % 2 == 1) {
-  
-    std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
-    accl->pong(*dst_buf, count, ::rank-1, n_reps, pingpong_version, 0, false);
-    // Making sure, the data from src_buf was pinged to the ponger correctly:
-    for (unsigned int i = 0; i < count; ++i) {
-        EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
-    }
-  
-  } else if (::rank < ::size - 1) {
-
-    std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
-    pingpong_time_allreps = accl->ping(*src_buf, *dst_buf, count, ::rank+1, n_reps, pingpong_version, 0, false);
-    std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all " << n_reps << " pongs after: " << pingpong_time_allreps << " ns\n";
-
-    // Making sure, the data from src_buf came back correctly:
-    for (unsigned int i = 0; i < count; ++i) {
-        EXPECT_FLOAT_EQ((*src_buf)[i], (*dst_buf)[i]);
-    }
-
-  } else { // No partner to ping-pong with
-    GTEST_SKIP() << ::rank << " has nothing to do.";
-  }
-  
-  std::cout << "Rank " << ::rank << " done." << std::endl;
-
-}
-
-// Ping-Pong Test/Benchmark
-TEST_F(ACCLTest, pingpong_nodst) {
-
-  unsigned int count = 8; // 8*32b = 32Bytes
-  std::time_t pingpong_time_allreps;
-  unsigned int n_reps = options.count; // On hardware: do sth. like 10k
-
-  auto src_buf = accl->create_buffer<float>(count, dataType::float32);
-  random_array(src_buf->buffer(), count);
-  auto copy_buf = accl->create_buffer<float>(count, dataType::float32);
-  accl->copy(*src_buf, *copy_buf, count);
-
-  // Making sure, the data from src_buf have been copied correctly:
-  for (unsigned int i = 0; i < count; ++i) {
-      EXPECT_FLOAT_EQ((*src_buf)[i], (*copy_buf)[i]);
-  }
-
-  if (::rank % 2 == 1) {
-  
-    std::cout << "Rank " << ::rank << " ponging back to " << ::rank-1 << std::endl;
-    accl->pong(*src_buf, count, ::rank-1, n_reps);
-  
-  } else if (::rank < ::size - 1) {
-
-    std::cout << "Rank " << ::rank << " pinging to " << ::rank+1 << std::endl;
-    pingpong_time_allreps = accl->ping(*src_buf, *src_buf, count, ::rank+1, n_reps);
-    std::cout << "Rank: " << ::rank << "/" << ::size << ":\n\tPinged to: " << ::rank + 1 << "\n\tReceived all pongs after: " << pingpong_time_allreps << " ns\n";
-
-  } else { // No partner to ping-pong with
-    cout << "Rank " << ::rank << "/" << ::size << " does nothing x)\n";
-  }
-
-  // Making sure, the data from src_buf came back correctly:
-  for (unsigned int i = 0; i < count; ++i) {
-      EXPECT_FLOAT_EQ((*src_buf)[i], (*copy_buf)[i]);
-  }
 }
 
 // Simply times the send function
