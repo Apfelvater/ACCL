@@ -956,6 +956,11 @@ int fused_recv_reduce_send(
     return err;
 }
 
+
+//HELPERS FOR COLLECTIVES
+
+
+
 //COLLECTIVES
 
 //root reads multiple times the same segment and send it to each rank before
@@ -1090,6 +1095,19 @@ int broadcast(  unsigned int count,
     } else {
         unsigned int max_seg_count;
         int elems_remaining = count;
+
+        // For binary tree implementation...
+        // l: sending rank for this round and area; also left area bound
+        int l;
+        // r: right area bound
+        int r;
+        // destination rank for this rounds data transmission of the area
+        int dst_rank;
+        // enables the use of MOVE_REPEAT for ranks that send to multiple ranks
+        bool first_send;
+        // if root != 0, we calculate the virtual rank. virtual rank root = 0
+        int virtual_rank = (world.local_rank - root_rank) % world.size;
+
         //convert max segment size to max segment count
         //if pulling from a stream, segment size is irrelevant and we use the
         //count directly because streams can't be read losslessly
@@ -1104,48 +1122,63 @@ int broadcast(  unsigned int count,
 
         int expected_ack_count = 0;
         while(elems_remaining > 0){
-            //determine if we're sending or receiving
-            if(root_rank == world.local_rank){
-                //on the root we only care about ETH_COMPRESSED and OP0_COMPRESSED
-                //so replace RES_COMPRESSED with ETH_COMPRESSED
-                compression = compression | ((compression & ETH_COMPRESSED) >> 1);
+            // Logarithmic Binary Tree implementation !! ONLY WORKS IF root == 0 !!
+            l = 0;
+            r = world.size - 1;
+            first_send = true;
 
-                //send a segment to each of the ranks (excluding self)
-                for(int i=0; i < world.size; i++){
+            while (r > l) {
+                // destination rank is rank at the middle of the area
+                dst_rank = (int) (l + r + 1) / 2;
+
+                // is this rank the sender or receiver in this round and area?
+                if (dst_rank == virtual_rank) {
+                    // R E C V
+                    err |= move(
+                        MOVE_NONE,
+                        MOVE_ON_RECV,
+                        (elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT,
+                        pack_flags(compression, RES_LOCAL, host & RES_HOST),
+                        0,
+                        min(max_seg_count, elems_remaining),
+                        comm_offset, arcfg_offset,
+                        0, 0, buf_addr, 0, 0, 0,
+                        // if root != 0 then rank l is virtual -> reconverting l to real rank no.:
+                        (l + root_rank) % world.size, TAG_ANY, 0, 0
+                    );
+                } else if (l == virtual_rank) {
+                    // S E N D
                     start_move(
-                        (i==0) ? ((elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT) : MOVE_REPEAT,
+                        first_send ? ((elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT) : MOVE_REPEAT,
+                        //(elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT,
                         MOVE_NONE,
                         MOVE_IMMEDIATE,
                         pack_flags(compression, RES_REMOTE, host & OP0_HOST),
                         0, 
-                        (i == root_rank) ? 0 : min(max_seg_count, elems_remaining),
+                        min(max_seg_count, elems_remaining),
                         comm_offset, arcfg_offset,
                         buf_addr, 0, 0, 0, 0, 0,
-                        0, 0, i, TAG_ANY
+                        // if root != 0 then dst_rank is virtual -> reconverting dst_rank to real rank no.:
+                        0, 0, (dst_rank + root_rank) % world.size, TAG_ANY
                     );
                     expected_ack_count++;
-                    //start flushing out ACKs so our pipes don't fill up
-                    if(expected_ack_count > 8){
-                        err |= end_move();
-                        expected_ack_count--;
-                    }
+                    first_send = false;
                 }
-            } else{
-                //on non-root nodes we only care about ETH_COMPRESSED and RES_COMPRESSED
-                //so replace OP1_COMPRESSED with the value of ETH_COMPRESSED
-                compression = compression | ((compression & ETH_COMPRESSED) >> 2);
-                err |= move(
-                    MOVE_NONE,
-                    MOVE_ON_RECV,
-                    (elems_remaining == count) ? MOVE_IMMEDIATE : MOVE_INCREMENT,
-                    pack_flags(compression, RES_LOCAL, host & RES_HOST),
-                    0,
-                    min(max_seg_count, elems_remaining),
-                    comm_offset, arcfg_offset,
-                    0, 0, buf_addr, 0, 0, 0,
-                    root_rank, TAG_ANY, 0, 0
-                );
+
+                // set next area bounds for this rank
+                if (virtual_rank >= dst_rank) {
+                    l = dst_rank;
+                } else {
+                    r = dst_rank - 1;
+                }
+
+                // start flushing out ACKs so our pipes don't fill up
+                if(expected_ack_count > 8){
+                    err |= end_move();
+                    expected_ack_count--;
+                }
             }
+            
             elems_remaining -= max_seg_count;
         }
         //flush remaining ACKs 
